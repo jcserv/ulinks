@@ -1,0 +1,1 @@
+{"version":3,"file":"AuthenticationMsg.js","sourceRoot":"","sources":["../../models/AuthenticationMsg.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,+CAAiD;AAGjD,IAAa,iBAAiB,GAA9B,MAAa,iBAAiB;CAM7B,CAAA;AAJC;IADC,oBAAK,EAAE;8BACA,MAAM;iDAAC;AAGf;IADC,oBAAK,CAAC,EAAE,QAAQ,EAAE,IAAI,EAAE,CAAC;8BACf,MAAM;mDAAC;AALP,iBAAiB;IAD7B,yBAAU,EAAE;GACA,iBAAiB,CAM7B;AANY,8CAAiB"}
