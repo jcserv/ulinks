@@ -12,7 +12,7 @@ import { User } from "../models";
 import { escapeRegex } from "../helpers";
 
 export interface UserState extends Omit<User, "groupChatsCreated"> {
-  groupChatsCreated: [String];
+  groupChatsCreated: [string];
 }
 @Resolver(User)
 export class UserResolver {

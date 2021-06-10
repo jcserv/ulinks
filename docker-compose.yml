@@ -12,15 +12,21 @@ services:
       - ./client:/client
     environment:
       - PORT=80
-  # server:
-  #   stdin_open: true
-  #   tty: true
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 4000:4000
-  #   environment:
-  #     - PORT=4000
-  #   volumes:
-  #     - ./server:/server
+      - HOST=http://host.docker.internal:4000
+    depends_on:
+      - server
+  server:
+    stdin_open: true
+    tty: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    environment:
+      - PORT=4000
+      - SECRET=qlwmwqmqojpompon1p2pj4p12ojgwenwoiqi
+      - MONGO_URI=mongodb+srv://admin:RTt1OqQJXGl6xL18@cluster0.1x9xf.mongodb.net/connectu?retryWrites=true&w=majority
+    volumes:
+      - ./server:/server
+      - /server/node_modules
