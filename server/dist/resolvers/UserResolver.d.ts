@@ -1,6 +1,6 @@
 import { User } from "../models";
 export interface UserState extends Omit<User, "groupChatsCreated"> {
-    groupChatsCreated: [String];
+    groupChatsCreated: [string];
 }
 export declare class UserResolver {
     getUser(email: string): Promise<import("../database/schema").IUser | null>;

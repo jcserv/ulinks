@@ -17,7 +17,10 @@ mongoose.connect(`${process.env.MONGO_URI}`, {
   useUnifiedTopology: true,
 });
 
-const customAuthChecker: AuthChecker<any> = ({ context: { req } }, roles) => {
+const customAuthChecker: AuthChecker<any> = (
+  { context: { req } },
+  roles
+): boolean => {
   if (!req.user) {
     return false;
   }
@@ -29,7 +32,7 @@ const path = "/graphql";
 const main = async () => {
   const schema = await buildSchema({
     resolvers: [AuthenticationResolver, UserResolver, GroupChatResolver],
-    authChecker: customAuthChecker
+    authChecker: customAuthChecker,
   });
 
   const apolloServer = new ApolloServer({

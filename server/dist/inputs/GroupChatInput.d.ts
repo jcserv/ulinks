@@ -1,15 +1,15 @@
 export declare class courseInformationInput {
     campus: string;
     department: string;
-    code: String;
-    term: String;
-    year: String;
+    code: string;
+    term: string;
+    year: string;
 }
 export declare class createGroupChatInput {
-    name: String;
-    description: String;
-    isCommunity: Boolean;
-    links: String[];
+    name: string;
+    description: string;
+    isCommunity: boolean;
+    links: string[];
     courseInformation?: courseInformationInput;
-    status: String;
+    status: string;
 }

@@ -9,28 +9,28 @@ export class courseInformationInput {
   department: string;
 
   @Field()
-  code: String;
+  code: string;
 
   @Field()
-  term: String;
+  term: string;
 
   @Field()
-  year: String;
+  year: string;
 }
 
 @InputType()
 export class createGroupChatInput {
   @Field()
-  name: String;
+  name: string;
   @Field()
-  description: String;
+  description: string;
   @Field()
-  isCommunity: Boolean;
+  isCommunity: boolean;
   @Field(() => [String])
-  links: String[];
+  links: string[];
   @Field(() => courseInformationInput, { nullable: true })
   courseInformation?: courseInformationInput;
 
   @Field()
-  status: String;
+  status: string;
 }

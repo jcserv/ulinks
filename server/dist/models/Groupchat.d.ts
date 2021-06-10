@@ -1,24 +1,24 @@
 export declare class CourseInformation {
     campus?: string;
     department?: string;
-    code?: String;
+    code?: string;
     term?: string;
-    year: String;
+    year: string;
 }
 export declare class GroupChat {
-    id: String;
+    id: string;
     name: string;
     description: string;
-    links: String[];
-    isCommunity: Boolean;
+    links: string[];
+    isCommunity: boolean;
     courseInformation?: CourseInformation;
     status: string;
 }
 export declare class GroupChatIds {
-    groupChats: String[];
+    groupChats: string[];
 }
 export declare class GroupChatPaginiated {
     groupChats: GroupChat[];
-    totalPages: Number;
-    pageNumber: Number;
+    totalPages: number;
+    pageNumber: number;
 }

@@ -1,4 +1,4 @@
 export declare class AuthenticationMsg {
-    status: String;
-    jwtToken?: String;
+    status: string;
+    jwtToken?: string;
 }
