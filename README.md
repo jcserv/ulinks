@@ -74,7 +74,9 @@ SECRET=[]
 With Docker:
 
 1. Download Docker
-2. `docker-compose up`
+2. Copy the .env for server into the root directory
+3. `docker-compose up`
+
 
 Locally running:
 1. `cd client && yarn`
