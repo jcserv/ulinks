@@ -1,0 +1,15 @@
+name: server-lint
+
+on: [pull_request]
+
+defaults:
+  run:
+    working-directory: server
+
+jobs:
+  serverlint:
+    name: server-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run linter
+        run: yarn run lint

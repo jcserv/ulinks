@@ -25,8 +25,8 @@ services:
       - 4000:4000
     environment:
       - PORT=4000
-      - SECRET=qlwmwqmqojpompon1p2pj4p12ojgwenwoiqi
-      - MONGO_URI=mongodb+srv://admin:RTt1OqQJXGl6xL18@cluster0.1x9xf.mongodb.net/connectu?retryWrites=true&w=majority
+      - SECRET=${SECRET}
+      - MONGO_URI=${MONGO_URI}
     volumes:
       - ./server:/server
       - /server/node_modules
