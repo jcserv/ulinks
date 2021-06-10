@@ -11,5 +11,8 @@ jobs:
     name: server-lint
     runs-on: ubuntu-latest
     steps:
+      - name: add dependencies
+        run: yarn --prefer-offline
+
       - name: Run linter
         run: yarn run lint
