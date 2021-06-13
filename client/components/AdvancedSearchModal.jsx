@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Button,
   FormControl,
@@ -24,8 +23,9 @@ import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import client from "../apollo-client";
+import { campuses, departments, terms, years } from "../constants";
 import locales from "../content/locale";
-import { campuses, departments, terms, years } from "../data/constants";
+import { ADVANCED_SEARCH_GROUPCHATS_QUERY } from "../gql/GroupChat";
 
 const messages = defineMessages({
   submit: {
@@ -222,30 +222,7 @@ const EnhancedSearchForm = withFormik({
         groupChats: { groupChats: newGroupChats },
       },
     } = await client.query({
-      query: gql`
-        query searchGroupChats(
-          $campus: String
-          $department: String
-          $code: String
-          $term: String
-          $year: String
-        ) {
-          groupChats: searchGroupChats(
-            campus: $campus
-            department: $department
-            code: $code
-            term: $term
-            year: $year
-          ) {
-            groupChats {
-              name
-              description
-              links
-              id
-            }
-          }
-        }
-      `,
+      query: ADVANCED_SEARCH_GROUPCHATS_QUERY,
       variables: {
         campus,
         department,

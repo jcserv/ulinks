@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { Form, withFormik } from "formik";
 import cookie from "js-cookie";
@@ -8,6 +7,7 @@ import * as Yup from "yup";
 
 import client from "../apollo-client";
 import locales from "../content/locale";
+import { LOGIN } from "../gql/Auth";
 
 const messages = defineMessages({
   createAcct: {
@@ -96,14 +96,7 @@ export const EnhancedLoginForm = withFormik({
         login: { status, jwtToken },
       },
     } = await client.query({
-      query: gql`
-        query login($email: String!, $password: String!) {
-          login(email: $email, password: $password) {
-            status
-            jwtToken
-          }
-        }
-      `,
+      query: LOGIN,
       variables: { email, password },
     });
     if (status === "OK") {

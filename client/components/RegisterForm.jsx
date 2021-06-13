@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Button,
   FormControl,
@@ -15,6 +14,7 @@ import * as Yup from "yup";
 
 import client from "../apollo-client";
 import locales from "../content/locale";
+import { SIGNUP } from "../gql/Auth";
 
 const messages = defineMessages({
   createAcct: {
@@ -133,14 +133,7 @@ export const EnhancedRegisterForm = withFormik({
         signup: { status, jwtToken },
       },
     } = await client.mutate({
-      mutation: gql`
-        mutation signup($email: String!, $password: String!) {
-          signup(email: $email, password: $password) {
-            status
-            jwtToken
-          }
-        }
-      `,
+      mutation: SIGNUP,
       variables: { email, password },
     });
 

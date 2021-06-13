@@ -12,7 +12,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
-import { statuses } from "../data/constants";
+import { statuses } from "../constants";
 
 const ChatRequestCard = ({ showRequestBtns, modifyRequest, name, id }) => {
   const { locale, defaultLocale, push } = useRouter();
