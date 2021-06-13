@@ -75,7 +75,7 @@ With Docker:
 
 1. Download Docker
 2. Copy the .env for server into the root directory
-3. `docker-compose up`
+3. `docker compose up --build`
 
 
 Locally running:
@@ -101,6 +101,14 @@ Import your project into Vercel. It will now have automated deployments on push.
 - [@AipioxTechson](https://github.com/AipioxTechson)
 - [@jcserv](https://jarrodservilla.com)
 - [@ninaricci29](https://github.com/ninaricci29)
+
+# 🔗 Relevant Links
+
+- [Website](https://uoftconnectu.tech)
+- [Staging Server](https://connectu.vercel.app)
+- [Original Frontend Repo](https://github.com/AipioxTechson/connectu-fe)
+- [Original Backend Repo](https://github.com/AipioxTechson/connectu-be)
+- [Devpost](https://devpost.com/software/connectu-q2cm8o)
 
 ## 🏁 License
 

@@ -1,26 +1,24 @@
 version: "3.8"
 services:
   client:
+    build: ./client
     stdin_open: true
-    build:
-      context: ./client
-      dockerfile: Dockerfile
+    tty: true
     ports:
       - 3000:3000
     volumes:
-      - /client/node_modules
       - ./client:/client
+      - /client/node_modules
     environment:
       - PORT=80
       - HOST=http://host.docker.internal:4000
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
   server:
     stdin_open: true
     tty: true
-    build:
-      context: ./server
-      dockerfile: Dockerfile
+    build: ./server
     ports:
       - 4000:4000
     environment:

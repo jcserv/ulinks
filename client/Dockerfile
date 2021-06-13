@@ -1,6 +1,6 @@
 FROM node:14-alpine
 ENV PORT 3000
-WORKDIR /
+WORKDIR /client
 # install app dependencies
 COPY ./package.json ./yarn.lock ./
 RUN yarn
