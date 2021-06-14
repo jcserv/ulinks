@@ -1,7 +1,7 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import React from "react";
 
-import links from "../data/footerLinks";
+import links from "../constants/footerLinks";
 import Emoji from "./Emoji";
 import LinkIconBar from "./LinkIconBar";
 

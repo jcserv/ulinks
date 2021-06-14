@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -24,6 +23,7 @@ import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
 import locales from "../content/locale";
+import { GET_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
 
 const messages = defineMessages({
   discover: {
@@ -105,21 +105,9 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: gql`
-        query searchGroupChats($text: String, $isCommunity: Boolean) {
-          groupChats: searchGroupChats(text: $text, isCommunity: $isCommunity) {
-            groupChats {
-              name
-              description
-              links
-              id
-            }
-            totalPages
-            pageNumber
-          }
-        }
-      `,
+      query: SEARCH_GROUPCHATS,
       variables: {
+        page: 0,
         text: searchQuery,
         isCommunity: isCommunity === 2,
       },
@@ -140,28 +128,7 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: gql`
-        query searchGroupChats(
-          $page: Float
-          $text: String
-          $isCommunity: Boolean
-        ) {
-          groupChats: searchGroupChats(
-            page: $page
-            text: $text
-            isCommunity: $isCommunity
-          ) {
-            groupChats {
-              name
-              description
-              links
-              id
-            }
-            totalPages
-            pageNumber
-          }
-        }
-      `,
+      query: SEARCH_GROUPCHATS,
       variables: {
         page: currentPage + 1,
         text: oldSearchQuery,
@@ -239,21 +206,7 @@ export async function getStaticProps() {
   const {
     data: { groupChats },
   } = await client.query({
-    query: gql`
-      query getGroupChats {
-        groupChats: getGroupChats {
-          groupChats {
-            name
-            description
-            links
-            id
-            isCommunity
-          }
-          totalPages
-          pageNumber
-        }
-      }
-    `,
+    query: GET_GROUPCHATS,
   });
   return {
     props: {
