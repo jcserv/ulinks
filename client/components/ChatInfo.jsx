@@ -1,9 +1,11 @@
-import { Heading, Img, Text } from "@chakra-ui/react";
+import { Heading, Img, Text, Button } from "@chakra-ui/react";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
 import LinkIconBar from "./LinkIconBar";
+import { useDisclosure } from "@chakra-ui/react";
+import EditChatModal from "./EditChatModal";
 
 const messages = defineMessages({
   details: {
@@ -21,6 +23,11 @@ const messages = defineMessages({
     description: locales.en["last-modified"],
     defaultMessage: locales.en["last-modified"],
   },
+  edit: {
+    id: "edit",
+    description: locales.en.edit,
+    defaultMessage: locales.en.details
+  }
 });
 
 function transformLink(url) {
@@ -31,9 +38,15 @@ function transformLink(url) {
   };
 }
 
-const ChatInfo = ({ name, description, links }) => {
+const ChatInfo = ({ name, description, links, courseInformation, isCommunity, editPermissions }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+
   return (
     <div className="d-flex row-12 justify-content-center">
       <div className="col-6">
@@ -59,9 +72,22 @@ const ChatInfo = ({ name, description, links }) => {
           <Text fontSize="sm" color="grey" m={2}>
             {formatMessage(messages.lastModified)}: 01/04/20
           </Text>
+          {/* potentially make this a component */}
+          {editPermissions && <Button onClick={onModalOpen}>{formatMessage(messages.edit)}</Button>}
+          <EditChatModal
+            isOpen={isModalOpen}
+            onOpen={onModalOpen}
+            onClose={onModalClose}
+            initialVals={{ 
+              name: name,
+              isCommunity: isCommunity,
+              description: description,
+              links: links,
+              courseInformation: courseInformation
+            }}
+          />
         </div>
       </div>
-
       <div className="col-6">
         <Img alt="Chat image" src="/python.png" />
       </div>
