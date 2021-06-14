@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { gql } from "@apollo/client";
 
 export const ADD_GROUPCHAT = gql`
@@ -9,7 +8,7 @@ export const ADD_GROUPCHAT = gql`
   }
 `;
 
-export const GET_GROUPCHAT_QUERY = gql`
+export const GET_GROUPCHAT = gql`
   query getGroupChat($id: String!) {
     getGroupChat(id: $id) {
       name
@@ -19,7 +18,7 @@ export const GET_GROUPCHAT_QUERY = gql`
   }
 `;
 
-export const GET_GROUPCHATS_QUERY = gql`
+export const GET_GROUPCHATS = gql`
   query getGroupChats {
     groupChats: getGroupChats {
       groupChats {
@@ -35,7 +34,7 @@ export const GET_GROUPCHATS_QUERY = gql`
   }
 `;
 
-export const GET_GROUPCHAT_IDS_QUERY = gql`
+export const GET_GROUPCHAT_IDS = gql`
   query getAllGroupChatIds {
     getAllGroupChatIds {
       groupChats
@@ -43,7 +42,7 @@ export const GET_GROUPCHAT_IDS_QUERY = gql`
   }
 `;
 
-export const SEARCH_GROUPCHATS_QUERY = gql`
+export const SEARCH_GROUPCHATS = gql`
   query searchGroupChats($page: Float, $text: String, $isCommunity: Boolean) {
     groupChats: searchGroupChats(
       page: $page
@@ -62,7 +61,7 @@ export const SEARCH_GROUPCHATS_QUERY = gql`
   }
 `;
 
-export const ADVANCED_SEARCH_GROUPCHATS_QUERY = gql`
+export const ADVANCED_SEARCH_GROUPCHATS = gql`
   query searchGroupChats(
     $campus: String
     $department: String
@@ -95,3 +94,13 @@ export const UPDATE_GROUPCHAT = gql`
     }
   }
 `;
+
+export default {
+  ADD_GROUPCHAT,
+  GET_GROUPCHAT,
+  GET_GROUPCHATS,
+  GET_GROUPCHAT_IDS,
+  SEARCH_GROUPCHATS,
+  ADVANCED_SEARCH_GROUPCHATS,
+  UPDATE_GROUPCHAT,
+};

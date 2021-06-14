@@ -25,7 +25,7 @@ import * as Yup from "yup";
 import client from "../apollo-client";
 import { campuses, departments, terms, years } from "../constants";
 import locales from "../content/locale";
-import { ADVANCED_SEARCH_GROUPCHATS_QUERY } from "../gql/GroupChat";
+import { ADVANCED_SEARCH_GROUPCHATS } from "../gql/GroupChat";
 
 const messages = defineMessages({
   submit: {
@@ -222,7 +222,7 @@ const EnhancedSearchForm = withFormik({
         groupChats: { groupChats: newGroupChats },
       },
     } = await client.query({
-      query: ADVANCED_SEARCH_GROUPCHATS_QUERY,
+      query: ADVANCED_SEARCH_GROUPCHATS,
       variables: {
         campus,
         department,

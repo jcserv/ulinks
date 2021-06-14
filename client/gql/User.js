@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { gql } from "@apollo/client";
 
 export const GET_USER = gql`
@@ -24,3 +23,9 @@ export const SEARCH_USERS = gql`
     }
   }
 `;
+
+export default {
+  GET_USER,
+  UPDATE_USER,
+  SEARCH_USERS,
+};

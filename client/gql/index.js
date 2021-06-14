@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { gql } from "@apollo/client";
 
 export const GET_ADMIN_DATA = gql`
@@ -24,3 +23,7 @@ export const GET_ADMIN_DATA = gql`
     }
   }
 `;
+
+export default {
+  GET_ADMIN_DATA,
+};

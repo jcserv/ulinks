@@ -23,10 +23,7 @@ import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
 import locales from "../content/locale";
-import {
-  GET_GROUPCHATS_QUERY,
-  SEARCH_GROUPCHATS_QUERY,
-} from "../gql/GroupChat";
+import { GET_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
 
 const messages = defineMessages({
   discover: {
@@ -108,7 +105,7 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: SEARCH_GROUPCHATS_QUERY,
+      query: SEARCH_GROUPCHATS,
       variables: {
         page: 0,
         text: searchQuery,
@@ -131,7 +128,7 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: SEARCH_GROUPCHATS_QUERY,
+      query: SEARCH_GROUPCHATS,
       variables: {
         page: currentPage + 1,
         text: oldSearchQuery,
@@ -209,7 +206,7 @@ export async function getStaticProps() {
   const {
     data: { groupChats },
   } = await client.query({
-    query: GET_GROUPCHATS_QUERY,
+    query: GET_GROUPCHATS,
   });
   return {
     props: {

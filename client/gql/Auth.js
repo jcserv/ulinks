@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { gql } from "@apollo/client";
 
 export const LOGIN = gql`
@@ -18,3 +17,8 @@ export const SIGNUP = gql`
     }
   }
 `;
+
+export default {
+  LOGIN,
+  SIGNUP,
+};
