@@ -1,12 +1,10 @@
 import { gql } from "@apollo/client";
-import { NextSeo } from "next-seo";
-import React, {useEffect, useState} from "react";
-
 import cookie from "js-cookie";
+import { NextSeo } from "next-seo";
+import React, { useEffect, useState } from "react";
+
 import client from "../../apollo-client";
 import ChatInfo from "../../components/ChatInfo";
-
-
 import { localesArr } from "../../content/locale";
 
 export default function Chat({ chat, id }) {
@@ -26,16 +24,18 @@ export default function Chat({ chat, id }) {
           }
         `,
         variables: {
-          email
+          email,
         },
       });
       if (!data.getUser) {
         return;
       }
-      if (data.getUser.status === "admin" || data.getUser.groupChatsCreated.includes(id)) {
+      if (
+        data.getUser.status === "admin" ||
+        data.getUser.groupChatsCreated.includes(id)
+      ) {
         console.log(data.getUser);
         setEditPermissions(true);
-        return;
       }
     }
   }, []);
@@ -46,7 +46,7 @@ export default function Chat({ chat, id }) {
         title={`${chat.name} | ConnectU`}
         description={`Join group chats for ${chat.name}`}
       />
-      <ChatInfo {...chat} editPermissions={editPermissions}/>
+      <ChatInfo {...chat} editPermissions={editPermissions} />
     </div>
   );
 }
@@ -106,7 +106,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       chat: getGroupChat,
-      id: id
+      id,
     },
   };
 }
