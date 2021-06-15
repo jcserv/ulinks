@@ -1,4 +1,4 @@
-name: lint
+name: client-test
 
 on:
   push:
@@ -12,8 +12,8 @@ defaults:
     working-directory: client
 
 jobs:
-  reactci:
-    name: reactci-lint
+  test:
+    name: test
     runs-on: ubuntu-latest
     env:
       HOST: http://localhost:4000
@@ -41,4 +41,4 @@ jobs:
         run: yarn --prefer-offline
 
       - name: Run linter
-        run: yarn run lint
+        run: yarn run test
