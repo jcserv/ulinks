@@ -1,4 +1,19 @@
-const links = [
+export const contributors = [
+  {
+    name: "Ritvik Bhardwaj",
+    href: "https://github.com/aipioxtechson/",
+  },
+  {
+    name: "Nina Ricci",
+    href: "https://ca.linkedin.com/in/ninaricci29",
+  },
+  {
+    name: "Jarrod Servilla",
+    href: "https://linkedin.com/in/jarrod-servilla",
+  },
+];
+
+export const links = [
   {
     label: "Github",
     icon: "github",
@@ -11,4 +26,7 @@ const links = [
   },
 ];
 
-export default links;
+export default {
+  contributors,
+  links,
+};

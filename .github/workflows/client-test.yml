@@ -42,3 +42,10 @@ jobs:
 
       - name: Run linter
         run: yarn run test
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage1.xml,./coverage2.xml
+          name: codecov-umbrella
+          verbose: true 
