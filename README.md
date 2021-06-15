@@ -1,5 +1,7 @@
 # 🚀 ConnectU
 
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/connectu/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/connectu/)
+
 ConnectU is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
 ConnectU was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.

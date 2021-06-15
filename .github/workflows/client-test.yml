@@ -40,12 +40,8 @@ jobs:
       - name: Install dependencies
         run: yarn --prefer-offline
 
-      - name: Run linter
-        run: yarn run test
+      - name: Run tests
+        run: yarn test --coverage
 
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage1.xml,./coverage2.xml
-          name: codecov-umbrella
-          verbose: true 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
