@@ -10,7 +10,7 @@ describe("LinkIconBar", () => {
 
   const renderComponent = (props) => {
     const defaultProps = {
-      links: [],
+      links,
     };
     return renderWrapped(<LinkIconBar {...defaultProps} {...props} />);
   };
@@ -20,11 +20,11 @@ describe("LinkIconBar", () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
-  /*
+
   it("Renders each link", () => {
     const { getByTestId } = renderComponent();
     links.forEach((link) =>
       expect(getByTestId(link.label).href).toBe(link.url)
     );
-  }); */
+  });
 });
