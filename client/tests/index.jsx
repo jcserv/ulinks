@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import { MockedProvider } from "@apollo/client/testing";
 import { ChakraProvider } from "@chakra-ui/react";
 import { render } from "@testing-library/react";
 import { RouterContext } from "next/dist/next-server/lib/router-context";
@@ -26,6 +27,12 @@ const mockRouter = {
   },
   isFallback: false,
 };
+
+export const wrapInApollo = (component, mocks = []) => (
+  <MockedProvider mocks={mocks} addTypename={false}>
+    {component}
+  </MockedProvider>
+);
 
 export const wrapInIntl = (component) => (
   <IntlProvider locale="en" defaultLocale="en" messages={locales.en}>
