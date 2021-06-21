@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-boolean-value */
 import { gql } from "@apollo/client";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
@@ -18,16 +21,12 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Radio,
-  RadioGroup,
   Select,
-  Stack,
   Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { Field, FieldArray, Form, withFormik } from "formik";
-import cookie from "js-cookie";
 import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
@@ -409,60 +408,60 @@ const EnhancedChatForm = withFormik({
       // eslint-disable-next-line prettier/prettier
       name,
       description,
+      status,
       links,
+      isCommunity,
       courseInfo,
+      id,
     },
     { props: { onClose, toast } }
   ) => {
-    console.log({
-      name,
-      description,
-      links,
-      courseInfo,
+    if (courseInfo.__typename != undefined) {
+      delete courseInfo.__typename;
+    }
+    const {
+      data: {
+        groupChat: { name: groupChatName },
+      },
+    } = await client.mutate({
+      mutation: gql`
+        mutation updateGroupChat(
+          $id: String!
+          $chatInfo: createGroupChatInput!
+        ) {
+          groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
+            name
+          }
+        }
+      `,
+      variables: {
+        id,
+        chatInfo: {
+          name,
+          status,
+          description,
+          isCommunity,
+          links,
+          courseInformation: courseInfo,
+        },
+      },
     });
-    // const email = cookie.get("email");
-    // const {
-    //   data: {
-    //     groupChat: { name: groupChatName },
-    //   },
-    // } = await client.mutate({
-    //   mutation: gql`
-    //     mutation addGroupChat($email: String!, $info: createGroupChatInput!) {
-    //       groupChat: addGroupChat(email: $email, info: $info) {
-    //         name
-    //       }
-    //     }
-    //   `,
-    //   variables: {
-    //     email,
-    //     info: {
-    //       name,
-    //       status: "approved",
-    //       description,
-    //       links,
-    //       isCommunity,
-    //       ...(!isCommunity ? { courseInformation: courseInfo } : {}),
-    //     },
-    //   },
-    // });
-    // toast({
-    //   title: "Success",
-    //   description: `${
-    //     isCommunity
-    //       ? "Request has been submitted"
-    //       : `${groupChatName} has been created`
-    //   }`,
-    //   status: "success",
-    //   position: "bottom-left",
-    //   duration: 5000,
-    //   isCloseable: false,
-    // });
+    toast({
+      title: "Success",
+      description: `${groupChatName} info has been changed`,
+      status: "success",
+      position: "bottom-left",
+      duration: 5000,
+      isCloseable: false,
+    });
     onClose();
   },
-  mapPropsToValues: ({ initialVals }) => ({
+  mapPropsToValues: ({ initialVals, id }) => ({
+    id,
     name: initialVals.name,
     description: initialVals.description,
     links: initialVals.links,
+    status: initialVals.status,
     isCommunity: initialVals.isCommunity,
     courseInfo: initialVals.courseInformation,
   }),
@@ -472,7 +471,7 @@ const EnhancedChatForm = withFormik({
   validateOnMount: true,
 })(ChatForm);
 
-export default function EditChatModal({ isOpen, onClose, initialVals }) {
+export default function EditChatModal({ isOpen, onClose, initialVals, id }) {
   const toast = useToast();
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
@@ -485,6 +484,7 @@ export default function EditChatModal({ isOpen, onClose, initialVals }) {
             onClose={onClose}
             toast={toast}
             initialVals={initialVals}
+            id={id}
           />
         </ModalBody>
       </ModalContent>

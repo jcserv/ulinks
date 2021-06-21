@@ -46,7 +46,7 @@ export default function Chat({ chat, id }) {
         title={`${chat.name} | ConnectU`}
         description={`Join group chats for ${chat.name}`}
       />
-      <ChatInfo {...chat} editPermissions={editPermissions} />
+      <ChatInfo {...chat} editPermissions={editPermissions} id={id} />
     </div>
   );
 }
@@ -89,6 +89,7 @@ export async function getStaticProps(context) {
         getGroupChat(id: $id) {
           name
           description
+          status
           isCommunity
           links
           courseInformation {

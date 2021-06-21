@@ -4,6 +4,7 @@ import { GroupChat } from "../models";
 import { createGroupChatInput } from "../inputs";
 import { GroupChatIds, GroupChatPaginiated } from "../models/Groupchat";
 import { escapeRegex } from "../helpers";
+import { courseInformationInput } from "../inputs/GroupChatInput";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
@@ -132,13 +133,34 @@ export class GroupChatResolver {
   }
 
   @Mutation(() => GroupChat, { nullable: true })
-  async updateGroupChat(@Arg("id") id: string, @Arg("status") status: string) {
+  async updateGroupChat(
+    @Arg("id") id: string, 
+    @Arg("chatInfo") chatInfo: createGroupChatInput) {
     const groupChat = await GroupChatModel.findOne({ _id: id });
     if (!groupChat) {
       return null;
     }
-    groupChat.status = status;
+    if(chatInfo.status != undefined && chatInfo.status != "") {
+      groupChat.status = chatInfo.status;
+    }
+    if(chatInfo.name != undefined && chatInfo.name != "") {
+      groupChat.name = chatInfo.name;
+    }
+    if(chatInfo.description != undefined && chatInfo.description != "") {
+      groupChat.description = chatInfo.description;
+    }
+    if(chatInfo.links != undefined && chatInfo.links.length > 0) {
+      groupChat.links = [...chatInfo.links] as typeof groupChat.links;
+    }
     const result = await groupChat.save();
     return result;
   }
+
+  @Mutation(returns => Boolean)
+  async deleteGroupChat(@Arg("id") id:string) {
+    const result = await GroupChatModel.deleteOne({ _id: id});
+    return result;
+  }
+
+
 }

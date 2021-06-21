@@ -3,6 +3,7 @@ import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
 
@@ -41,9 +42,11 @@ const ChatInfo = ({
   name,
   description,
   links,
+  status,
   courseInformation,
   isCommunity,
   editPermissions,
+  id,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -51,6 +54,11 @@ const ChatInfo = ({
     isOpen: isModalOpen,
     onOpen: onModalOpen,
     onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onDeleteModalOpen,
+    onClose: onDeleteModalClose,
   } = useDisclosure();
 
   return (
@@ -80,8 +88,13 @@ const ChatInfo = ({
           </Text>
           {/* potentially make this a component */}
           {editPermissions && (
-            <Button onClick={onModalOpen}>
+            <Button onClick={onModalOpen} m={1}>
               {formatMessage(messages.edit)}
+            </Button>
+          )}
+          {editPermissions && (
+            <Button colorScheme="red" onClick={onDeleteModalOpen} m={1}>
+              Delete
             </Button>
           )}
           <EditChatModal
@@ -91,10 +104,18 @@ const ChatInfo = ({
             initialVals={{
               name,
               isCommunity,
+              status,
               description,
               links,
               courseInformation,
             }}
+            id={id}
+          />
+          <DeleteChatModal
+            isOpen={isDeleteModalOpen}
+            onOpen={onDeleteModalOpen}
+            onClose={onDeleteModalClose}
+            id={id}
           />
         </div>
       </div>
