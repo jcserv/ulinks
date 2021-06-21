@@ -130,12 +130,12 @@ export default function Admin() {
   const modifyRequest = async (id, status) => {
     const {
       data: {
-        updateGroupChat: { name, id: groupChatId },
+        updateStatus: { name, id: groupChatId },
       },
     } = await client.mutate({
       mutation: gql`
-        mutation updateGroupChat($id: String!, $status: String!) {
-          updateGroupChat(id: $id, status: $status) {
+        mutation updateStatus($id: String!, $status: String!) {
+          updateStatus(id: $id, status: $status) {
             name
             id
           }
