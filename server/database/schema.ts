@@ -32,6 +32,8 @@ const UserSchema: Schema = new Schema(
   {
     email: String,
     password: String,
+    verified: Boolean,
+    verifyHash: String,
     groupChatsCreated: [Schema.Types.ObjectId],
     status: {
       type: String,
@@ -47,6 +49,8 @@ interface IUser extends Document {
   password: string;
   groupChatsCreated: [string];
   status: string;
+  verified: boolean;
+  verifyHash: string;
 }
 
 interface ICourseInformation extends Document {
