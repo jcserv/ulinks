@@ -105,14 +105,12 @@ export const UPDATE_STATUS = gql`
 `;
 
 export const UPDATE_GROUPCHAT = gql`
-mutation updateGroupChat(
-  $id: String!
-  $chatInfo: createGroupChatInput!
-) {
-  groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
+  mutation updateGroupChat($id: String!, $chatInfo: createGroupChatInput!) {
+    groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
       name
+    }
   }
-}`
+`;
 
 export default {
   ADD_GROUPCHAT,

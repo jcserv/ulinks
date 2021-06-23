@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import cookie from "js-cookie";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";

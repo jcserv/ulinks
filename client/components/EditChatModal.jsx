@@ -31,8 +31,8 @@ import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import client from "../apollo-client";
-import locales from "../content/locale";
 import { campuses, departments, terms, years } from "../constants";
+import locales from "../content/locale";
 import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 
 const messages = defineMessages({
