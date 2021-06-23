@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Button,
   Modal,
@@ -13,19 +12,14 @@ import {
 import React from "react";
 
 import client from "../apollo-client";
-import { userStatuses } from "../data/constants";
+import { userStatuses } from "../constants";
+import { UPDATE_USER } from "../gql/User";
 
 export default function BanUserModal({ isOpen, onClose, selectedUser }) {
   const toast = useToast();
   const onClick = async () => {
     const { data } = await client.mutate({
-      mutation: gql`
-        mutation updateUser($status: String!, $email: String!) {
-          updateUser(status: $status, email: $email) {
-            email
-          }
-        }
-      `,
+      mutation: UPDATE_USER,
       variables: {
         status: userStatuses.banned,
         email: selectedUser,

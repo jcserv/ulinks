@@ -30,6 +30,7 @@ const LinkIcon = ({
   <Tooltip label={label} aria-label={`${label}-tooltip`} key={`link-${index}`}>
     <Link
       aria-label={`Open link to ${url}`}
+      data-testid={label}
       display="inline-block"
       href={url}
       isExternal

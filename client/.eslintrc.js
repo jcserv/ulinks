@@ -3,6 +3,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
   plugins: ["react", "simple-import-sort", "prettier"],
   extends: [
@@ -25,8 +26,8 @@ module.exports = {
     "react/no-array-index-key": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-one-expression-per-line": "off",
-    "no-console": "warn",
-    "no-unused-vars": "warn",
+    "no-console": "error",
+    "no-unused-vars": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-implicit-coercion": "error",

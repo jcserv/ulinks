@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-boolean-value */
-import { gql } from "@apollo/client";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -33,8 +32,9 @@ import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import client from "../apollo-client";
+import { campuses, departments, terms, years } from "../constants";
 import locales from "../content/locale";
-import { campuses, departments, terms, years } from "../data/constants";
+import { ADD_GROUPCHAT } from "../gql/GroupChat";
 
 const messages = defineMessages({
   name: {
@@ -434,13 +434,7 @@ const EnhancedChatForm = withFormik({
         groupChat: { name: groupChatName },
       },
     } = await client.mutate({
-      mutation: gql`
-        mutation addGroupChat($email: String!, $info: createGroupChatInput!) {
-          groupChat: addGroupChat(email: $email, info: $info) {
-            name
-          }
-        }
-      `,
+      mutation: ADD_GROUPCHAT,
       variables: {
         email,
         info: {

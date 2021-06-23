@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import client from "../../apollo-client";
 import ChatInfo from "../../components/ChatInfo";
 import { localesArr } from "../../content/locale";
+import { GET_GROUPCHAT, GET_GROUPCHAT_IDS } from "../../gql/GroupChat";
+import { GET_USER } from "../../gql/User";
 
 export default function Chat({ chat, id }) {
   const [editPermissions, setEditPermissions] = useState(false);
@@ -13,16 +15,7 @@ export default function Chat({ chat, id }) {
     const email = cookie.get("email");
     if (email) {
       const { data } = await client.query({
-        query: gql`
-          query getUser($email: String!) {
-            getUser(email: $email) {
-              status
-              groupChatsCreated {
-                id
-              }
-            }
-          }
-        `,
+        query: GET_USER,
         variables: {
           email,
         },
@@ -34,7 +27,6 @@ export default function Chat({ chat, id }) {
         data.getUser.status === "admin" ||
         data.getUser.groupChatsCreated.includes(id)
       ) {
-        console.log(data.getUser);
         setEditPermissions(true);
       }
     }
@@ -57,13 +49,7 @@ export async function getStaticPaths() {
       getAllGroupChatIds: { groupChats },
     },
   } = await client.query({
-    query: gql`
-      query getAllGroupChatIds {
-        getAllGroupChatIds {
-          groupChats
-        }
-      }
-    `,
+    query: GET_GROUPCHAT_IDS,
   });
   const paths =
     groupChats.length > 0 &&
@@ -84,24 +70,7 @@ export async function getStaticProps(context) {
   const {
     data: { getGroupChat },
   } = await client.query({
-    query: gql`
-      query getGroupChat($id: String!) {
-        getGroupChat(id: $id) {
-          name
-          description
-          status
-          isCommunity
-          links
-          courseInformation {
-            year
-            term
-            code
-            department
-            campus
-          }
-        }
-      }
-    `,
+    query: GET_GROUPCHAT,
     variables: { id },
   });
   return {

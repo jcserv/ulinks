@@ -152,6 +152,9 @@ export class GroupChatResolver {
     if(chatInfo.links != undefined && chatInfo.links.length > 0) {
       groupChat.links = [...chatInfo.links] as typeof groupChat.links;
     }
+    if(chatInfo.courseInformation != undefined) {
+      groupChat.courseInformation.set(chatInfo.courseInformation);
+    }
     const result = await groupChat.save();
     return result;
   }

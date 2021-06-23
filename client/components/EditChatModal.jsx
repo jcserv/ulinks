@@ -2,7 +2,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-boolean-value */
-import { gql } from "@apollo/client";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -33,7 +32,8 @@ import * as Yup from "yup";
 
 import client from "../apollo-client";
 import locales from "../content/locale";
-import { campuses, departments, terms, years } from "../data/constants";
+import { campuses, departments, terms, years } from "../constants";
+import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 
 const messages = defineMessages({
   name: {
@@ -424,16 +424,7 @@ const EnhancedChatForm = withFormik({
         groupChat: { name: groupChatName },
       },
     } = await client.mutate({
-      mutation: gql`
-        mutation updateGroupChat(
-          $id: String!
-          $chatInfo: createGroupChatInput!
-        ) {
-          groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
-            name
-          }
-        }
-      `,
+      mutation: UPDATE_GROUPCHAT,
       variables: {
         id,
         chatInfo: {
@@ -442,7 +433,7 @@ const EnhancedChatForm = withFormik({
           description,
           isCommunity,
           links,
-          courseInformation: courseInfo,
+          ...(!isCommunity ? { courseInformation: courseInfo } : {}),
         },
       },
     });
@@ -463,7 +454,7 @@ const EnhancedChatForm = withFormik({
     links: initialVals.links,
     status: initialVals.status,
     isCommunity: initialVals.isCommunity,
-    courseInfo: initialVals.courseInformation,
+    courseInfo: !initialVals.isCommunity ? initialVals.courseInformation : {},
   }),
   validationSchema: () => ChatSchema,
   validateOnBlur: true,
