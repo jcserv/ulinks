@@ -45,5 +45,7 @@
   "details": "Details",
   "created": "Created",
   "last-modified": "Last modified",
-  "edit": "Edit Details"
+  "edit": "Edit Details",
+  "confirm": "Confirm",
+  "delete-message": "Delete Chat Info"
 }
