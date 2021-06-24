@@ -1,8 +1,9 @@
 import { Heading, Img, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useRef } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import { postImage } from "../helpers/imgur";
 import LinkIconBar from "./LinkIconBar";
 
 const messages = defineMessages({
@@ -31,9 +32,16 @@ function transformLink(url) {
   };
 }
 
-const ChatInfo = ({ name, description, links }) => {
+const ChatInfo = ({ id, name, description, links, image }) => {
   const { formatMessage } = useIntl();
+  const fileUpload = useRef(null);
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
+
+  async function fileSelectedHandler(e) {
+    const file = e.target.files[0];
+    await postImage(id, file);
+  }
+
   return (
     <div className="d-flex row-12 justify-content-center">
       <div className="col-6">
@@ -63,7 +71,23 @@ const ChatInfo = ({ name, description, links }) => {
       </div>
 
       <div className="col-6">
-        <Img alt="Chat image" src="/python.png" />
+        <input
+          id="file"
+          type="file"
+          ref={fileUpload}
+          onChange={fileSelectedHandler}
+          style={{ display: "none" }}
+        />
+        <Img
+          alt="Chat image"
+          src={
+            image ||
+            "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
+          }
+          width="400"
+          height="400"
+          onClick={() => fileUpload.current.click()}
+        />
       </div>
     </div>
   );

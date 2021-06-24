@@ -140,12 +140,17 @@ export class GroupChatResolver {
   }
 
   @Mutation(() => GroupChat, { nullable: true })
-  async updateGroupChat(@Arg("id") id: string, @Arg("status") status: string) {
+  async updateGroupChat(
+    @Arg("id") id: string,
+    @Arg("status", { nullable: true }) status?: string,
+    @Arg("image", { nullable: true }) image?: string
+  ) {
     const groupChat = await GroupChatModel.findOne({ _id: id });
     if (!groupChat) {
       return null;
     }
-    groupChat.status = status;
+    if (status) groupChat.status = status;
+    if (image) groupChat.image = image;
     const result = await groupChat.save();
     return result;
   }
