@@ -17,6 +17,7 @@ const GroupChatSchema: Schema = new Schema(
     description: String,
     isCommunity: Boolean,
     links: [String],
+    image: String,
     courseInformation: CourseInformationSchema,
     status: {
       type: String,

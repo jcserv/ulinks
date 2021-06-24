@@ -30,6 +30,8 @@ export class GroupChat {
   courseInformation?: CourseInformation;
 
   @Field() status: string;
+
+  @Field({ nullable: true }) image: string;
 }
 
 @ObjectType()

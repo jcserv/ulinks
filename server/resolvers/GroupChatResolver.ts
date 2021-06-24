@@ -3,7 +3,7 @@ import { GroupChat as GroupChatModel, User as UserModel } from "../database";
 import { GroupChat } from "../models";
 import { createGroupChatInput } from "../inputs";
 import { GroupChatIds, GroupChatPaginiated } from "../models/Groupchat";
-import { escapeRegex } from "../helpers";
+import { departmentToImage, escapeRegex } from "../helpers";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
@@ -73,7 +73,6 @@ export class GroupChatResolver {
   ) {
     let queryObj = {};
     if (campus != undefined && campus !== "") {
-      console.log(campus);
       queryObj = { ...queryObj, "courseInformation.campus": campus };
     }
     if (department != undefined && department !== "") {
@@ -99,7 +98,6 @@ export class GroupChatResolver {
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
-    console.log(groupChats, totalCount);
     if (totalCount === 0) {
       return {
         groupChats: [],
@@ -123,7 +121,17 @@ export class GroupChatResolver {
     if (!user) {
       return null;
     }
-    const newGroupChat = await GroupChatModel.create({ ...groupchatInfo });
+
+    const image = groupchatInfo.isCommunity
+      ? departmentToImage.Community
+      : departmentToImage[
+          groupchatInfo?.courseInformation?.department || "Community"
+        ];
+
+    const newGroupChat = await GroupChatModel.create({
+      ...groupchatInfo,
+      image: image,
+    });
     await UserModel.updateOne(
       { email },
       { $push: { groupChatsCreated: newGroupChat._id } }

@@ -25,6 +25,7 @@ export const GET_GROUPCHATS = gql`
         name
         description
         links
+        image
         id
         isCommunity
       }
