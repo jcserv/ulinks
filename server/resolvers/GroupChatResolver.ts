@@ -123,7 +123,7 @@ export class GroupChatResolver {
     if (!user) {
       return null;
     }
-    const newGroupChat = await GroupChatModel.create({ ...groupchatInfo });
+    const newGroupChat = await GroupChatModel.create({ ...groupchatInfo, createdBy: email});
     await UserModel.updateOne(
       { email },
       { $push: { groupChatsCreated: newGroupChat._id } }
@@ -132,13 +132,53 @@ export class GroupChatResolver {
   }
 
   @Mutation(() => GroupChat, { nullable: true })
-  async updateGroupChat(@Arg("id") id: string, @Arg("status") status: string) {
+  async updateGroupChat(
+    @Arg("id") id: string, 
+    @Arg("chatInfo") chatInfo: createGroupChatInput) {
     const groupChat = await GroupChatModel.findOne({ _id: id });
     if (!groupChat) {
       return null;
     }
-    groupChat.status = status;
+    if(chatInfo.status != undefined && chatInfo.status != "") {
+      groupChat.status = chatInfo.status;
+    }
+    if(chatInfo.name != undefined && chatInfo.name != "") {
+      groupChat.name = chatInfo.name;
+    }
+    if(chatInfo.description != undefined && chatInfo.description != "") {
+      groupChat.description = chatInfo.description;
+    }
+    if(chatInfo.links != undefined && chatInfo.links.length > 0) {
+      groupChat.links = [...chatInfo.links] as typeof groupChat.links;
+    }
+    if(chatInfo.courseInformation != undefined) {
+      groupChat.courseInformation.set(chatInfo.courseInformation);
+    }
     const result = await groupChat.save();
     return result;
   }
+
+  @Mutation(() => GroupChat, { nullable: true })
+  async updateStatus(@Arg("id") id:string, @Arg("status") status:string) {
+    const groupChat = await GroupChatModel.findOne({ _id: id });
+		if (!groupChat) {
+			return null;
+		}
+		groupChat.status = status;
+		const result = await groupChat.save();
+		return result;
+  }
+
+  @Mutation(() => Boolean)
+  async deleteGroupChat(@Arg("id") id:string) {
+    const chat = await GroupChatModel.findOne({ _id: id});
+    if(chat != undefined) {
+      const result = await UserModel.updateOne({ email: chat.createdBy }, {$pull: {groupChatsCreated: id}});
+      const result2 = await GroupChatModel.deleteOne({ _id: id});
+      return result && (result2.n == 1);
+    }
+    return false;
+  }
+
+
 }

@@ -1,8 +1,11 @@
-import { Heading, Img, Text } from "@chakra-ui/react";
+import { Button, Heading, Img, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import CheckPermissions from "./CheckPermissions";
+import DeleteChatModal from "./DeleteChatModal";
+import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
 
 const messages = defineMessages({
@@ -21,6 +24,11 @@ const messages = defineMessages({
     description: locales.en["last-modified"],
     defaultMessage: locales.en["last-modified"],
   },
+  edit: {
+    id: "edit",
+    description: locales.en.edit,
+    defaultMessage: locales.en.details,
+  },
 });
 
 function transformLink(url) {
@@ -31,9 +39,28 @@ function transformLink(url) {
   };
 }
 
-const ChatInfo = ({ name, description, links }) => {
+const ChatInfo = ({
+  name,
+  description,
+  links,
+  status,
+  courseInformation,
+  isCommunity,
+  id,
+}) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onDeleteModalOpen,
+    onClose: onDeleteModalClose,
+  } = useDisclosure();
+
   return (
     <div className="d-flex row-12 justify-content-center">
       <div className="col-6">
@@ -59,9 +86,36 @@ const ChatInfo = ({ name, description, links }) => {
           <Text fontSize="sm" color="grey" m={2}>
             {formatMessage(messages.lastModified)}: 01/04/20
           </Text>
+          <CheckPermissions id={id}>
+            <Button onClick={onModalOpen} m={1}>
+              {formatMessage(messages.edit)}
+            </Button>
+            <Button colorScheme="red" onClick={onDeleteModalOpen} m={1}>
+              Delete
+            </Button>
+          </CheckPermissions>
+          <EditChatModal
+            isOpen={isModalOpen}
+            onOpen={onModalOpen}
+            onClose={onModalClose}
+            initialVals={{
+              name,
+              isCommunity,
+              status,
+              description,
+              links,
+              courseInformation,
+            }}
+            id={id}
+          />
+          <DeleteChatModal
+            isOpen={isDeleteModalOpen}
+            onOpen={onDeleteModalOpen}
+            onClose={onDeleteModalClose}
+            id={id}
+          />
         </div>
       </div>
-
       <div className="col-6">
         <Img alt="Chat image" src="/python.png" />
       </div>

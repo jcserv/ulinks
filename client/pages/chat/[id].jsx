@@ -6,14 +6,14 @@ import ChatInfo from "../../components/ChatInfo";
 import { localesArr } from "../../content/locale";
 import { GET_GROUPCHAT, GET_GROUPCHAT_IDS } from "../../gql/GroupChat";
 
-export default function Chat({ chat }) {
+export default function Chat({ chat, id }) {
   return (
     <div className="page-container">
       <NextSeo
         title={`${chat.name} | ConnectU`}
         description={`Join group chats for ${chat.name}`}
       />
-      <ChatInfo {...chat} />
+      <ChatInfo {...chat} id={id} />
     </div>
   );
 }
@@ -51,6 +51,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       chat: getGroupChat,
+      id,
     },
   };
 }

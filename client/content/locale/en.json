@@ -44,5 +44,8 @@
   "find-groupchats": "FIND GROUPCHATS",
   "details": "Details",
   "created": "Created",
-  "last-modified": "Last modified"
+  "last-modified": "Last modified",
+  "edit": "Edit Details",
+  "confirm": "Confirm",
+  "delete-message": "Delete Chat Info"
 }

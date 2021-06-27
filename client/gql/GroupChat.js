@@ -13,7 +13,16 @@ export const GET_GROUPCHAT = gql`
     getGroupChat(id: $id) {
       name
       description
+      status
+      isCommunity
       links
+      courseInformation {
+        year
+        term
+        code
+        department
+        campus
+      }
     }
   }
 `;
@@ -86,11 +95,19 @@ export const ADVANCED_SEARCH_GROUPCHATS = gql`
   }
 `;
 
-export const UPDATE_GROUPCHAT = gql`
-  mutation updateGroupChat($id: String!, $status: String!) {
-    updateGroupChat(id: $id, status: $status) {
+export const UPDATE_STATUS = gql`
+  mutation updateStatus($id: String!, $status: String!) {
+    updateStatus(id: $id, status: $status) {
       name
       id
+    }
+  }
+`;
+
+export const UPDATE_GROUPCHAT = gql`
+  mutation updateGroupChat($id: String!, $chatInfo: createGroupChatInput!) {
+    groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
+      name
     }
   }
 `;
@@ -102,5 +119,6 @@ export default {
   GET_GROUPCHAT_IDS,
   SEARCH_GROUPCHATS,
   ADVANCED_SEARCH_GROUPCHATS,
+  UPDATE_STATUS,
   UPDATE_GROUPCHAT,
 };
