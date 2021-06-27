@@ -1,6 +1,5 @@
-import cookie from "js-cookie";
 import { NextSeo } from "next-seo";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import client from "../../apollo-client";
 import ChatInfo from "../../components/ChatInfo";

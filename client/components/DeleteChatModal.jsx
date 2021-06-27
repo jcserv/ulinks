@@ -53,6 +53,15 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
         duration: 5000,
         isClosable: false,
       });
+    } else {
+      toast({
+        title: "Error",
+        description: `Unable to remove chat`,
+        status: "error",
+        position: "bottom-left",
+        duration: 5000,
+        isClosable: false,
+      });
     }
     onClose();
   };
