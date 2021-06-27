@@ -9,9 +9,10 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
-import { useRouter } from "next/router";
+
 import client from "../apollo-client";
 import locales from "../content/locale";
 
