@@ -4,7 +4,6 @@ import { GroupChat } from "../models";
 import { createGroupChatInput } from "../inputs";
 import { GroupChatIds, GroupChatPaginiated } from "../models/Groupchat";
 import { escapeRegex } from "../helpers";
-import { courseInformationInput } from "../inputs/GroupChatInput";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
@@ -170,7 +169,7 @@ export class GroupChatResolver {
 		return result;
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation(() => Boolean)
   async deleteGroupChat(@Arg("id") id:string) {
     const chat = await GroupChatModel.findOne({ _id: id});
     if(chat != undefined) {
