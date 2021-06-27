@@ -6,38 +6,15 @@ import client from "../../apollo-client";
 import ChatInfo from "../../components/ChatInfo";
 import { localesArr } from "../../content/locale";
 import { GET_GROUPCHAT, GET_GROUPCHAT_IDS } from "../../gql/GroupChat";
-import { GET_USER } from "../../gql/User";
 
 export default function Chat({ chat, id }) {
-  const [editPermissions, setEditPermissions] = useState(false);
-  useEffect(async () => {
-    const email = cookie.get("email");
-    if (email) {
-      const { data } = await client.query({
-        query: GET_USER,
-        variables: {
-          email,
-        },
-      });
-      if (!data.getUser) {
-        return;
-      }
-      if (
-        data.getUser.status === "admin" ||
-        data.getUser.groupChatsCreated.includes(id)
-      ) {
-        setEditPermissions(true);
-      }
-    }
-  }, []);
-
   return (
     <div className="page-container">
       <NextSeo
         title={`${chat.name} | ConnectU`}
         description={`Join group chats for ${chat.name}`}
       />
-      <ChatInfo {...chat} editPermissions={editPermissions} id={id} />
+      <ChatInfo {...chat} id={id} />
     </div>
   );
 }

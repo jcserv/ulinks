@@ -3,6 +3,7 @@ import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
@@ -45,7 +46,6 @@ const ChatInfo = ({
   status,
   courseInformation,
   isCommunity,
-  editPermissions,
   id,
 }) => {
   const { formatMessage } = useIntl();
@@ -86,17 +86,14 @@ const ChatInfo = ({
           <Text fontSize="sm" color="grey" m={2}>
             {formatMessage(messages.lastModified)}: 01/04/20
           </Text>
-          {/* potentially make this a component */}
-          {editPermissions && (
+          <CheckPermissions id={id}>
             <Button onClick={onModalOpen} m={1}>
               {formatMessage(messages.edit)}
             </Button>
-          )}
-          {editPermissions && (
             <Button colorScheme="red" onClick={onDeleteModalOpen} m={1}>
               Delete
             </Button>
-          )}
+          </CheckPermissions>
           <EditChatModal
             isOpen={isModalOpen}
             onOpen={onModalOpen}
