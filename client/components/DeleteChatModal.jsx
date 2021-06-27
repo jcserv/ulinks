@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
-
+import { useRouter } from "next/router";
 import client from "../apollo-client";
 import locales from "../content/locale";
 
@@ -31,6 +31,7 @@ const messages = defineMessages({
 export default function DeleteChatModal({ isOpen, onClose, id }) {
   const toast = useToast();
   const { formatMessage } = useIntl();
+  const { locale, defaultLocale, push } = useRouter();
   const deleteAction = async () => {
     const {
       data: { deleteGroupChat: deleteResult },
@@ -53,6 +54,8 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
         duration: 5000,
         isClosable: false,
       });
+      onClose();
+      push(`${locale !== defaultLocale ? locale : ""}/`);
     } else {
       toast({
         title: "Error",
