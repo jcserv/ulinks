@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/nodemailer": "^6.4.2",
     "apollo-server-express": "^2.24.0",
     "bcrypt": "^5.0.1",
     "class-validator": "^0.13.1",
@@ -27,6 +28,7 @@
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.7",
+    "nodemailer": "^6.6.2",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },

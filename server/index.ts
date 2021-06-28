@@ -53,7 +53,7 @@ const main = async () => {
   );
 
   // Verification
-  app.get("/test/:hashId", async function (req, res) {
+  app.get("/verify/:hashId", async function (req, res) {
     const { hashId } = req.params;
     const user = await User.findOne({ verifyHash: hashId });
     if (!user) {

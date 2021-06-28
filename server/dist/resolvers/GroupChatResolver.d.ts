@@ -1,9 +1,8 @@
-import { createGroupChatInput } from '../inputs';
+import { createGroupChatInput } from "../inputs";
+import { GroupChatIds } from "../models/Groupchat";
 export declare class GroupChatResolver {
     pageSize: number;
-    getAllGroupChatIds(): Promise<{
-        groupChats: any[];
-    }>;
+    getAllGroupChatIds(): Promise<GroupChatIds>;
     getGroupChats(page?: number): Promise<{
         groupChats: import("../database/schema").IGroupChat[];
         totalPages: number;

@@ -49,6 +49,8 @@ const GroupChatSchema = new mongoose_1.Schema({
 const UserSchema = new mongoose_1.Schema({
     email: String,
     password: String,
+    verified: Boolean,
+    verifyHash: String,
     groupChatsCreated: [mongoose_1.Schema.Types.ObjectId],
     status: {
         type: String,
