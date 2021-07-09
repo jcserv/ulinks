@@ -11,11 +11,13 @@ export const ADD_GROUPCHAT = gql`
 export const GET_GROUPCHAT = gql`
   query getGroupChat($id: String!) {
     getGroupChat(id: $id) {
+      id
       name
       description
       status
       isCommunity
       links
+      image
       courseInformation {
         year
         term
@@ -34,6 +36,7 @@ export const GET_GROUPCHATS = gql`
         name
         description
         links
+        image
         id
         isCommunity
       }
@@ -95,7 +98,7 @@ export const ADVANCED_SEARCH_GROUPCHATS = gql`
   }
 `;
 
-export const UPDATE_STATUS = gql`
+export const UPDATE_GROUPCHAT_STATUS = gql`
   mutation updateStatus($id: String!, $status: String!) {
     updateStatus(id: $id, status: $status) {
       name
@@ -119,6 +122,6 @@ export default {
   GET_GROUPCHAT_IDS,
   SEARCH_GROUPCHATS,
   ADVANCED_SEARCH_GROUPCHATS,
-  UPDATE_STATUS,
+  UPDATE_GROUPCHAT_STATUS,
   UPDATE_GROUPCHAT,
 };

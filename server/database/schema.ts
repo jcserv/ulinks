@@ -11,6 +11,7 @@ const CourseInformationSchema: Schema = new Schema({
   },
   year: String,
 });
+
 const GroupChatSchema: Schema = new Schema(
   {
     name: String,
@@ -18,6 +19,7 @@ const GroupChatSchema: Schema = new Schema(
     description: String,
     isCommunity: Boolean,
     links: [String],
+    image: String,
     courseInformation: CourseInformationSchema,
     status: {
       type: String,
@@ -63,6 +65,7 @@ interface IGroupChat extends Document {
   description: string;
   isCommunity: boolean;
   links: [string];
+  image: string;
   courseInformation: ICourseInformation;
   status: string;
 }

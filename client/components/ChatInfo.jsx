@@ -40,13 +40,14 @@ function transformLink(url) {
 }
 
 const ChatInfo = ({
+  id,
   name,
   description,
   links,
   status,
   courseInformation,
   isCommunity,
-  id,
+  image,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -117,7 +118,15 @@ const ChatInfo = ({
         </div>
       </div>
       <div className="col-6">
-        <Img alt="Chat image" src="/python.png" />
+        <Img
+          alt="Chat image"
+          src={
+            image ||
+            "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
+          }
+          width="400"
+          height="400"
+        />
       </div>
     </div>
   );

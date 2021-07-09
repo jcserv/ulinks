@@ -12,7 +12,7 @@ import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
 import locales from "../../content/locale";
 import { GET_ADMIN_DATA } from "../../gql";
-import { UPDATE_STATUS } from "../../gql/GroupChat";
+import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
 import { GET_USER, SEARCH_USERS } from "../../gql/User";
 import { mapAsOption } from "../../helpers";
 
@@ -107,7 +107,7 @@ export default function Admin() {
         updateStatus: { name, id: groupChatId },
       },
     } = await client.mutate({
-      mutation: UPDATE_STATUS,
+      mutation: UPDATE_GROUPCHAT_STATUS,
       variables: {
         id,
         status,
