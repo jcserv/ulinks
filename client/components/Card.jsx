@@ -7,6 +7,7 @@ import Tilt from "react-vanilla-tilt";
 export const Card = ({ name, description, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
+  const textColor = useColorModeValue("black", "white");
   const LinksMapped = links.map((link) => {
     if (link.includes("discord")) {
       return { type: "discord" };
@@ -45,19 +46,30 @@ export const Card = ({ name, description, links, id }) => {
         </Box>
 
         <Box p="6">
-          <Box fontWeight="semibold" as="h2" lineHeight="tight">
+          <Box
+            fontWeight="semibold"
+            as="h2"
+            lineHeight="tight"
+            color={textColor}
+          >
             {name}
           </Box>
 
-          <Box mt="1" fontWeight="semibold" as="h2" isTruncated>
+          <Box
+            mt="1"
+            color={textColor}
+            fontWeight="semibold"
+            as="h2"
+            isTruncated
+          >
             {description}
           </Box>
           <Box mt="2">
             {LinksMapped.map(({ type }, index) =>
               type === "discord" ? (
-                <FaDiscord key={index} />
+                <FaDiscord color={textColor} key={index} />
               ) : (
-                <FaWhatsapp key={index} />
+                <FaWhatsapp color={textColor} key={index} />
               )
             )}
           </Box>
