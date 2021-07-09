@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
@@ -12,6 +11,9 @@ import RequestsList from "../../components/RequestsList";
 import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
 import locales from "../../content/locale";
+import { GET_ADMIN_DATA } from "../../gql";
+import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
+import { GET_USER, SEARCH_USERS } from "../../gql/User";
 import { mapAsOption } from "../../helpers";
 
 const messages = defineMessages({
@@ -70,13 +72,7 @@ export default function Admin() {
       return;
     }
     const { data } = await client.query({
-      query: gql`
-        query getUser($email: String!) {
-          getUser(email: $email) {
-            status
-          }
-        }
-      `,
+      query: GET_USER,
       variables: {
         email,
       },
@@ -91,29 +87,7 @@ export default function Admin() {
     }
 
     const { data: adminData } = await client.query({
-      query: gql`
-        query getAdminData(
-          $status1: String!
-          $status2: String!
-          $limit: Float!
-          $userStatus: String!
-        ) {
-          pendingChats: getGroupChatByStatus(status: $status1) {
-            id
-            name
-          }
-          rejectedChats: getGroupChatByStatus(status: $status2) {
-            id
-            name
-          }
-          users: getUsers(limit: $limit) {
-            email
-          }
-          bannedUsers: getUsers(status: $userStatus) {
-            email
-          }
-        }
-      `,
+      query: GET_ADMIN_DATA,
       variables: {
         status1: "pending",
         status2: "rejected",
@@ -130,17 +104,10 @@ export default function Admin() {
   const modifyRequest = async (id, status) => {
     const {
       data: {
-        updateGroupChat: { name, id: groupChatId },
+        updateStatus: { name, id: groupChatId },
       },
     } = await client.mutate({
-      mutation: gql`
-        mutation updateGroupChat($id: String!, $status: String!) {
-          updateGroupChat(id: $id, status: $status) {
-            name
-            id
-          }
-        }
-      `,
+      mutation: UPDATE_GROUPCHAT_STATUS,
       variables: {
         id,
         status,
@@ -168,13 +135,7 @@ export default function Admin() {
     const {
       data: { searchUsers },
     } = await client.query({
-      query: gql`
-        query searchUsers($text: String!) {
-          searchUsers(text: $text) {
-            email
-          }
-        }
-      `,
+      query: SEARCH_USERS,
       variables: {
         text,
       },

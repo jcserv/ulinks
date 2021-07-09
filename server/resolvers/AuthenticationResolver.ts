@@ -10,11 +10,14 @@ import { IUser } from "../database/schema";
 export class AuthenticationResolver {
   @Authorized("user")
   @Query(() => String, { nullable: true })
-  async me() {
+  async me(): Promise<string> {
     return "Hello";
   }
   @Query(() => AuthenticationMsg)
-  async login(@Arg("email") email: string, @Arg("password") password: string) {
+  async login(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<AuthenticationMsg> {
     const user = await User.findOne({ email });
     if (!user) {
       return {
@@ -38,7 +41,10 @@ export class AuthenticationResolver {
   }
 
   @Mutation(() => AuthenticationMsg)
-  async signup(@Arg("email") email: string, @Arg("password") password: string) {
+  async signup(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<AuthenticationMsg> {
     const user = await User.findOne({ email });
     if (user) {
       return {

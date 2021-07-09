@@ -1,5 +1,7 @@
 # 🚀 ConnectU
 
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/connectu/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/connectu/)
+
 ConnectU is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
 ConnectU was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
@@ -71,7 +73,9 @@ SECRET=[]
 With Docker:
 
 1. Download Docker
-2. `docker-compose up`
+2. Copy the .env for server into the root directory
+3. `docker compose up --build`
+
 
 Locally running:
 1. `cd client && yarn`
@@ -96,6 +100,14 @@ Import your project into Vercel. It will now have automated deployments on push.
 - [@AipioxTechson](https://github.com/AipioxTechson)
 - [@jcserv](https://jarrodservilla.com)
 - [@ninaricci29](https://github.com/ninaricci29)
+
+# 🔗 Relevant Links
+
+- [Website](https://uoftconnectu.tech)
+- [Staging Server](https://connectu.vercel.app)
+- [Original Frontend Repo](https://github.com/AipioxTechson/connectu-fe)
+- [Original Backend Repo](https://github.com/AipioxTechson/connectu-be)
+- [Devpost](https://devpost.com/software/connectu-q2cm8o)
 
 ## 🏁 License
 

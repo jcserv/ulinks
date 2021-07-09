@@ -4,7 +4,7 @@ import React from "react";
 import { FaDiscord, FaWhatsapp } from "react-icons/fa";
 import Tilt from "react-vanilla-tilt";
 
-export const Card = ({ name, description, links, id }) => {
+export const Card = ({ name, description, image, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
 
   const LinksMapped = links.map((link) => {
@@ -22,7 +22,12 @@ export const Card = ({ name, description, links, id }) => {
       <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Box justifyContent="center">
           <Image
-            src="https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?q=75&fm=jpg&w=400&fit=max"
+            src={
+              image ||
+              "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
+            }
+            width="200"
+            height="200"
             alt="CourseImage"
           />
         </Box>

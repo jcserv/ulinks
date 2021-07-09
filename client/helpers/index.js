@@ -1,4 +1,4 @@
-export default function removeDuplicates(arr) {
+export function removeDuplicates(arr) {
   return [...new Set(arr)];
 }
 
@@ -28,3 +28,10 @@ export const createMockUser = ({ email, password, groupChats, status }) => ({
   groupChats,
   status,
 });
+
+export default {
+  createMockGroupChat,
+  createMockUser,
+  mapAsOption,
+  removeDuplicates,
+};

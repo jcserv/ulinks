@@ -6,36 +6,38 @@ export class CourseInformation {
 
   @Field() department?: string;
 
-  @Field() code?: String;
+  @Field() code?: string;
 
   @Field() term?: string;
 
-  @Field() year: String;
+  @Field() year: string;
 }
 
 @ObjectType()
 export class GroupChat {
-  @Field() id: String;
+  @Field() id: string;
 
   @Field() name: string;
 
   @Field() description: string;
 
   @Field(() => [String])
-  links: String[];
+  links: string[];
 
-  @Field() isCommunity: Boolean;
+  @Field() isCommunity: boolean;
 
   @Field(() => CourseInformation, { nullable: true })
   courseInformation?: CourseInformation;
 
   @Field() status: string;
+
+  @Field({ nullable: true }) image: string;
 }
 
 @ObjectType()
 export class GroupChatIds {
   @Field(() => [String])
-  groupChats: String[];
+  groupChats: string[];
 }
 
 @ObjectType()
@@ -43,7 +45,7 @@ export class GroupChatPaginiated {
   @Field(() => [GroupChat], { nullable: "itemsAndList" })
   groupChats: GroupChat[];
 
-  @Field() totalPages: Number;
+  @Field() totalPages: number;
 
-  @Field() pageNumber: Number;
+  @Field() pageNumber: number;
 }
