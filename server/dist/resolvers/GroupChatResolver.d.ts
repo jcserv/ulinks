@@ -1,9 +1,8 @@
-import { createGroupChatInput } from '../inputs';
+import { createGroupChatInput } from "../inputs";
+import { GroupChatIds } from "../models/Groupchat";
 export declare class GroupChatResolver {
     pageSize: number;
-    getAllGroupChatIds(): Promise<{
-        groupChats: any[];
-    }>;
+    getAllGroupChatIds(): Promise<GroupChatIds>;
     getGroupChats(page?: number): Promise<{
         groupChats: import("../database/schema").IGroupChat[];
         totalPages: number;
@@ -17,5 +16,7 @@ export declare class GroupChatResolver {
         pageNumber: number;
     }>;
     addGroupChat(email: string, groupchatInfo: createGroupChatInput): Promise<import("../database/schema").IGroupChat | null>;
-    updateGroupChat(id: string, status: string): Promise<import("../database/schema").IGroupChat | null>;
+    updateGroupChat(id: string, chatInfo: createGroupChatInput): Promise<import("../database/schema").IGroupChat | null>;
+    updateStatus(id: string, status: string): Promise<import("../database/schema").IGroupChat | null>;
+    deleteGroupChat(id: string): Promise<boolean>;
 }
