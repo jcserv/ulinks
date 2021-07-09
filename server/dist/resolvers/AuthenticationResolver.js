@@ -71,14 +71,16 @@ __decorate([
 ], AuthenticationResolver.prototype, "me", null);
 __decorate([
     type_graphql_1.Query(() => models_1.AuthenticationMsg),
-    __param(0, type_graphql_1.Arg("email")), __param(1, type_graphql_1.Arg("password")),
+    __param(0, type_graphql_1.Arg("email")),
+    __param(1, type_graphql_1.Arg("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], AuthenticationResolver.prototype, "login", null);
 __decorate([
     type_graphql_1.Mutation(() => models_1.AuthenticationMsg),
-    __param(0, type_graphql_1.Arg("email")), __param(1, type_graphql_1.Arg("password")),
+    __param(0, type_graphql_1.Arg("email")),
+    __param(1, type_graphql_1.Arg("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)

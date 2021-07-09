@@ -45,9 +45,6 @@ Frontend Acceptance Criteria:
 2. Adequate automated test coverage (WIP)
 3. Basic manual QA & accessibility checks with Axe
 
-Backend Acceptance Criteria:
-WIP
-
 ## ⛏️ Featurework:
 
 1. `git checkout -b DEV-XXX` (where XXX corresponds to the github issue number)

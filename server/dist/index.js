@@ -25,7 +25,7 @@ const path = "/graphql";
 const main = async () => {
     const schema = await type_graphql_1.buildSchema({
         resolvers: [resolvers_1.AuthenticationResolver, resolvers_1.UserResolver, resolvers_1.GroupChatResolver],
-        authChecker: customAuthChecker
+        authChecker: customAuthChecker,
     });
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema,

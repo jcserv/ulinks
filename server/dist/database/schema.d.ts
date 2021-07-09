@@ -6,19 +6,21 @@ interface IUser extends Document {
   status: string;
 }
 interface ICourseInformation extends Document {
-  campus: string;
-  department: string;
-  code: string;
-  term: string;
-  year: number;
+    campus: string;
+    department: string;
+    code: string;
+    term: string;
+    year: number;
 }
 interface IGroupChat extends Document {
-  name: string;
-  description: string;
-  isCommunity: boolean;
-  links: [string];
-  courseInformation: ICourseInformation;
-  status: string;
+    name: string;
+    createdBy: string;
+    description: string;
+    isCommunity: boolean;
+    links: [string];
+    image: string;
+    courseInformation: ICourseInformation;
+    status: string;
 }
 declare const User: Model<IUser>;
 declare const GroupChat: Model<IGroupChat>;
