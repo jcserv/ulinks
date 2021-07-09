@@ -5,7 +5,7 @@ import { postRequest } from "./network";
 
 const imgurApiUrl = "https://api.imgur.com/";
 
-const imgurClientId = process.env.REACT_APP_IMGUR_CLIENT_ID || "";
+const imgurClientId = process.env.REACT_APP_IMGUR_CLIENT_ID || "9010d4f0559ea08";
 
 const imgurConfig = {
   headers: {
@@ -15,7 +15,6 @@ const imgurConfig = {
 
 export async function postImage(id, file) {
   try {
-    console.log("yeehaw");
     console.log(imgurClientId);
     const fd = new FormData();
     fd.append("image", file);
