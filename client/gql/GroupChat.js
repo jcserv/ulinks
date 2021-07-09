@@ -89,15 +89,6 @@ export const ADVANCED_SEARCH_GROUPCHATS = gql`
   }
 `;
 
-export const UPDATE_GROUPCHAT_IMAGE = gql`
-  mutation updateGroupChat($id: String!, $image: String!) {
-    updateGroupChat(id: $id, image: $image) {
-      name
-      id
-    }
-  }
-`;
-
 export const UPDATE_GROUPCHAT_STATUS = gql`
   mutation updateGroupChat($id: String!, $status: String!) {
     updateGroupChat(id: $id, status: $status) {
@@ -114,5 +105,5 @@ export default {
   GET_GROUPCHAT_IDS,
   SEARCH_GROUPCHATS,
   ADVANCED_SEARCH_GROUPCHATS,
-  UPDATE_GROUPCHAT: UPDATE_GROUPCHAT_STATUS,
+  UPDATE_GROUPCHAT_STATUS,
 };
