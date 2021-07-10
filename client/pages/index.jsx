@@ -148,12 +148,14 @@ export default function Home({
         <Text fontSize="md" color="grey" m={3}>
           {formatMessage(messages.findGroupchats)}
         </Text>
-        <div className="d-flex row-12 justify-content-between">
+        <div className="d-flex row-12">
           <Heading as="h1" size="2xl" m={3}>
             {formatMessage(messages.discover)}
           </Heading>
-          <TabSelect tabs={tabs} onChange={setCommunity} />
           <br />
+        </div>
+        <div className="d-flex row-12">
+          <TabSelect tabs={tabs} onChange={setCommunity} />
         </div>
       </div>
       <div className="col-8">
