@@ -1,4 +1,4 @@
-## DEV-XXX
+## feat/[name]
 
 <!--- Please add in the issue number this PR is fixing below. If an issue does not exist, create one! --->
 
