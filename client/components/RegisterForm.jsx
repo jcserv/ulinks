@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Form, withFormik } from "formik";
 import cookie from "js-cookie";
@@ -64,10 +65,11 @@ const RegisterForm = ({
   values: { email, password, confirmPassword },
 }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const isValid = email && password && confirmPassword;
   const { formatMessage } = useIntl();
+  const width = useBreakpointValue({ base: "w-50", sm: "w-50", md: "w-25" });
+  const isValid = email && password && confirmPassword;
   return (
-    <Form className="col-6 w-25">
+    <Form className={`col-6 ${width}`}>
       <FormControl
         id="email"
         isRequired

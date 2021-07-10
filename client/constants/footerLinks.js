@@ -11,6 +11,10 @@ export const contributors = [
     name: "Jarrod Servilla",
     href: "https://linkedin.com/in/jarrod-servilla",
   },
+  {
+    name: "Michael Phung",
+    href: "https://www.linkedin.com/in/michael-phung-508b5a175/",
+  },
 ];
 
 export const links = [

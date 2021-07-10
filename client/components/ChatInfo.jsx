@@ -1,4 +1,13 @@
-import { Button, Heading, Img, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  GridItem,
+  Heading,
+  Img,
+  SimpleGrid,
+  Text,
+  useBreakpointValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -39,7 +48,7 @@ function transformLink(url) {
   };
 }
 
-const ChatInfo = ({
+const ChatDetails = ({
   id,
   name,
   description,
@@ -47,7 +56,6 @@ const ChatInfo = ({
   status,
   courseInformation,
   isCommunity,
-  image,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -63,72 +71,108 @@ const ChatInfo = ({
   } = useDisclosure();
 
   return (
-    <div className="d-flex row-12 justify-content-center">
-      <div className="col-6">
-        <div className="col-6 m-auto">
-          <Text fontSize="md" color="grey" m={2}>
-            {formatMessage(messages.details)}
-          </Text>
-          <Heading as="h2" size="2xl" m={2}>
-            {name}
-          </Heading>
-          <Text fontSize="md" color="grey" m={2}>
-            {description}
-          </Text>
-          <LinkIconBar
-            links={linkIcons}
-            boxSize="2em"
-            justify="flex-start"
-            ml={2}
-          />
-          <Text fontSize="sm" color="grey" m={2}>
-            {formatMessage(messages.created)}: 01/01/20
-          </Text>
-          <Text fontSize="sm" color="grey" m={2}>
-            {formatMessage(messages.lastModified)}: 01/04/20
-          </Text>
-          <CheckPermissions id={id}>
-            <Button onClick={onModalOpen} m={1}>
-              {formatMessage(messages.edit)}
-            </Button>
-            <Button colorScheme="red" onClick={onDeleteModalOpen} m={1}>
-              Delete
-            </Button>
-          </CheckPermissions>
-          <EditChatModal
-            isOpen={isModalOpen}
-            onOpen={onModalOpen}
-            onClose={onModalClose}
-            initialVals={{
-              name,
-              isCommunity,
-              status,
-              description,
-              links,
-              courseInformation,
-            }}
-            id={id}
-          />
-          <DeleteChatModal
-            isOpen={isDeleteModalOpen}
-            onOpen={onDeleteModalOpen}
-            onClose={onDeleteModalClose}
-            id={id}
-          />
-        </div>
-      </div>
-      <div className="col-6">
-        <Img
-          alt="Chat image"
-          src={
-            image ||
-            "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
-          }
-          width="400"
-          height="400"
-        />
-      </div>
-    </div>
+    <GridItem>
+      <Text fontSize="md" color="grey" m={2}>
+        {formatMessage(messages.details)}
+      </Text>
+      <Heading as="h2" size="2xl" m={2}>
+        {name}
+      </Heading>
+      <Text fontSize="md" color="grey" m={2}>
+        {description}
+      </Text>
+      <LinkIconBar
+        links={linkIcons}
+        boxSize="2em"
+        justify="flex-start"
+        ml={2}
+      />
+      <Text fontSize="sm" color="grey" m={2}>
+        {formatMessage(messages.created)}: 01/01/20
+      </Text>
+      <Text fontSize="sm" color="grey" m={2}>
+        {formatMessage(messages.lastModified)}: 01/04/20
+      </Text>
+      <CheckPermissions id={id}>
+        <Button onClick={onModalOpen} m={1}>
+          {formatMessage(messages.edit)}
+        </Button>
+        <Button colorScheme="red" onClick={onDeleteModalOpen} m={1}>
+          Delete
+        </Button>
+      </CheckPermissions>
+      <EditChatModal
+        isOpen={isModalOpen}
+        onOpen={onModalOpen}
+        onClose={onModalClose}
+        initialVals={{
+          name,
+          isCommunity,
+          status,
+          description,
+          links,
+          courseInformation,
+        }}
+        id={id}
+      />
+      <DeleteChatModal
+        isOpen={isDeleteModalOpen}
+        onOpen={onDeleteModalOpen}
+        onClose={onDeleteModalClose}
+        id={id}
+      />
+    </GridItem>
+  );
+};
+
+const ChatImage = ({ image }) => (
+  <GridItem>
+    <Img
+      alt="Chat image"
+      src={
+        image || "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
+      }
+      width="400"
+      height="400"
+    />
+  </GridItem>
+);
+
+const ChatInfo = ({
+  id,
+  name,
+  description,
+  links,
+  status,
+  courseInformation,
+  isCommunity,
+  image,
+}) => {
+  const shouldAlternate = useBreakpointValue({ base: false, md: true });
+  const img = <ChatImage image={image} />;
+  const desc = (
+    <ChatDetails
+      id={id}
+      name={name}
+      description={description}
+      links={links}
+      status={status}
+      courseInformation={courseInformation}
+      isCommunity={isCommunity}
+    />
+  );
+  return (
+    <SimpleGrid
+      pl="10%"
+      pt="5%"
+      pr="10%"
+      spacing={12}
+      columns={[1, null, 2]}
+      justifyContent="center"
+    >
+      {shouldAlternate ? desc : img}
+      {shouldAlternate ? img : desc}
+    </SimpleGrid>
   );
 };
 
