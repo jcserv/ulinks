@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 cd client && yarn format
-cd server && yarn build && yarn format
+cd ../server && yarn build && yarn format
