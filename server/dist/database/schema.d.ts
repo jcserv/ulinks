@@ -1,9 +1,9 @@
 import mongoose, { Document, Model } from "mongoose";
 interface IUser extends Document {
-  email: string;
-  password: string;
-  groupChatsCreated: [string];
-  status: string;
+    email: string;
+    password: string;
+    groupChatsCreated: [string];
+    status: string;
 }
 interface ICourseInformation extends Document {
     campus: string;
