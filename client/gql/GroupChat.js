@@ -18,6 +18,10 @@ export const GET_GROUPCHAT = gql`
       isCommunity
       links
       image
+      created
+      updated
+      views
+      likes
       courseInformation {
         year
         term
@@ -38,6 +42,10 @@ export const GET_GROUPCHATS = gql`
         links
         image
         id
+        created
+        updated
+        views
+        likes
         isCommunity
       }
       totalPages
