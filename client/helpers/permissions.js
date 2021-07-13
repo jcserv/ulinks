@@ -2,6 +2,22 @@ import client from "../apollo-client";
 import { userStatuses } from "../constants";
 import { GET_USER } from "../gql/User";
 
+export async function checkAdmin({ email }) {
+  const { data } = await client.query({
+    query: GET_USER,
+    variables: {
+      email,
+    },
+  });
+  if (!data.getUser) {
+    return false;
+  }
+  if (data.getUser.status === userStatuses.admin) {
+    return true;
+  }
+  return false;
+}
+
 export async function checkAdminOrCreated({ id, email }) {
   const { data } = await client.query({
     query: GET_USER,
@@ -24,5 +40,6 @@ export async function checkAdminOrCreated({ id, email }) {
 }
 
 export default {
+  checkAdmin,
   checkAdminOrCreated,
 };
