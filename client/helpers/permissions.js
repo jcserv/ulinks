@@ -2,7 +2,7 @@ import client from "../apollo-client";
 import { userStatuses } from "../constants";
 import { GET_USER } from "../gql/User";
 
-export async function checkAdmin({ email }) {
+export async function getUserData(email) {
   const { data } = await client.query({
     query: GET_USER,
     variables: {
@@ -10,27 +10,24 @@ export async function checkAdmin({ email }) {
     },
   });
   if (!data.getUser) {
-    return false;
+    return null;
   }
-  if (data.getUser.status === userStatuses.admin) {
+  return data;
+}
+
+export async function checkAdmin({ email }) {
+  const data = await getUserData(email);
+  if (data?.getUser?.status === userStatuses.admin) {
     return true;
   }
   return false;
 }
 
 export async function checkAdminOrCreated({ id, email }) {
-  const { data } = await client.query({
-    query: GET_USER,
-    variables: {
-      email,
-    },
-  });
-  if (!data.getUser) {
-    return false;
-  }
+  const data = await getUserData(email);
   if (
-    data.getUser.status === userStatuses.admin ||
-    data.getUser?.groupChatsCreated
+    data?.getUser?.status === userStatuses.admin ||
+    data?.getUser?.groupChatsCreated
       ?.map((groupChat) => groupChat.id)
       .includes(id)
   ) {
