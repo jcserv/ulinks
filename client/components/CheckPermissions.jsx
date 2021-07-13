@@ -20,7 +20,7 @@ export default function CheckPermissions({ id, children }) {
       }
       if (
         data.getUser.status === "admin" ||
-        data.getUser.groupChatsCreated.includes(id)
+        data.getUser?.groupChatsCreated?.includes(id)
       ) {
         setEditPermissions(true);
       }

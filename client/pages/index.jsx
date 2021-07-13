@@ -168,18 +168,20 @@ export default function Home({
             }}
             mb={4}
           />
-          <InputRightElement pr={10}>
+          <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
             <ButtonGroup isAttached>
               <IconButton
                 aria-label="Search"
                 icon={<SearchIcon />}
                 onClick={handleSearch}
               />
-              <IconButton
-                aria-label="Advanced search settings"
-                icon={<GoSettings />}
-                onClick={onOpen}
-              />
+              {isCommunity !== 2 && (
+                <IconButton
+                  aria-label="Advanced search settings"
+                  icon={<GoSettings />}
+                  onClick={onOpen}
+                />
+              )}
             </ButtonGroup>
           </InputRightElement>
         </InputGroup>
