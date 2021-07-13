@@ -109,15 +109,17 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
     user: 1,
   };
 
+  const email = cookie.get("email");
+
   useEffect(async () => {
-    const email = cookie.get("email");
     if (!email) {
       setNavBtns(navBtnsAll.slice(2));
       return;
     }
     const data = await getUserData(email);
     setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
-  }, []);
+  }, [email]);
+
   const btns = navBtns.map((btn) => (
     <Button key={btn.label} size={size} variant="link" mb={2} onClick={onClose}>
       {btn.label === "Create" ? (
