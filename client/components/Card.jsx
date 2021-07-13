@@ -20,8 +20,9 @@ export const Card = ({ name, description, image, links, id }) => {
     width: "300px",
     padding: "30px",
     margin: "10px",
-    borderRadius: "4px; color: rgb(54, 73, 98);",
-    fontSize: "16px; line-height: 1.6;",
+    borderRadius: "4px; color: rgb(54, 73, 98)",
+    fontSize: "16px; line-height: 1.6",
+    cursor: "pointer",
   };
 
   return (

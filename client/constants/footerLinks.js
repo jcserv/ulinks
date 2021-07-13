@@ -15,6 +15,10 @@ export const contributors = [
     name: "Michael Phung",
     href: "https://www.linkedin.com/in/michael-phung-508b5a175/",
   },
+  {
+    name: "Yousef Bulbulia",
+    href: "https://www.linkedin.com/in/yousef-bulbulia/",
+  },
 ];
 
 export const links = [
