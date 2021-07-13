@@ -414,14 +414,23 @@ const EnhancedChatForm = withFormik({
       courseInfo,
       id,
     },
-    { props: { onClose, toast } }
+    { props: { onClose, setChatInfo, toast } }
   ) => {
     if (courseInfo.__typename != undefined) {
       delete courseInfo.__typename;
     }
     const {
       data: {
-        groupChat: { name: groupChatName },
+        groupChat: {
+          id: groupChatId,
+          name: groupChatName,
+          description: groupChatDesc,
+          links: groupChatLinks,
+          isCommunity: groupChatIsCommunity,
+          image: groupChatImage,
+          status: groupChatStatus,
+          courseInformation: groupChatCourseInfo,
+        },
       },
     } = await client.mutate({
       mutation: UPDATE_GROUPCHAT,
@@ -445,6 +454,16 @@ const EnhancedChatForm = withFormik({
       duration: 5000,
       isCloseable: false,
     });
+    setChatInfo({
+      id: groupChatId,
+      name: groupChatName,
+      description: groupChatDesc,
+      links: groupChatLinks,
+      isCommunity: groupChatIsCommunity,
+      image: groupChatImage,
+      status: groupChatStatus,
+      courseInformation: groupChatCourseInfo,
+    });
     onClose();
   },
   mapPropsToValues: ({ initialVals, id }) => ({
@@ -462,7 +481,13 @@ const EnhancedChatForm = withFormik({
   validateOnMount: true,
 })(ChatForm);
 
-export default function EditChatModal({ isOpen, onClose, initialVals, id }) {
+export default function EditChatModal({
+  isOpen,
+  onClose,
+  initialVals,
+  id,
+  setChatInfo,
+}) {
   const toast = useToast();
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
@@ -476,6 +501,7 @@ export default function EditChatModal({ isOpen, onClose, initialVals, id }) {
             toast={toast}
             initialVals={initialVals}
             id={id}
+            setChatInfo={setChatInfo}
           />
         </ModalBody>
       </ModalContent>

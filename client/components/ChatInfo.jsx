@@ -56,6 +56,7 @@ const ChatDetails = ({
   status,
   courseInformation,
   isCommunity,
+  setChatInfo,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -105,6 +106,7 @@ const ChatDetails = ({
         isOpen={isModalOpen}
         onOpen={onModalOpen}
         onClose={onModalClose}
+        setChatInfo={setChatInfo}
         initialVals={{
           name,
           isCommunity,
@@ -147,6 +149,7 @@ const ChatInfo = ({
   courseInformation,
   isCommunity,
   image,
+  setChatInfo,
 }) => {
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
@@ -159,6 +162,7 @@ const ChatInfo = ({
       status={status}
       courseInformation={courseInformation}
       isCommunity={isCommunity}
+      setChatInfo={setChatInfo}
     />
   );
   return (
