@@ -15,11 +15,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Text,
   Textarea,
@@ -257,18 +252,13 @@ const ChatForm = ({
               mt={2}
             >
               <FormLabel>{formatMessage(messages.code)}</FormLabel>
-              <NumberInput
-                min={100}
-                max={499}
-                value={courseInfo.code}
-                onChange={(val) => setFieldValue("courseInfo.code", val)}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              <Input
+                type="text"
+                value={courseInfo && courseInfo.code}
+                onChange={(e) => {
+                  setFieldValue("courseInfo.code", e.target.value);
+                }}
+              />
               {hasSubmitted && (
                 <Text color="red">
                   {errors.courseInfo && errors.courseInfo.code}

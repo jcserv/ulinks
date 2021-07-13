@@ -2,17 +2,13 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Text,
   useToast,
@@ -137,18 +133,13 @@ const SearchForm = ({
           mt={2}
         >
           <FormLabel htmlFor="code">{formatMessage(messages.code)}</FormLabel>
-          <NumberInput
-            min={100}
-            max={499}
+          <Input
+            type="text"
             value={code}
-            onChange={(val) => setFieldValue("code", val)}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+            onChange={(e) => {
+              setFieldValue("code", e.target.value);
+            }}
+          />
           {hasSubmitted && <Text color="red">{errors && errors.code}</Text>}
         </FormControl>
       </div>
