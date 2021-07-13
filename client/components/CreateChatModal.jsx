@@ -13,11 +13,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Radio,
   RadioGroup,
   Select,
@@ -36,7 +31,7 @@ import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import client from "../apollo-client";
-import { campuses, departments, terms, years } from "../constants";
+import { campuses, departments, terms, utscLevels, years } from "../constants";
 import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
 
@@ -156,6 +151,32 @@ const ChatForm = ({
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
 
+  const inferDepartment = (val) => {
+    if (val.length === 3) {
+      const dept = val.toUpperCase();
+      if (departments.includes(dept))
+        setFieldValue("courseInfo.department", dept);
+    }
+  };
+
+  const inferCode = (val) => {
+    if (val.length === 6) {
+      const code = val.slice(3);
+      const numCode = parseInt(code, 10);
+      const endNums = parseInt(code[1] + code[2], 10);
+      if (numCode >= 100 && numCode <= 499) {
+        setFieldValue("courseInfo.code", code);
+      } else if (
+        utscLevels.includes(code[0]) &&
+        endNums >= 0 &&
+        endNums <= 99
+      ) {
+        setFieldValue("courseInfo.code", code);
+        setFieldValue("courseInfo.campus", "UTSC");
+      }
+    }
+  };
+
   return (
     <Form className="col-6 w-100">
       <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
@@ -164,18 +185,8 @@ const ChatForm = ({
           type="text"
           onChange={(e) => {
             setFieldValue("name", e.target.value);
-            if (
-              e.target.value.length === 6 &&
-              departments.includes(e.target.value.slice(0, 3).toUpperCase()) &&
-              parseInt(e.target.value.slice(3), 10) >= 100 &&
-              parseInt(e.target.value.slice(3), 10) <= 499
-            ) {
-              setFieldValue(
-                "courseInfo.department",
-                name.slice(0, 3).toUpperCase()
-              );
-              setFieldValue("courseInfo.code", e.target.value.slice(3));
-            }
+            inferDepartment(e.target.value);
+            inferCode(e.target.value);
           }}
         />
         {hasSubmitted && <Text color="red">{errors.name}</Text>}
@@ -223,6 +234,7 @@ const ChatForm = ({
               onChange={(e) => {
                 setFieldValue("courseInfo.campus", e.target.value);
               }}
+              value={courseInfo && courseInfo.campus}
             >
               {campuses.map((campus, index) => (
                 <option key={index} value={campus}>
@@ -277,18 +289,13 @@ const ChatForm = ({
               mt={2}
             >
               <FormLabel>{formatMessage(messages.code)}</FormLabel>
-              <NumberInput
-                min={100}
-                max={499}
-                value={courseInfo.code}
-                onChange={(val) => setFieldValue("courseInfo.code", val)}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              <Input
+                type="text"
+                value={courseInfo && courseInfo.code}
+                onChange={(e) => {
+                  setFieldValue("courseInfo.code", e.target.value);
+                }}
+              />
               {hasSubmitted && (
                 <Text color="red">
                   {errors.courseInfo && errors.courseInfo.code}
