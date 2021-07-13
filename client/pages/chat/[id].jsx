@@ -3,8 +3,7 @@ import React, { useState } from "react";
 
 import client from "../../apollo-client";
 import ChatInfo from "../../components/ChatInfo";
-import { localesArr } from "../../content/locale";
-import { GET_GROUPCHAT, GET_GROUPCHAT_IDS } from "../../gql/GroupChat";
+import { GET_GROUPCHAT } from "../../gql/GroupChat";
 
 export default function Chat({ chat, id }) {
   const [chatInfo, setChatInfo] = useState(chat);
@@ -19,29 +18,7 @@ export default function Chat({ chat, id }) {
   );
 }
 
-export async function getStaticPaths() {
-  const {
-    data: {
-      getAllGroupChatIds: { groupChats },
-    },
-  } = await client.query({
-    query: GET_GROUPCHAT_IDS,
-  });
-  const paths =
-    groupChats.length > 0 &&
-    groupChats
-      .map((chat) =>
-        localesArr.map((locale) => ({
-          params: { id: chat },
-          locale,
-        }))
-      )
-      .flat();
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const { id } = context.params;
   const {
     data: { getGroupChat },
