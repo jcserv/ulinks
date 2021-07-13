@@ -12,6 +12,7 @@ import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import { checkAdminOrCreated } from "../helpers/permissions";
 import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
@@ -94,7 +95,7 @@ const ChatDetails = ({
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.lastModified)}: 01/04/20
       </Text>
-      <CheckPermissions id={id}>
+      <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>
         <Button onClick={onModalOpen} m={1}>
           {formatMessage(messages.edit)}
         </Button>
