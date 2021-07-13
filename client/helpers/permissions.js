@@ -14,7 +14,9 @@ export async function checkAdminOrCreated({ id, email }) {
   }
   if (
     data.getUser.status === userStatuses.admin ||
-    data.getUser?.groupChatsCreated?.includes(id)
+    data.getUser?.groupChatsCreated
+      ?.map((groupChat) => groupChat.id)
+      .includes(id)
   ) {
     return true;
   }
