@@ -29,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { Field, FieldArray, Form, withFormik } from "formik";
 import cookie from "js-cookie";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { FaDiscord, FaWhatsapp } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
@@ -454,12 +455,12 @@ const EnhancedChatForm = withFormik({
       isCommunity,
       courseInfo,
     },
-    { props: { onClose, toast } }
+    { props: { onClose, redirect, toast } }
   ) => {
     const email = cookie.get("email");
     const {
       data: {
-        groupChat: { name: groupChatName },
+        groupChat: { name: groupChatName, id },
       },
     } = await client.mutate({
       mutation: ADD_GROUPCHAT,
@@ -488,6 +489,7 @@ const EnhancedChatForm = withFormik({
       isCloseable: false,
     });
     onClose();
+    redirect(id);
   },
   mapPropsToValues: () => ({
     name: "",
@@ -510,6 +512,11 @@ const EnhancedChatForm = withFormik({
 
 export default function CreateChatModal({ isOpen, onClose }) {
   const toast = useToast();
+  const { locale, defaultLocale, push } = useRouter();
+
+  const redirect = (id) => {
+    push(`${locale !== defaultLocale ? locale : ""}/chat/${id}`);
+  };
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
@@ -518,7 +525,11 @@ export default function CreateChatModal({ isOpen, onClose }) {
         <ModalHeader>Submit a Group Chat</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <EnhancedChatForm onClose={onClose} toast={toast} />
+          <EnhancedChatForm
+            onClose={onClose}
+            redirect={redirect}
+            toast={toast}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>
