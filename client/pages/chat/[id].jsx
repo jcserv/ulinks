@@ -20,16 +20,34 @@ export default function Chat({ chat, id }) {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const {
-    data: { getGroupChat },
-  } = await client.query({
-    query: GET_GROUPCHAT,
-    variables: { id },
-  });
-  return {
-    props: {
-      chat: getGroupChat,
-      id,
-    },
-  };
+  if (id.length !== 24) {
+    return {
+      notFound: true,
+    };
+  }
+  try {
+    const {
+      data: { getGroupChat },
+    } = await client.query({
+      query: GET_GROUPCHAT,
+      variables: { id },
+    });
+
+    if (!getGroupChat) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        chat: getGroupChat,
+        id,
+      },
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 }
