@@ -110,7 +110,7 @@ const messages = defineMessages({
 
 const ChatSchema = Yup.object().shape({
   name: Yup.string().min(3).max(30).required(),
-  description: Yup.string().min(3).max(200).required(),
+  description: Yup.string().min(3).max(500).required(),
   links: Yup.array()
     .of(Yup.string().url("Must be a valid URL"))
     .required()

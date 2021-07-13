@@ -23,12 +23,13 @@ import {
 import cookie from "js-cookie";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
 import locales from "../content/locale";
+import { getUserData } from "../helpers/permissions";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
 
@@ -83,10 +84,15 @@ const MenuToggle = ({ isOpen, onOpen }) => (
 
 const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   const { formatMessage } = useIntl();
+  const [navBtns, setNavBtns] = useState([]);
 
-  const navBtns = [
+  const navBtnsAll = [
     {
       label: formatMessage(messages.create),
+    },
+    {
+      label: formatMessage(messages.admin),
+      href: "/admin",
     },
     {
       label: formatMessage(messages.login),
@@ -98,9 +104,23 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
     },
   ];
 
-  const displayBtns =
-    cookie.get("email") !== undefined ? navBtns.slice(0, 1) : navBtns.slice(1);
-  const btns = displayBtns.map((btn) => (
+  const statusToNavBtnIndex = {
+    admin: 2,
+    user: 1,
+  };
+
+  const email = cookie.get("email");
+
+  useEffect(async () => {
+    if (!email) {
+      setNavBtns(navBtnsAll.slice(2));
+      return;
+    }
+    const data = await getUserData(email);
+    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
+  }, [email]);
+
+  const btns = navBtns.map((btn) => (
     <Button key={btn.label} size={size} variant="link" mb={2} onClick={onClose}>
       {btn.label === "Create" ? (
         <Button variant="link" onClick={onModalOpen}>
