@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   HStack,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -20,6 +21,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Spacer,
   Stack,
   Text,
   Textarea,
@@ -28,6 +30,7 @@ import {
 import { Field, FieldArray, Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import React, { useState } from "react";
+import { FaDiscord, FaWhatsapp } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
@@ -362,7 +365,32 @@ const ChatForm = ({
                 mt={2}
                 isInvalid={hasSubmitted && errors.links}
               >
-                <FormLabel>{formatMessage(messages.link)}</FormLabel>
+                <HStack>
+                  <FormLabel>{formatMessage(messages.link)}</FormLabel>
+                  <Spacer />
+                  <IconButton
+                    aria-label="Prefill Discord link"
+                    icon={<FaDiscord />}
+                    variant="ghost"
+                    onClick={() => {
+                      const newLinks = [...links];
+                      newLinks[index] = "http://discord.gg/";
+                      setFieldValue("links", newLinks);
+                    }}
+                  />
+                  <IconButton
+                    aria-label="Prefill WhatsApp link"
+                    boxSize="1.5em"
+                    icon={<FaWhatsapp />}
+                    variant="ghost"
+                    onClick={() => {
+                      const newLinks = [...links];
+                      newLinks[index] = "http://chat.whatsapp.com/";
+                      setFieldValue("links", newLinks);
+                    }}
+                  />
+                </HStack>
+
                 <Input
                   as={Field}
                   name={`links.${index}`}
