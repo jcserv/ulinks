@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Please use this template to request a new feature for ConnectU
+about: Please use this template to request a new feature for ulinks
 title: "\U0001F680 Feature Request: {{Feature Request Title}}"
 assignees: ""
 ---
