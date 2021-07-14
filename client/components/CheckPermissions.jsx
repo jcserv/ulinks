@@ -1,29 +1,30 @@
 import cookie from "js-cookie";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import client from "../apollo-client";
-import { GET_USER } from "../gql/User";
-
-export default function CheckPermissions({ id, children }) {
+export default function CheckPermissions({
+  data,
+  permissionCheck,
+  children,
+  redirectIfNoEmail = false,
+  redirect = false,
+  path = "",
+}) {
   const [editPermissions, setEditPermissions] = useState(false);
+  const { locale, defaultLocale, push } = useRouter();
+
   useEffect(async () => {
     const email = cookie.get("email");
-    if (email) {
-      const { data } = await client.query({
-        query: GET_USER,
-        variables: {
-          email,
-        },
-      });
-      if (!data.getUser) {
-        return;
+    if (!email) {
+      if (redirectIfNoEmail) {
+        push(`${locale !== defaultLocale ? locale : ""}/${path}`);
       }
-      if (
-        data.getUser.status === "admin" ||
-        data.getUser.groupChatsCreated.includes(id)
-      ) {
-        setEditPermissions(true);
-      }
+      return;
+    }
+    if (await permissionCheck({ ...data, email })) {
+      setEditPermissions(true);
+    } else if (redirect) {
+      push(`${locale !== defaultLocale ? locale : ""}/${path}`);
     }
   }, []);
   return <>{editPermissions && children}</>;
