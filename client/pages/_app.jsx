@@ -11,9 +11,9 @@ import NavBar from "../components/NavBar";
 import locales from "../content/locale";
 import theme from "../theme";
 
-const TITLE = "uoft.connectu | Find all your school communities in one place";
+const TITLE = "ulinks | Find all your school communities in one place";
 const DESCRIPTION = "Find all your school communities in one place";
-const URL = "http://uoft.connectu.tech";
+const URL = "http://ulinks.io";
 
 const SiteHead = ({ title }) => (
   <Head>
@@ -55,10 +55,9 @@ function App({ Component, pageProps }) {
 
   const pathToTitle = {
     "/": TITLE,
-    "/admin": "Admin Panel | ConnectU",
-    "/login": "Sign in to ConnectU | ConnectU",
-    "/register": "Join ConnectU | ConnectU",
-    "/team": "Learn about the team | ConnectU",
+    "/admin": "Admin Panel | ulinks",
+    "/login": "Sign in to ulinks | ulinks",
+    "/register": "Join ulinks | ulinks",
   };
 
   const messages = locales[locale];
