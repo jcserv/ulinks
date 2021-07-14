@@ -1,10 +1,10 @@
-# 🚀 ConnectU
+# 🚀 ulinks
 
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/connectu/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/connectu/)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/ulinks/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/ulinks/)
 
-ConnectU is a platform for students to browse & upload academic group chats to stay connected during online school.
+ulinks is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
-ConnectU was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
+Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
 ## 📁 Project Structure
 
@@ -19,7 +19,7 @@ WIP
 
 ## 💡 Contributing
 
-ConnectU follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
+ulinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
 
 ```
 ──────────────────────── main ────────────────────────────────────    # Deployments
@@ -35,7 +35,7 @@ For internal team:
 
 For open source contributors:
 1. Fork the repo
-2. `git remote add upstream https://github.com/jcserv/connectu/`
+2. `git remote add upstream https://github.com/jcserv/ulinks/`
 3. `git fetch upstream`
 4. `git rebase upstream/develop`
 5. See featurework

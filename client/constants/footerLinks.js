@@ -25,7 +25,7 @@ export const links = [
   {
     label: "Github",
     icon: "github",
-    url: "https://github.com/jcserv/connectu",
+    url: "https://github.com/jcserv/ulinks",
   },
   {
     label: "Devpost",
