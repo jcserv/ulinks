@@ -46,5 +46,6 @@
   "edit": "Modifier",
   "confirm": "Confirmer",
   "delete-message": "Supprimer une message",
-  "confirm-deletion": "Êtes-vous sûr que vous vouliez supprimer ce tchat? Cette action ne peux pas être renversé."
+  "confirm-deletion": "Êtes-vous sûr que vous vouliez supprimer ce tchat? Cette action ne peux pas être renversé.",
+  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!"
 }
