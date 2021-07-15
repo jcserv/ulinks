@@ -23,7 +23,11 @@ import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
 import locales from "../content/locale";
-import { GET_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import {
+  GET_GROUPCHATS,
+  SEARCH_ALL_GROUPCHATS,
+  SEARCH_GROUPCHATS,
+} from "../gql/GroupChat";
 
 const messages = defineMessages({
   discover: {
@@ -81,17 +85,15 @@ export default function Home({
     },
   ];
 
-  function applyGroupChatFilter() {
+  function applyGroupChatFilter(groupchatstates) {
     if (isCommunity === 0) {
-      return groupChatStates;
+      return groupchatstates;
     }
     if (isCommunity === 1) {
-      return groupChatStates.filter((groupChat) => !groupChat.isCommunity);
+      return groupchatstates.filter((groupChat) => !groupChat.isCommunity);
     }
-    return groupChatStates.filter((groupChat) => groupChat.isCommunity);
+    return groupchatstates.filter((groupChat) => groupChat.isCommunity);
   }
-
-  const filteredGroupChats = applyGroupChatFilter();
 
   const handleSearch = async () => {
     setCurrentPage(0);
@@ -105,11 +107,11 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: SEARCH_GROUPCHATS,
+      query: isCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
       variables: {
         page: 0,
-        text: searchQuery,
-        isCommunity: isCommunity === 2,
+        ...(searchQuery === "" ? {} : { text: searchQuery }),
+        ...(isCommunity === 0 ? { isCommunity: isCommunity === 2 } : {}),
       },
     });
     setGroupChats([...newGroupChats]);
@@ -128,11 +130,11 @@ export default function Home({
         },
       },
     } = await client.query({
-      query: SEARCH_GROUPCHATS,
+      query: isCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
       variables: {
         page: currentPage + 1,
         text: oldSearchQuery,
-        isCommunity: isCommunity === 2,
+        ...(isCommunity === 0 ? { isCommunity: isCommunity === 2 } : {}),
       },
     });
     setGroupChats((oldGroupChats) => [...oldGroupChats, ...newGroupChats]);
@@ -186,7 +188,7 @@ export default function Home({
           </InputRightElement>
         </InputGroup>
         <Flex wrap="wrap" justifyContent="flex-start">
-          {filteredGroupChats.map((groupChat, index) => (
+          {applyGroupChatFilter(groupChatStates).map((groupChat, index) => (
             <Card key={index} {...groupChat} />
           ))}
         </Flex>
