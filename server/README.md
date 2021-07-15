@@ -1,5 +1,7 @@
 # 🚀 ulinks server
+
 Primary maintainer for backend:
+
 - [@AipioxTechson](https://github.com/AipioxTechson)
 
 ## 💼 Local Development
@@ -13,6 +15,7 @@ SECRET=[secret hash for encryption]
 ```
 
 ## 📋 Backend Acceptance Criteria:
+
 1. It should be properly linted/formatted (`yarn run format`)
 2. Adequate automated test coverage
 3. Basic manual QA
