@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const ADD_GROUPCHAT = gql`
   mutation addGroupChat($email: String!, $info: createGroupChatInput!) {
     groupChat: addGroupChat(email: $email, info: $info) {
+      id
       name
     }
   }
@@ -118,7 +119,20 @@ export const UPDATE_GROUPCHAT_STATUS = gql`
 export const UPDATE_GROUPCHAT = gql`
   mutation updateGroupChat($id: String!, $chatInfo: createGroupChatInput!) {
     groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
+      id
       name
+      description
+      links
+      isCommunity
+      status
+      image
+      courseInformation {
+        campus
+        department
+        code
+        term
+        year
+      }
     }
   }
 `;

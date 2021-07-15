@@ -12,6 +12,7 @@ import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../content/locale";
+import { checkAdminOrCreated } from "../helpers/permissions";
 import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
@@ -58,6 +59,7 @@ const ChatDetails = ({
   isCommunity,
   created,
   updated,
+  setChatInfo,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -95,11 +97,10 @@ const ChatDetails = ({
       {
         updated &&
         <Text fontSize="sm" color="grey" m={2}>
-            {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
-          </Text>
+          {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
+        </Text>
       }
-
-      <CheckPermissions id={id}>
+      <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>
         <Button onClick={onModalOpen} m={1}>
           {formatMessage(messages.edit)}
         </Button>
@@ -111,6 +112,7 @@ const ChatDetails = ({
         isOpen={isModalOpen}
         onOpen={onModalOpen}
         onClose={onModalClose}
+        setChatInfo={setChatInfo}
         initialVals={{
           name,
           isCommunity,
@@ -155,6 +157,7 @@ const ChatInfo = ({
   image,
   created,
   updated,
+  setChatInfo,
 }) => {
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
@@ -169,6 +172,7 @@ const ChatInfo = ({
       isCommunity={isCommunity}
       created={created}
       updated={updated}
+      setChatInfo={setChatInfo}
     />
   );
   return (

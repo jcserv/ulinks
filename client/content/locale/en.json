@@ -38,7 +38,7 @@
   "no-requests": "No requests to display.",
   "no-users": "No users to display.",
   "tagline": "Connect, interact, learn.",
-  "desc1": "UofT ConnectU is a directory containing all your online school group chats!",
+  "desc1": "ulinks is a directory containing all your online school group chats!",
   "desc2": "Scroll down to view all our chats or create an account to add your own.",
   "discover": "Discover",
   "find-groupchats": "FIND GROUPCHATS",
@@ -47,5 +47,7 @@
   "last-modified": "Last modified",
   "edit": "Edit Details",
   "confirm": "Confirm",
-  "delete-message": "Delete Chat Info"
+  "delete-message": "Delete Chat Info",
+  "confirm-deletion": "Are you sure you want to delete this chat? This action cannot be reversed.",
+  "no-chats": "No group chats found—try making one!"
 }

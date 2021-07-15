@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -50,6 +51,11 @@ const messages = defineMessages({
     id: "communities",
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
+  },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
   },
 });
 
@@ -168,21 +174,28 @@ export default function Home({
             }}
             mb={4}
           />
-          <InputRightElement pr={10}>
+          <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
             <ButtonGroup isAttached>
               <IconButton
                 aria-label="Search"
                 icon={<SearchIcon />}
                 onClick={handleSearch}
               />
-              <IconButton
-                aria-label="Advanced search settings"
-                icon={<GoSettings />}
-                onClick={onOpen}
-              />
+              {isCommunity !== 2 && (
+                <IconButton
+                  aria-label="Advanced search settings"
+                  icon={<GoSettings />}
+                  onClick={onOpen}
+                />
+              )}
             </ButtonGroup>
           </InputRightElement>
         </InputGroup>
+        {filteredGroupChats.length === 0 && (
+          <Center mt="10vh">
+            <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+          </Center>
+        )}
         <Flex wrap="wrap" justifyContent="flex-start">
           {filteredGroupChats.map((groupChat, index) => (
             <Card key={index} {...groupChat} />
@@ -204,7 +217,7 @@ export default function Home({
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const {
     data: { groupChats },
   } = await client.query({

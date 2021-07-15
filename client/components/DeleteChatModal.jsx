@@ -5,6 +5,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   useToast,
@@ -26,6 +27,11 @@ const messages = defineMessages({
     id: "delete-message",
     description: locales.en.deleteMessage,
     defaultMessage: locales.en.deleteMessage,
+  },
+  confirmDeletion: {
+    id: "confirm-deletion",
+    description: locales.en.confirmDeletion,
+    defaultMessage: locales.en.confirmDeletion,
   },
 });
 
@@ -83,10 +89,13 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
         <ModalHeader>{formatMessage(messages.deleteMessage)}</ModalHeader>
         <ModalCloseButton />
         <ModalBody alignContent="center">
+          {formatMessage(messages.confirmDeletion)}
+        </ModalBody>
+        <ModalFooter>
           <Button colorScheme="red" onClick={deleteAction}>
             {formatMessage(messages.confirm)}
           </Button>
-        </ModalBody>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

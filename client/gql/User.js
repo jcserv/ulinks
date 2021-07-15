@@ -4,6 +4,9 @@ export const GET_USER = gql`
   query getUser($email: String!) {
     getUser(email: $email) {
       status
+      groupChatsCreated {
+        id
+      }
     }
   }
 `;

@@ -1,10 +1,10 @@
-# 🚀 ConnectU
+# 🚀 ulinks
 
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/connectu/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/connectu/)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/ulinks/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/ulinks/)
 
-ConnectU is a platform for students to browse & upload academic group chats to stay connected during online school.
+ulinks is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
-ConnectU was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
+Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
 ## 📁 Project Structure
 
@@ -15,11 +15,9 @@ ConnectU was originally started at TOHacks 2021, <a href="https://devpost.com/so
 └── README.md                       # You are here! :)
 ```
 
-WIP
-
 ## 💡 Contributing
 
-ConnectU follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
+ulinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
 
 ```
 ──────────────────────── main ────────────────────────────────────    # Deployments
@@ -35,7 +33,7 @@ For internal team:
 
 For open source contributors:
 1. Fork the repo
-2. `git remote add upstream https://github.com/jcserv/connectu/`
+2. `git remote add upstream https://github.com/jcserv/ulinks/`
 3. `git fetch upstream`
 4. `git rebase upstream/develop`
 5. See featurework
@@ -56,6 +54,8 @@ Frontend Acceptance Criteria:
 
 ## 💼 Local Development
 
+### Running Locally 
+
 For client & server, you'll need a .env file in each.
 
 client:
@@ -67,15 +67,8 @@ server:
 ```
 PORT=4000
 MONGO_URI=[put your mongo URI here]
-SECRET=[]
+SECRET=[secret hash for encryption]
 ```
-
-With Docker:
-
-1. Download Docker
-2. Copy the .env for server into the root directory
-3. `docker compose up --build`
-
 
 Locally running:
 1. `cd client && yarn`
@@ -83,11 +76,20 @@ Locally running:
 3. `cd server && yarn`
 4. `yarn dev`
 
+### With Docker 🐳
+
+With Docker:
+1. Download Docker
+2. Copy/create the .env for server into the root directory
+3. `docker compose up --build`
+
 Go to http://localhost:3000 for the frontend, and http://localhost:4000/graphql for the graphql backend
 
 ## 💫 Deployment
 
-Import your project into Vercel. It will now have automated deployments on push.
+Client: Import your Github project into Vercel. It will now have automated deployments on push.
+
+Server: We opted to use Google Cloud Run, which can be set to auto deploy on pushes to main.
 
 ## ⛏️ Built With
 
@@ -100,12 +102,12 @@ Import your project into Vercel. It will now have automated deployments on push.
 - [@AipioxTechson](https://github.com/AipioxTechson)
 - [@jcserv](https://jarrodservilla.com)
 - [@imphungky](https://github.com/imphungky)
+- [@CometWhoosh](https://github.com/CometWhoosh)
 - [@ninaricci29](https://github.com/ninaricci29)
 
 # 🔗 Relevant Links
 
-- [Website](https://uoftconnectu.tech)
-- [Staging Server](https://connectu.vercel.app)
+- [Website](https://ulinks.io)
 - [Original Frontend Repo](https://github.com/AipioxTechson/connectu-fe)
 - [Original Backend Repo](https://github.com/AipioxTechson/connectu-be)
 - [Devpost](https://devpost.com/software/connectu-q2cm8o)
