@@ -100,8 +100,9 @@ Import your project into Vercel. It will now have automated deployments on push.
 - [@AipioxTechson](https://github.com/AipioxTechson)
 - [@jcserv](https://jarrodservilla.com)
 - [@imphungky](https://github.com/imphungky)
-- [@CometWhoosh](https://github.com/CometWhoosh)
+- [@CometWhoosh](https://github.com/CometWhoosh) 
 - [@ninaricci29](https://github.com/ninaricci29)
+- [@DigestedLime](https://github.com/DigestedLime) - 🇫🇷 translation support <3
 
 # 🔗 Relevant Links
 
