@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -185,6 +186,11 @@ export default function Home({
             </ButtonGroup>
           </InputRightElement>
         </InputGroup>
+        {filteredGroupChats.length === 0 && (
+          <Center>
+            <Text>No group chats found - try making one!</Text>
+          </Center>
+        )}
         <Flex wrap="wrap" justifyContent="flex-start">
           {filteredGroupChats.map((groupChat, index) => (
             <Card key={index} {...groupChat} />

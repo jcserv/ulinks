@@ -1,4 +1,4 @@
-import { Box, Image, useColorModeValue } from "@chakra-ui/react";
+import { Box, Center, Image, useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaDiscord, FaWhatsapp } from "react-icons/fa";
@@ -39,17 +39,17 @@ export const Card = ({ name, description, image, links, id }) => {
         borderRadius="lg"
         overflow="hidden"
       >
-        <Box justifyContent="center">
+        <Center>
           <Image
+            fallbackSrc="/logo.png"
             src={
               image ||
               "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
             }
-            width="200"
             height="200"
             alt="CourseImage"
           />
-        </Box>
+        </Center>
 
         <Box p="6">
           <Box
