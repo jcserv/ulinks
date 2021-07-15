@@ -164,6 +164,7 @@ export class GroupChatResolver {
     if (chatInfo.courseInformation != undefined) {
       groupChat.courseInformation.set(chatInfo.courseInformation);
     }
+    groupChat.updated = new Date();
     const result = await groupChat.save();
     return result;
   }

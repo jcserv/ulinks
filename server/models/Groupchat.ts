@@ -33,7 +33,7 @@ export class GroupChat {
 
   @Field({ nullable: true }) image: string;
 
-  @Field({ nullable: true }) created: string;
+  @Field({ nullable: true }) created: Date;
 
   @Field({ nullable: true }) updated: Date;
 

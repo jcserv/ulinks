@@ -56,6 +56,8 @@ const ChatDetails = ({
   status,
   courseInformation,
   isCommunity,
+  created,
+  updated,
 }) => {
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
@@ -88,10 +90,10 @@ const ChatDetails = ({
         ml={2}
       />
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.created)}: 01/01/20
+        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(created))}
       </Text>
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.lastModified)}: 01/04/20
+        {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
       </Text>
       <CheckPermissions id={id}>
         <Button onClick={onModalOpen} m={1}>
@@ -147,6 +149,8 @@ const ChatInfo = ({
   courseInformation,
   isCommunity,
   image,
+  created,
+  updated,
 }) => {
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
@@ -159,6 +163,8 @@ const ChatInfo = ({
       status={status}
       courseInformation={courseInformation}
       isCommunity={isCommunity}
+      created={created}
+      updated={updated}
     />
   );
   return (
@@ -175,5 +181,6 @@ const ChatInfo = ({
     </SimpleGrid>
   );
 };
+
 
 export default ChatInfo;
