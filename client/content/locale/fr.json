@@ -46,5 +46,14 @@
   "edit": "Modifier",
   "confirm": "Confirmer",
   "delete-message": "Supprimer une message",
-  "confirm-deletion": "Êtes-vous sûr que vous vouliez supprimer ce tchat? Cette action ne peux pas être renversé."
+  "confirm-deletion": "Êtes-vous sûr que vous vouliez supprimer ce tchat? Cette action ne peux pas être renversé.",
+  "all": "Tout",
+  "courses": "Cours",
+  "communities": "Communautés",
+  "advanced-search": "Recherche Avancée",
+  "select-campus": "Sélectionnez le campus",
+  "select-department": "Sélectionnez le département",
+  "select-term": "Sélectionnez le terme",
+  "select-year": "Sélectionnez l'année",
+  "view-more": "Voir Plus"
 }

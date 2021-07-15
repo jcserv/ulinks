@@ -59,6 +59,31 @@ const messages = defineMessages({
     description: locales.en.course,
     defaultMessage: locales.en.course,
   },
+  advancedSearch: {
+    id: "advanced-search",
+    description: locales.en["advanced-search"],
+    defaultMessage: locales.en["advanced-search"],
+  },
+  selectCampus: {
+    id: "select-campus",
+    description: locales.en["select-campus"],
+    defaultMessage: locales.en["select-campus"],
+  },
+  selectDepartment: {
+    id: "select-department",
+    description: locales.en["select-department"],
+    defaultMessage: locales.en["select-department"],
+  },
+  selectTerm: {
+    id: "select-term",
+    description: locales.en["select-term"],
+    defaultMessage: locales.en["select-term"],
+  },
+  selectYear: {
+    id: "select-year",
+    description: locales.en["select-year"],
+    defaultMessage: locales.en["select-year"],
+  },
 });
 
 const SearchSchema = Yup.object().shape({
@@ -86,7 +111,7 @@ const SearchForm = ({
       >
         <FormLabel htmlFor="campus">{formatMessage(messages.campus)}</FormLabel>
         <Select
-          placeholder="Select campus"
+          placeholder={formatMessage(messages.selectCampus)}
           onChange={(e) => {
             setFieldValue("campus", e.target.value);
           }}
@@ -111,7 +136,7 @@ const SearchForm = ({
             {formatMessage(messages.department)}
           </FormLabel>
           <Select
-            placeholder="Select department"
+            placeholder={formatMessage(messages.selectDepartment)}
             onChange={(e) => {
               setFieldValue("department", e.target.value);
             }}
@@ -135,6 +160,7 @@ const SearchForm = ({
           <FormLabel htmlFor="code">{formatMessage(messages.code)}</FormLabel>
           <Input
             type="text"
+            placeholder="100"
             value={code}
             onChange={(e) => {
               setFieldValue("code", e.target.value);
@@ -153,7 +179,7 @@ const SearchForm = ({
         >
           <FormLabel htmlFor="term">{formatMessage(messages.term)}</FormLabel>
           <Select
-            placeholder="Select term"
+            placeholder={formatMessage(messages.selectTerm)}
             onChange={(e) => {
               setFieldValue("term", e.target.value);
             }}
@@ -174,7 +200,7 @@ const SearchForm = ({
         >
           <FormLabel htmlFor="year">{formatMessage(messages.year)}</FormLabel>
           <Select
-            placeholder="Select year"
+            placeholder={formatMessage(messages.selectYear)}
             onChange={(e) => {
               setFieldValue("year", e.target.value);
             }}
@@ -262,13 +288,13 @@ export default function AdvancedSearchModal({
   onClose,
   setGroupChats,
 }) {
+  const { formatMessage } = useIntl();
   const toast = useToast();
-
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Advanced Search</ModalHeader>
+        <ModalHeader>{formatMessage(messages.advancedSearch)}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EnhancedSearchForm
