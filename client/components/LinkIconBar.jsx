@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FaDev, FaDiscord, FaWhatsapp } from "react-icons/fa";
-import { VscGithubInverted } from "react-icons/vsc";
+import { VscGithubInverted, VscIssues } from "react-icons/vsc";
 
 import { colors } from "../theme";
 
@@ -16,6 +16,7 @@ const icons = {
   github: VscGithubInverted,
   devpost: FaDev,
   whatsapp: FaWhatsapp,
+  bug: VscIssues,
 };
 
 const LinkIcon = ({
