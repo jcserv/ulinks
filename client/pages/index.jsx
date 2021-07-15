@@ -52,6 +52,11 @@ const messages = defineMessages({
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
   },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
+  },
 });
 
 export default function Home({
@@ -187,8 +192,8 @@ export default function Home({
           </InputRightElement>
         </InputGroup>
         {filteredGroupChats.length === 0 && (
-          <Center>
-            <Text>No group chats found - try making one!</Text>
+          <Center mt="10vh">
+            <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
           </Center>
         )}
         <Flex wrap="wrap" justifyContent="flex-start">
