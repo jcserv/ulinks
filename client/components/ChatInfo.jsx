@@ -42,7 +42,7 @@ const messages = defineMessages({
 
 function transformLink(url) {
   return {
-    label: url.includes("whatsapp") ? "WhatsApp" : "Discord",
+    label: url.includes("whatsapp") ? "Join the WhatsApp group" : "Join the Discord server",
     icon: url.includes("whatsapp") ? "whatsapp" : "discord",
     url,
   };
@@ -92,9 +92,13 @@ const ChatDetails = ({
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(created))}
       </Text>
-      <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
-      </Text>
+      {
+        updated &&
+        <Text fontSize="sm" color="grey" m={2}>
+            {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
+          </Text>
+      }
+
       <CheckPermissions id={id}>
         <Button onClick={onModalOpen} m={1}>
           {formatMessage(messages.edit)}
