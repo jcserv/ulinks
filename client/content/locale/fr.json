@@ -55,5 +55,7 @@
   "select-department": "Sélectionnez le département",
   "select-term": "Sélectionnez le terme",
   "select-year": "Sélectionnez l'année",
-  "view-more": "Voir Plus"
+  "view-more": "Voir Plus",
+  "submit-group-chat": "Soumettre une Tchat",
+  "search": "Cherche"
 }

@@ -54,5 +54,7 @@
   "select-department": "Select department",
   "select-term": "Select term",
   "select-year": "Select year",
-  "view-more": "View More"
+  "view-more": "View More",
+  "submit-group-chat": "Submit a Group Chat",
+  "search": "Search"
 }

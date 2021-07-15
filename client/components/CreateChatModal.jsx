@@ -106,6 +106,11 @@ const messages = defineMessages({
     description: locales.en.community,
     defaultMessage: locales.en.community,
   },
+  submitGroupChat: {
+    id: "submit-group-chat",
+    description: locales.en["submit-group-chat"],
+    defaultMessage: locales.en["submit-group-chat"],
+  },
 });
 
 const ChatForm = ({
@@ -350,6 +355,7 @@ const EnhancedChatForm = withFormik({
 })(ChatForm);
 
 export default function CreateChatModal({ isOpen, onClose }) {
+  const { formatMessage } = useIntl();
   const toast = useToast();
   const { locale, defaultLocale, push } = useRouter();
 
@@ -361,7 +367,7 @@ export default function CreateChatModal({ isOpen, onClose }) {
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Submit a Group Chat</ModalHeader>
+        <ModalHeader>{formatMessage(messages.submitGroupChat)}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EnhancedChatForm

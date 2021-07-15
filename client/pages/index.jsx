@@ -56,6 +56,11 @@ const messages = defineMessages({
     description: locales.en["view-more"],
     defaultMessage: locales.en["view-more"],
   },
+  search: {
+    id: "search",
+    description: locales.en.search,
+    defaultMessage: locales.en.search,
+  },
 });
 
 export default function Home({
@@ -166,7 +171,7 @@ export default function Home({
       <div className="col-8">
         <InputGroup>
           <Input
-            placeholder="Search"
+            placeholder={formatMessage(messages.search)}
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
