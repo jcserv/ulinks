@@ -27,7 +27,7 @@ import { Field, FieldArray, Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { FaDiscord, FaWhatsapp } from "react-icons/fa";
+import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
@@ -122,13 +122,14 @@ const ChatSchema = Yup.object().shape({
     .of(Yup.string().url("Must be a valid URL"))
     .required()
     .test({
-      name: "Includes Discord/WhatsApp",
-      message: "Link must be from Discord or WhatsApp",
+      name: "Includes Discord, WhatsApp, or Linktree",
+      message: "Link must be from Discord, Linktree, or WhatsApp",
       test: (value) =>
         value.every(
           (val) =>
             (val && val.includes("discord")) ||
-            (val && val.includes("whatsapp"))
+            (val && val.includes("whatsapp")) ||
+            (val && val.includes("linktr.ee"))
         ),
     }),
   isCommunity: Yup.boolean().required(),
@@ -434,6 +435,17 @@ const ChatForm = ({
                     onClick={() => {
                       const newLinks = [...links];
                       newLinks[index] = "http://chat.whatsapp.com/";
+                      setFieldValue("links", newLinks);
+                    }}
+                  />
+                  <IconButton
+                    aria-label="Prefill Linktree link"
+                    boxSize="1.5em"
+                    icon={<FaTree />}
+                    variant="ghost"
+                    onClick={() => {
+                      const newLinks = [...links];
+                      newLinks[index] = "http://linktr.ee/";
                       setFieldValue("links", newLinks);
                     }}
                   />
