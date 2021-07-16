@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.departmentToImage = exports.sendEmail = exports.generateRandomString = exports.escapeRegex = void 0;
-const nodemailer_1 = __importDefault(require("nodemailer"));
+exports.departmentToImage = exports.generateRandomString = exports.escapeRegex = void 0;
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
@@ -14,30 +10,6 @@ function generateRandomString() {
         Math.random().toString(36).substring(2, 15));
 }
 exports.generateRandomString = generateRandomString;
-const sendEmail = async (recipient, url) => {
-    const transporter = nodemailer_1.default.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        auth: {
-            user: process.env.NODEMAILER_EMAIL,
-            pass: process.env.NODEMAILER_PASSWORD,
-        },
-    });
-    const message = {
-        from: "Sender Name <atechson@gmail.com>",
-        to: `Recipient <${recipient}>`,
-        subject: "Verification email",
-        html: `<html>
-        <body>
-        <p>Testing!</p>
-        <a href="${url}">confirm email</a>
-        </body>
-        </html>`,
-    };
-    const result = await transporter.sendMail(message);
-    console.log(result);
-};
-exports.sendEmail = sendEmail;
 exports.departmentToImage = {
     ANT: "https://images.unsplash.com/flagged/photo-1552863473-6e5ffe5e052f",
     AST: "https://images.unsplash.com/photo-1464802686167-b939a6910659",

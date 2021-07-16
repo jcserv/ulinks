@@ -23,6 +23,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
 const helpers_1 = require("../helpers");
+const email_1 = require("../helpers/email");
 let AuthenticationResolver = class AuthenticationResolver {
     async me() {
         return "Hello";
@@ -61,7 +62,7 @@ let AuthenticationResolver = class AuthenticationResolver {
             password: await bcrypt_1.default.hash(password, 10),
             groupChatsCreated: [],
         });
-        await helpers_1.sendEmail(email, `http://localhost:5000/verify/${newHash}`);
+        await email_1.sendEmail(email, email_1.emailTypeToContent("confirmEmail", newHash));
         return {
             status: "OK",
             jwtToken: jsonwebtoken_1.default.sign({ email, status: `${newUser.status}` }, `${process.env.SECRET}`, { expiresIn: "1y" }),
