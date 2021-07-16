@@ -151,11 +151,17 @@ const ChatForm = ({
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
 
+  const inferCampus = (val) => {
+    const campus = val.toUpperCase();
+    if (campuses.includes(campus)) {
+      setFieldValue("courseInfo.campus", campus);
+    }
+  };
+
   const inferDepartment = (val) => {
-    if (val.length === 3) {
-      const dept = val.toUpperCase();
-      if (departments.includes(dept))
-        setFieldValue("courseInfo.department", dept);
+    const dept = val.toUpperCase();
+    if (departments.includes(dept)) {
+      setFieldValue("courseInfo.department", dept);
     }
   };
 
@@ -185,8 +191,12 @@ const ChatForm = ({
           type="text"
           onChange={(e) => {
             setFieldValue("name", e.target.value);
-            inferDepartment(e.target.value);
-            inferCode(e.target.value);
+            const words = e.target.value.split(" ");
+            words.forEach((word) => {
+              inferDepartment(word);
+              inferCode(word);
+              inferCampus(word);
+            });
           }}
         />
         {hasSubmitted && <Text color="red">{errors.name}</Text>}
