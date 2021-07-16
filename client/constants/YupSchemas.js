@@ -19,13 +19,14 @@ export const ChatSchema = Yup.object().shape({
     .of(Yup.string().url("Must be a valid URL"))
     .required()
     .test({
-      name: "Includes Discord/WhatsApp",
-      message: "Link must be from Discord or WhatsApp",
+      name: "Includes Discord, WhatsApp, or Linktree",
+      message: "Link must be from Discord, Linktree, or WhatsApp",
       test: (value) =>
         value.every(
           (val) =>
             (val && val.includes("discord")) ||
-            (val && val.includes("whatsapp"))
+            (val && val.includes("whatsapp")) ||
+            (val && val.includes("linktr.ee"))
         ),
     }),
   isCommunity: Yup.boolean().required(),

@@ -3,6 +3,7 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   HStack,
   IconButton,
@@ -25,14 +26,15 @@ import { Field, FieldArray, Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { FaDiscord, FaWhatsapp } from "react-icons/fa";
+import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
 
 import client from "../apollo-client";
-import { departments, utscLevels } from "../constants";
+import { campuses, departments, terms, utscLevels, years } from "../constants";
 import { ChatSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
+import { capitallize } from "../helpers/formatters";
 import CourseInfo from "./CourseInfo";
 
 const messages = defineMessages({
@@ -106,6 +108,11 @@ const messages = defineMessages({
     description: locales.en.community,
     defaultMessage: locales.en.community,
   },
+  gcNameTip: {
+    id: "gc-name-tip",
+    description: locales.en["gc-name-tip"],
+    defaultMessage: locales.en["gc-name-tip"],
+  },
   submitGroupChat: {
     id: "submit-group-chat",
     description: locales.en["submit-group-chat"],
@@ -122,11 +129,17 @@ const ChatForm = ({
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
 
+  const inferCampus = (val) => {
+    const campus = val.toUpperCase();
+    if (campuses.includes(campus)) {
+      setFieldValue("courseInfo.campus", campus);
+    }
+  };
+
   const inferDepartment = (val) => {
-    if (val.length === 3) {
-      const dept = val.toUpperCase();
-      if (departments.includes(dept))
-        setFieldValue("courseInfo.department", dept);
+    const dept = val.toUpperCase();
+    if (departments.includes(dept)) {
+      setFieldValue("courseInfo.department", dept);
     }
   };
 
@@ -148,6 +161,20 @@ const ChatForm = ({
     }
   };
 
+  const inferTerm = (val) => {
+    if (!val) return;
+    const term = capitallize(val);
+    if (terms.includes(term)) {
+      setFieldValue("courseInfo.term", term);
+    }
+  };
+
+  const inferYear = (val) => {
+    const yearMatches = years.filter((x) => x.split("-")[0] === val);
+    if (yearMatches.length === 1)
+      setFieldValue("courseInfo.year", yearMatches[0]);
+  };
+
   return (
     <Form className="col-6 w-100">
       <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
@@ -156,10 +183,21 @@ const ChatForm = ({
           type="text"
           onChange={(e) => {
             setFieldValue("name", e.target.value);
-            inferDepartment(e.target.value);
-            inferCode(e.target.value);
+            const words = e.target.value.split(" ");
+            words.forEach((word) => {
+              if (word.length >= 3) {
+                inferDepartment(word);
+                inferCode(word);
+                inferCampus(word);
+                inferTerm(word);
+                inferYear(word);
+              }
+            });
           }}
         />
+        {!isCommunity && (
+          <FormHelperText>{formatMessage(messages.gcNameTip)}</FormHelperText>
+        )}
         {hasSubmitted && <Text color="red">{errors.name}</Text>}
       </FormControl>
       <FormControl
@@ -231,6 +269,17 @@ const ChatForm = ({
                     onClick={() => {
                       const newLinks = [...links];
                       newLinks[index] = "http://chat.whatsapp.com/";
+                      setFieldValue("links", newLinks);
+                    }}
+                  />
+                  <IconButton
+                    aria-label="Prefill Linktree link"
+                    boxSize="1.5em"
+                    icon={<FaTree />}
+                    variant="ghost"
+                    onClick={() => {
+                      const newLinks = [...links];
+                      newLinks[index] = "http://linktr.ee/";
                       setFieldValue("links", newLinks);
                     }}
                   />
