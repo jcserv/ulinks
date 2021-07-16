@@ -133,6 +133,8 @@ export const UPDATE_GROUPCHAT = gql`
         term
         year
       }
+      created
+      updated
     }
   }
 `;

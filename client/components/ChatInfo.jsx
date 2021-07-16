@@ -61,6 +61,7 @@ const ChatDetails = ({
   updated,
   setChatInfo,
 }) => {
+
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
   const {
@@ -92,7 +93,7 @@ const ChatDetails = ({
         ml={2}
       />
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(created))}
+        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(created? created : new Date()))}
       </Text>
       {
         updated &&
@@ -159,6 +160,7 @@ const ChatInfo = ({
   updated,
   setChatInfo,
 }) => {
+    console.log(updated);
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
   const desc = (

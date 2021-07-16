@@ -420,6 +420,8 @@ const EnhancedChatForm = withFormik({
           image: groupChatImage,
           status: groupChatStatus,
           courseInformation: groupChatCourseInfo,
+          created: created,
+          updated: updated,
         },
       },
     } = await client.mutate({
@@ -453,6 +455,8 @@ const EnhancedChatForm = withFormik({
       image: groupChatImage,
       status: groupChatStatus,
       courseInformation: groupChatCourseInfo,
+      created: created,
+      updated: updated,
     });
     onClose();
   },
