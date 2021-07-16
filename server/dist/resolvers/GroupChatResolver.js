@@ -98,10 +98,11 @@ let GroupChatResolver = class GroupChatResolver {
     }
     async addGroupChat(email, groupchatInfo) {
         var _a;
-        const user = database_1.User.findOne({ email });
-        if (!user) {
+        const user = await database_1.User.findOne({ email });
+        if (!user)
             return null;
-        }
+        if (!user.verified)
+            return null;
         const image = groupchatInfo.isCommunity
             ? helpers_1.departmentToImage.Community
             : helpers_1.departmentToImage[((_a = groupchatInfo === null || groupchatInfo === void 0 ? void 0 : groupchatInfo.courseInformation) === null || _a === void 0 ? void 0 : _a.department) || "Community"];

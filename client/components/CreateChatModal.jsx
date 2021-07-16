@@ -353,9 +353,7 @@ const EnhancedChatForm = withFormik({
   ) => {
     const email = cookie.get("email");
     const {
-      data: {
-        groupChat: { name: groupChatName, id },
-      },
+      data: { groupChat },
     } = await client.mutate({
       mutation: ADD_GROUPCHAT,
       variables: {
@@ -370,20 +368,33 @@ const EnhancedChatForm = withFormik({
         },
       },
     });
-    toast({
-      title: "Success",
-      description: `${
-        isCommunity
-          ? "Request has been submitted"
-          : `${groupChatName} has been created`
-      }`,
-      status: "success",
-      position: "bottom-left",
-      duration: 5000,
-      isCloseable: false,
-    });
-    onClose();
-    redirectToChat(id);
+    if (groupChat) {
+      const { name: groupChatName, id } = groupChat;
+      toast({
+        title: "Success",
+        description: `${
+          isCommunity
+            ? "Request has been submitted"
+            : `${groupChatName} has been created`
+        }`,
+        status: "success",
+        position: "bottom-left",
+        duration: 5000,
+        isCloseable: false,
+      });
+      onClose();
+      redirectToChat(id);
+    } else {
+      toast({
+        title: "Error",
+        description: "An error has occurred, please try again.",
+        status: "error",
+        position: "bottom-left",
+        duration: 5000,
+        isCloseable: false,
+      });
+      onClose();
+    }
   },
   mapPropsToValues: () => ({
     name: "",
