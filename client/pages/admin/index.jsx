@@ -1,20 +1,20 @@
 import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
-import cookie from "js-cookie";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import client from "../../apollo-client";
 import Autocomplete from "../../components/Autocomplete";
 import BanUserModal from "../../components/BanUserModal";
+import CheckPermissions from "../../components/CheckPermissions";
 import RequestsList from "../../components/RequestsList";
 import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
 import locales from "../../content/locale";
 import { GET_ADMIN_DATA } from "../../gql";
-import { UPDATE_GROUPCHAT } from "../../gql/GroupChat";
-import { GET_USER, SEARCH_USERS } from "../../gql/User";
+import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
+import { SEARCH_USERS } from "../../gql/User";
 import { mapAsOption } from "../../helpers";
+import { checkAdmin } from "../../helpers/permissions";
 
 const messages = defineMessages({
   requestManagement: {
@@ -63,29 +63,8 @@ export default function Admin() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const toast = useToast();
-  const { locale, defaultLocale, push } = useRouter();
 
   useEffect(async () => {
-    const email = cookie.get("email");
-    if (!email) {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-    const { data } = await client.query({
-      query: GET_USER,
-      variables: {
-        email,
-      },
-    });
-    if (!data.getUser) {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-    if (data.getUser.status !== "admin") {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-
     const { data: adminData } = await client.query({
       query: GET_ADMIN_DATA,
       variables: {
@@ -104,10 +83,10 @@ export default function Admin() {
   const modifyRequest = async (id, status) => {
     const {
       data: {
-        updateGroupChat: { name, id: groupChatId },
+        updateStatus: { name, id: groupChatId },
       },
     } = await client.mutate({
-      mutation: UPDATE_GROUPCHAT,
+      mutation: UPDATE_GROUPCHAT_STATUS,
       variables: {
         id,
         status,
@@ -152,44 +131,46 @@ export default function Admin() {
 
   return (
     <div className="page-container">
-      <SectionContainer height="">
-        <Heading alignSelf="flex-start">
-          {formatMessage(messages.requestManagement)}
-        </Heading>
-        <RequestsList
-          heading={formatMessage(messages.pendingRequests)}
-          noItemsText={formatMessage(messages.noRequests)}
-          items={pending}
-          showRequestBtns
-          modifyRequest={modifyRequest}
-        />
-        <RequestsList
-          heading={formatMessage(messages.rejectedRequests)}
-          noItemsText={formatMessage(messages.noRequests)}
-          items={rejected}
-        />
-        <Heading alignSelf="flex-start" mb={4}>
-          {formatMessage(messages.userManagement)}
-        </Heading>
-        <Box justifyContent="flex-start" w="100%">
-          <Autocomplete
-            name="Search Users"
-            options={mapAsOption(users, "email")}
-            onSearch={searchForUsers}
-            onSelect={onSelectUser}
+      <CheckPermissions permissionCheck={checkAdmin} redirectIfNoEmail redirect>
+        <SectionContainer height="">
+          <Heading alignSelf="flex-start">
+            {formatMessage(messages.requestManagement)}
+          </Heading>
+          <RequestsList
+            heading={formatMessage(messages.pendingRequests)}
+            noItemsText={formatMessage(messages.noRequests)}
+            items={pending}
+            showRequestBtns
+            modifyRequest={modifyRequest}
           />
-        </Box>
-        <UsersList
-          heading={formatMessage(messages.bannedUsers)}
-          noItemsText={formatMessage(messages.noUsers)}
-          items={banned}
-        />
-        <BanUserModal
-          isOpen={isOpen}
-          onClose={onClose}
-          selectedUser={selectedUser}
-        />
-      </SectionContainer>
+          <RequestsList
+            heading={formatMessage(messages.rejectedRequests)}
+            noItemsText={formatMessage(messages.noRequests)}
+            items={rejected}
+          />
+          <Heading alignSelf="flex-start" mb={4}>
+            {formatMessage(messages.userManagement)}
+          </Heading>
+          <Box justifyContent="flex-start" w="100%">
+            <Autocomplete
+              name="Search Users"
+              options={mapAsOption(users, "email")}
+              onSearch={searchForUsers}
+              onSelect={onSelectUser}
+            />
+          </Box>
+          <UsersList
+            heading={formatMessage(messages.bannedUsers)}
+            noItemsText={formatMessage(messages.noUsers)}
+            items={banned}
+          />
+          <BanUserModal
+            isOpen={isOpen}
+            onClose={onClose}
+            selectedUser={selectedUser}
+          />
+        </SectionContainer>
+      </CheckPermissions>
     </div>
   );
 }

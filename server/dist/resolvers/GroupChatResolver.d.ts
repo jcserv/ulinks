@@ -16,5 +16,7 @@ export declare class GroupChatResolver {
         pageNumber: number;
     }>;
     addGroupChat(email: string, groupchatInfo: createGroupChatInput): Promise<import("../database/schema").IGroupChat | null>;
-    updateGroupChat(id: string, status: string): Promise<import("../database/schema").IGroupChat | null>;
+    updateGroupChat(id: string, chatInfo: createGroupChatInput): Promise<import("../database/schema").IGroupChat | null>;
+    updateStatus(id: string, status: string): Promise<import("../database/schema").IGroupChat | null>;
+    deleteGroupChat(id: string): Promise<boolean>;
 }

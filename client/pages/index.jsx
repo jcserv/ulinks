@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -50,6 +51,21 @@ const messages = defineMessages({
     id: "communities",
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
+  },
+  viewMore: {
+    id: "view-more",
+    description: locales.en["view-more"],
+    defaultMessage: locales.en["view-more"],
+  },
+  search: {
+    id: "search",
+    description: locales.en.search,
+    defaultMessage: locales.en.search,
+  },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
   },
 });
 
@@ -148,39 +164,48 @@ export default function Home({
         <Text fontSize="md" color="grey" m={3}>
           {formatMessage(messages.findGroupchats)}
         </Text>
-        <div className="d-flex row-12 justify-content-between">
+        <div className="d-flex row-12">
           <Heading as="h1" size="2xl" m={3}>
             {formatMessage(messages.discover)}
           </Heading>
-          <TabSelect tabs={tabs} onChange={setCommunity} />
           <br />
+        </div>
+        <div className="d-flex row-12">
+          <TabSelect tabs={tabs} onChange={setCommunity} />
         </div>
       </div>
       <div className="col-8">
         <InputGroup>
           <Input
-            placeholder="Search"
+            placeholder={formatMessage(messages.search)}
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
             }}
             mb={4}
           />
-          <InputRightElement pr={10}>
+          <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
             <ButtonGroup isAttached>
               <IconButton
                 aria-label="Search"
                 icon={<SearchIcon />}
                 onClick={handleSearch}
               />
-              <IconButton
-                aria-label="Advanced search settings"
-                icon={<GoSettings />}
-                onClick={onOpen}
-              />
+              {isCommunity !== 2 && (
+                <IconButton
+                  aria-label="Advanced search settings"
+                  icon={<GoSettings />}
+                  onClick={onOpen}
+                />
+              )}
             </ButtonGroup>
           </InputRightElement>
         </InputGroup>
+        {filteredGroupChats.length === 0 && (
+          <Center mt="10vh">
+            <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+          </Center>
+        )}
         <Flex wrap="wrap" justifyContent="flex-start">
           {filteredGroupChats.map((groupChat, index) => (
             <Card key={index} {...groupChat} />
@@ -188,7 +213,9 @@ export default function Home({
         </Flex>
         {currentPage !== totalPageState ? (
           <Box textAlign="center">
-            <Button onClick={displayMorePages}>View More</Button>
+            <Button onClick={displayMorePages}>
+              {formatMessage(messages.viewMore)}
+            </Button>
           </Box>
         ) : null}
         <AdvancedSearchModal
@@ -202,7 +229,7 @@ export default function Home({
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const {
     data: { groupChats },
   } = await client.query({

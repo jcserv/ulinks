@@ -1,31 +1,22 @@
 import {
   Button,
-  FormControl,
-  FormLabel,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  Text,
   useToast,
 } from "@chakra-ui/react";
 import { Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
-import * as Yup from "yup";
 
 import client from "../apollo-client";
-import { campuses, departments, terms, years } from "../constants";
+import { CourseInfoSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
 import { ADVANCED_SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import CourseInfo from "./CourseInfo";
 
 const messages = defineMessages({
   submit: {
@@ -63,14 +54,31 @@ const messages = defineMessages({
     description: locales.en.course,
     defaultMessage: locales.en.course,
   },
-});
-
-const SearchSchema = Yup.object().shape({
-  campus: Yup.string().oneOf(campuses),
-  department: Yup.string().oneOf(departments),
-  code: Yup.string(),
-  term: Yup.string().oneOf(terms),
-  year: Yup.string(),
+  advancedSearch: {
+    id: "advanced-search",
+    description: locales.en["advanced-search"],
+    defaultMessage: locales.en["advanced-search"],
+  },
+  selectCampus: {
+    id: "select-campus",
+    description: locales.en["select-campus"],
+    defaultMessage: locales.en["select-campus"],
+  },
+  selectDepartment: {
+    id: "select-department",
+    description: locales.en["select-department"],
+    defaultMessage: locales.en["select-department"],
+  },
+  selectTerm: {
+    id: "select-term",
+    description: locales.en["select-term"],
+    defaultMessage: locales.en["select-term"],
+  },
+  selectYear: {
+    id: "select-year",
+    description: locales.en["select-year"],
+    defaultMessage: locales.en["select-year"],
+  },
 });
 
 const SearchForm = ({
@@ -83,120 +91,12 @@ const SearchForm = ({
   const { formatMessage } = useIntl();
   return (
     <Form className="col-6 w-100">
-      <FormControl
-        id="campus"
-        isInvalid={hasSubmitted && errors && errors.campus}
-        mt={2}
-      >
-        <FormLabel htmlFor="campus">{formatMessage(messages.campus)}</FormLabel>
-        <Select
-          placeholder="Select campus"
-          onChange={(e) => {
-            setFieldValue("campus", e.target.value);
-          }}
-        >
-          {campuses.map((val, index) => (
-            <option key={index} value={val}>
-              {val}
-            </option>
-          ))}
-        </Select>
-        {hasSubmitted && <Text color="red">{errors && errors.campus}</Text>}
-      </FormControl>
-      <div className="d-flex row-12 justify-content-center">
-        <FormControl
-          w="50%"
-          id="department"
-          isInvalid={hasSubmitted && errors && errors.department}
-          mt={2}
-          mr={2}
-        >
-          <FormLabel htmlFor="department">
-            {formatMessage(messages.department)}
-          </FormLabel>
-          <Select
-            placeholder="Select department"
-            onChange={(e) => {
-              setFieldValue("department", e.target.value);
-            }}
-          >
-            {departments.map((dept, index) => (
-              <option key={index} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </Select>
-          {hasSubmitted && (
-            <Text color="red">{errors && errors.department}</Text>
-          )}
-        </FormControl>
-        <FormControl
-          w="50%"
-          id="code"
-          isInvalid={hasSubmitted && errors && errors.code}
-          mt={2}
-        >
-          <FormLabel htmlFor="code">{formatMessage(messages.code)}</FormLabel>
-          <NumberInput
-            min={100}
-            max={499}
-            value={code}
-            onChange={(val) => setFieldValue("code", val)}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          {hasSubmitted && <Text color="red">{errors && errors.code}</Text>}
-        </FormControl>
-      </div>
-      <div className="d-flex row-12 justify-content-center">
-        <FormControl
-          w="50%"
-          id="term"
-          isInvalid={hasSubmitted && errors && errors.term}
-          mt={2}
-          mr={2}
-        >
-          <FormLabel htmlFor="term">{formatMessage(messages.term)}</FormLabel>
-          <Select
-            placeholder="Select term"
-            onChange={(e) => {
-              setFieldValue("term", e.target.value);
-            }}
-          >
-            {terms.map((val, index) => (
-              <option key={index} value={val}>
-                {val}
-              </option>
-            ))}
-          </Select>
-          {hasSubmitted && <Text color="red">{errors && errors.term}</Text>}
-        </FormControl>
-        <FormControl
-          w="50%"
-          id="year"
-          isInvalid={hasSubmitted && errors && errors.year}
-          mt={2}
-        >
-          <FormLabel htmlFor="year">{formatMessage(messages.year)}</FormLabel>
-          <Select
-            placeholder="Select year"
-            onChange={(e) => {
-              setFieldValue("year", e.target.value);
-            }}
-          >
-            {years.map((val, index) => (
-              <option key={index} value={val}>
-                {val}
-              </option>
-            ))}
-          </Select>
-          {hasSubmitted && <Text color="red">{errors && errors.year}</Text>}
-        </FormControl>
-      </div>
+      <CourseInfo
+        errors={errors}
+        setFieldValue={setFieldValue}
+        hasSubmitted={hasSubmitted}
+        values={{ campus, department, code, term, year }}
+      />
       <Button
         className="w-100 mt-4"
         isDisabled={!isValid}
@@ -260,7 +160,7 @@ const EnhancedSearchForm = withFormik({
     term: "",
     year: "",
   }),
-  validationSchema: () => SearchSchema,
+  validationSchema: () => CourseInfoSchema,
   validateOnBlur: true,
   validateOnChange: true,
   validateOnMount: true,
@@ -271,13 +171,13 @@ export default function AdvancedSearchModal({
   onClose,
   setGroupChats,
 }) {
+  const { formatMessage } = useIntl();
   const toast = useToast();
-
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Advanced Search</ModalHeader>
+        <ModalHeader>{formatMessage(messages.advancedSearch)}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EnhancedSearchForm

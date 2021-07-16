@@ -61,7 +61,7 @@ let AuthenticationResolver = class AuthenticationResolver {
             password: await bcrypt_1.default.hash(password, 10),
             groupChatsCreated: [],
         });
-        await helpers_1.sendEmail(email, `http://localhost:5000/${newHash}`);
+        await helpers_1.sendEmail(email, `http://localhost:5000/verify/${newHash}`);
         return {
             status: "OK",
             jwtToken: jsonwebtoken_1.default.sign({ email, status: `${newUser.status}` }, `${process.env.SECRET}`, { expiresIn: "1y" }),

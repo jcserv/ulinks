@@ -67,6 +67,10 @@ __decorate([
     type_graphql_1.Field(),
     __metadata("design:type", String)
 ], GroupChat.prototype, "status", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", String)
+], GroupChat.prototype, "image", void 0);
 GroupChat = __decorate([
     type_graphql_1.ObjectType()
 ], GroupChat);

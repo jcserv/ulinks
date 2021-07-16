@@ -39,7 +39,7 @@ const main = async () => {
         algorithms: ["HS256"],
     }));
     // Verification
-    app.get("/test/:hashId", async function (req, res) {
+    app.get("/verify/:hashId", async function (req, res) {
         const { hashId } = req.params;
         const user = await database_1.User.findOne({ verifyHash: hashId });
         if (!user) {

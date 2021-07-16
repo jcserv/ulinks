@@ -58,7 +58,6 @@ let GroupChatResolver = class GroupChatResolver {
     async searchGroupChats(campus, department, code, term, year, text, type, page = 0) {
         let queryObj = {};
         if (campus != undefined && campus !== "") {
-            console.log(campus);
             queryObj = { ...queryObj, "courseInformation.campus": campus };
         }
         if (department != undefined && department !== "") {
@@ -84,7 +83,6 @@ let GroupChatResolver = class GroupChatResolver {
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find(queryObj).countDocuments();
-        console.log(groupChats, totalCount);
         if (totalCount === 0) {
             return {
                 groupChats: [],
@@ -99,15 +97,46 @@ let GroupChatResolver = class GroupChatResolver {
         };
     }
     async addGroupChat(email, groupchatInfo) {
+        var _a;
         const user = database_1.User.findOne({ email });
         if (!user) {
             return null;
         }
-        const newGroupChat = await database_1.GroupChat.create({ ...groupchatInfo });
+        const image = groupchatInfo.isCommunity
+            ? helpers_1.departmentToImage.Community
+            : helpers_1.departmentToImage[((_a = groupchatInfo === null || groupchatInfo === void 0 ? void 0 : groupchatInfo.courseInformation) === null || _a === void 0 ? void 0 : _a.department) || "Community"];
+        const newGroupChat = await database_1.GroupChat.create({
+            ...groupchatInfo,
+            image: image,
+            createdBy: email,
+        });
         await database_1.User.updateOne({ email }, { $push: { groupChatsCreated: newGroupChat._id } });
         return newGroupChat;
     }
-    async updateGroupChat(id, status) {
+    async updateGroupChat(id, chatInfo) {
+        const groupChat = await database_1.GroupChat.findOne({ _id: id });
+        if (!groupChat) {
+            return null;
+        }
+        if (chatInfo.status != undefined && chatInfo.status != "") {
+            groupChat.status = chatInfo.status;
+        }
+        if (chatInfo.name != undefined && chatInfo.name != "") {
+            groupChat.name = chatInfo.name;
+        }
+        if (chatInfo.description != undefined && chatInfo.description != "") {
+            groupChat.description = chatInfo.description;
+        }
+        if (chatInfo.links != undefined && chatInfo.links.length > 0) {
+            groupChat.links = [...chatInfo.links];
+        }
+        if (chatInfo.courseInformation != undefined) {
+            groupChat.courseInformation.set(chatInfo.courseInformation);
+        }
+        const result = await groupChat.save();
+        return result;
+    }
+    async updateStatus(id, status) {
         const groupChat = await database_1.GroupChat.findOne({ _id: id });
         if (!groupChat) {
             return null;
@@ -115,6 +144,15 @@ let GroupChatResolver = class GroupChatResolver {
         groupChat.status = status;
         const result = await groupChat.save();
         return result;
+    }
+    async deleteGroupChat(id) {
+        const chat = await database_1.GroupChat.findOne({ _id: id });
+        if (chat != undefined) {
+            const result = await database_1.User.updateOne({ email: chat.createdBy }, { $pull: { groupChatsCreated: id } });
+            const result2 = await database_1.GroupChat.deleteOne({ _id: id });
+            return result && result2.n == 1;
+        }
+        return false;
     }
 };
 __decorate([
@@ -168,11 +206,26 @@ __decorate([
 ], GroupChatResolver.prototype, "addGroupChat", null);
 __decorate([
     type_graphql_1.Mutation(() => models_1.GroupChat, { nullable: true }),
+    __param(0, type_graphql_1.Arg("id")),
+    __param(1, type_graphql_1.Arg("chatInfo")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, inputs_1.createGroupChatInput]),
+    __metadata("design:returntype", Promise)
+], GroupChatResolver.prototype, "updateGroupChat", null);
+__decorate([
+    type_graphql_1.Mutation(() => models_1.GroupChat, { nullable: true }),
     __param(0, type_graphql_1.Arg("id")), __param(1, type_graphql_1.Arg("status")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
-], GroupChatResolver.prototype, "updateGroupChat", null);
+], GroupChatResolver.prototype, "updateStatus", null);
+__decorate([
+    type_graphql_1.Mutation(() => Boolean),
+    __param(0, type_graphql_1.Arg("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GroupChatResolver.prototype, "deleteGroupChat", null);
 GroupChatResolver = __decorate([
     type_graphql_1.Resolver(models_1.GroupChat)
 ], GroupChatResolver);

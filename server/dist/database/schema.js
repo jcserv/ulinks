@@ -35,9 +35,11 @@ const CourseInformationSchema = new mongoose_1.Schema({
 });
 const GroupChatSchema = new mongoose_1.Schema({
     name: String,
+    createdBy: String,
     description: String,
     isCommunity: Boolean,
     links: [String],
+    image: String,
     courseInformation: CourseInformationSchema,
     status: {
         type: String,

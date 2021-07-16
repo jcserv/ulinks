@@ -1,12 +1,13 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-boolean-value */
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
-  FormHelperText,
   FormLabel,
   HStack,
-  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -14,27 +15,19 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Radio,
-  RadioGroup,
-  Spacer,
-  Stack,
   Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { Field, FieldArray, Form, withFormik } from "formik";
-import cookie from "js-cookie";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import { defineMessages, useIntl } from "react-intl";
 
 import client from "../apollo-client";
-import { campuses, departments, terms, utscLevels, years } from "../constants";
+import { departments } from "../constants";
 import { ChatSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
-import { ADD_GROUPCHAT } from "../gql/GroupChat";
-import { capitallize } from "../helpers/formatters";
+import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 import CourseInfo from "./CourseInfo";
 
 const messages = defineMessages({
@@ -108,96 +101,39 @@ const messages = defineMessages({
     description: locales.en.community,
     defaultMessage: locales.en.community,
   },
-  gcNameTip: {
-    id: "gc-name-tip",
-    description: locales.en["gc-name-tip"],
-    defaultMessage: locales.en["gc-name-tip"],
-  },
-  submitGroupChat: {
-    id: "submit-group-chat",
-    description: locales.en["submit-group-chat"],
-    defaultMessage: locales.en["submit-group-chat"],
-  },
 });
 
 const ChatForm = ({
   errors,
   setFieldValue,
-  values: { name, description, links, isCommunity, courseInfo },
+  values: { name, description, links, courseInfo, isCommunity },
 }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
-
-  const inferCampus = (val) => {
-    const campus = val.toUpperCase();
-    if (campuses.includes(campus)) {
-      setFieldValue("courseInfo.campus", campus);
-    }
-  };
-
-  const inferDepartment = (val) => {
-    const dept = val.toUpperCase();
-    if (departments.includes(dept)) {
-      setFieldValue("courseInfo.department", dept);
-    }
-  };
-
-  const inferCode = (val) => {
-    if (val.length === 6) {
-      const code = val.slice(3);
-      const numCode = parseInt(code, 10);
-      const endNums = parseInt(code[1] + code[2], 10);
-      if (numCode >= 100 && numCode <= 499) {
-        setFieldValue("courseInfo.code", code);
-      } else if (
-        utscLevels.includes(code[0]) &&
-        endNums >= 0 &&
-        endNums <= 99
-      ) {
-        setFieldValue("courseInfo.code", code);
-        setFieldValue("courseInfo.campus", "UTSC");
-      }
-    }
-  };
-
-  const inferTerm = (val) => {
-    if (!val) return;
-    const term = capitallize(val);
-    if (terms.includes(term)) {
-      setFieldValue("courseInfo.term", term);
-    }
-  };
-
-  const inferYear = (val) => {
-    const yearMatches = years.filter((x) => x.split("-")[0] === val);
-    if (yearMatches.length === 1)
-      setFieldValue("courseInfo.year", yearMatches[0]);
-  };
-
   return (
     <Form className="col-6 w-100">
       <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
         <FormLabel>{formatMessage(messages.name)}</FormLabel>
         <Input
+          value={name}
           type="text"
           onChange={(e) => {
             setFieldValue("name", e.target.value);
-            const words = e.target.value.split(" ");
-            words.forEach((word) => {
-              if (word.length >= 3) {
-                inferDepartment(word);
-                inferCode(word);
-                inferCampus(word);
-                inferTerm(word);
-                inferYear(word);
-              }
-            });
+            if (
+              e.target.value.length === 6 &&
+              departments.includes(e.target.value.slice(0, 3).toUpperCase()) &&
+              parseInt(e.target.value.slice(3), 10) >= 100 &&
+              parseInt(e.target.value.slice(3), 10) <= 499
+            ) {
+              setFieldValue(
+                "courseInfo.department",
+                name.slice(0, 3).toUpperCase()
+              );
+              setFieldValue("courseInfo.code", e.target.value.slice(3));
+            }
           }}
         />
-        {!isCommunity && (
-          <FormHelperText>{formatMessage(messages.gcNameTip)}</FormHelperText>
-        )}
         {hasSubmitted && <Text color="red">{errors.name}</Text>}
       </FormControl>
       <FormControl
@@ -207,26 +143,10 @@ const ChatForm = ({
       >
         <FormLabel>{formatMessage(messages.description)}</FormLabel>
         <Textarea
+          value={description}
           onChange={(e) => setFieldValue("description", e.target.value)}
         />
         {hasSubmitted && <Text color="red">{errors.description}</Text>}
-      </FormControl>
-      <FormControl id="type" mt={2} isInvalid={hasSubmitted && errors.type}>
-        <FormLabel>{formatMessage(messages.type)}</FormLabel>
-        <RadioGroup
-          onChange={(val) => setFieldValue("isCommunity", val === "true")}
-          value={isCommunity}
-        >
-          <Stack direction="row">
-            <Radio id="course" value={false}>
-              {formatMessage(messages.course)}
-            </Radio>
-            <Radio id="community" value={true}>
-              {formatMessage(messages.community)}
-            </Radio>
-          </Stack>
-        </RadioGroup>
-        {hasSubmitted && <Text color="red">{errors.isCommunity}</Text>}
       </FormControl>
       {!isCommunity && (
         <CourseInfo
@@ -248,43 +168,7 @@ const ChatForm = ({
                 mt={2}
                 isInvalid={hasSubmitted && errors.links}
               >
-                <HStack>
-                  <FormLabel>{formatMessage(messages.link)}</FormLabel>
-                  <Spacer />
-                  <IconButton
-                    aria-label="Prefill Discord link"
-                    icon={<FaDiscord />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://discord.gg/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Prefill WhatsApp link"
-                    boxSize="1.5em"
-                    icon={<FaWhatsapp />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://chat.whatsapp.com/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Prefill Linktree link"
-                    boxSize="1.5em"
-                    icon={<FaTree />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://linktr.ee/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                </HStack>
-
+                <FormLabel>{formatMessage(messages.link)}</FormLabel>
                 <Input
                   as={Field}
                   name={`links.${index}`}
@@ -344,58 +228,72 @@ const EnhancedChatForm = withFormik({
       // eslint-disable-next-line prettier/prettier
       name,
       description,
+      status,
       links,
       isCommunity,
       courseInfo,
+      id,
     },
-    { props: { onClose, redirect, toast } }
+    { props: { onClose, setChatInfo, toast } }
   ) => {
-    const email = cookie.get("email");
+    if (courseInfo.__typename != undefined) {
+      delete courseInfo.__typename;
+    }
     const {
       data: {
-        groupChat: { name: groupChatName, id },
+        groupChat: {
+          id: groupChatId,
+          name: groupChatName,
+          description: groupChatDesc,
+          links: groupChatLinks,
+          isCommunity: groupChatIsCommunity,
+          image: groupChatImage,
+          status: groupChatStatus,
+          courseInformation: groupChatCourseInfo,
+        },
       },
     } = await client.mutate({
-      mutation: ADD_GROUPCHAT,
+      mutation: UPDATE_GROUPCHAT,
       variables: {
-        email,
-        info: {
+        id,
+        chatInfo: {
           name,
-          status: isCommunity ? "pending" : "approved",
+          status,
           description,
-          links,
           isCommunity,
+          links,
           ...(!isCommunity ? { courseInformation: courseInfo } : {}),
         },
       },
     });
     toast({
       title: "Success",
-      description: `${
-        isCommunity
-          ? "Request has been submitted"
-          : `${groupChatName} has been created`
-      }`,
+      description: `${groupChatName} info has been changed`,
       status: "success",
       position: "bottom-left",
       duration: 5000,
       isCloseable: false,
     });
+    setChatInfo({
+      id: groupChatId,
+      name: groupChatName,
+      description: groupChatDesc,
+      links: groupChatLinks,
+      isCommunity: groupChatIsCommunity,
+      image: groupChatImage,
+      status: groupChatStatus,
+      courseInformation: groupChatCourseInfo,
+    });
     onClose();
-    redirect(id);
   },
-  mapPropsToValues: () => ({
-    name: "",
-    description: "",
-    links: [""],
-    isCommunity: false,
-    courseInfo: {
-      campus: "",
-      department: "",
-      code: "101",
-      term: "",
-      year: "2021",
-    },
+  mapPropsToValues: ({ initialVals, id }) => ({
+    id,
+    name: initialVals.name,
+    description: initialVals.description,
+    links: initialVals.links,
+    status: initialVals.status,
+    isCommunity: initialVals.isCommunity,
+    courseInfo: !initialVals.isCommunity ? initialVals.courseInformation : {},
   }),
   validationSchema: () => ChatSchema,
   validateOnBlur: true,
@@ -403,26 +301,27 @@ const EnhancedChatForm = withFormik({
   validateOnMount: true,
 })(ChatForm);
 
-export default function CreateChatModal({ isOpen, onClose }) {
-  const { formatMessage } = useIntl();
+export default function EditChatModal({
+  isOpen,
+  onClose,
+  initialVals,
+  id,
+  setChatInfo,
+}) {
   const toast = useToast();
-  const { locale, defaultLocale, push } = useRouter();
-
-  const redirect = (id) => {
-    push(`${locale !== defaultLocale ? locale : ""}/chat/${id}`);
-  };
-
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{formatMessage(messages.submitGroupChat)}</ModalHeader>
+        <ModalHeader>Edit Group Chat</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EnhancedChatForm
             onClose={onClose}
-            redirect={redirect}
             toast={toast}
+            initialVals={initialVals}
+            id={id}
+            setChatInfo={setChatInfo}
           />
         </ModalBody>
       </ModalContent>

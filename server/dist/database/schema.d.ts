@@ -16,9 +16,11 @@ interface ICourseInformation extends Document {
 }
 interface IGroupChat extends Document {
     name: string;
+    createdBy: string;
     description: string;
     isCommunity: boolean;
     links: [string];
+    image: string;
     courseInformation: ICourseInformation;
     status: string;
 }

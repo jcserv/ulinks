@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const ADD_GROUPCHAT = gql`
   mutation addGroupChat($email: String!, $info: createGroupChatInput!) {
     groupChat: addGroupChat(email: $email, info: $info) {
+      id
       name
     }
   }
@@ -11,9 +12,20 @@ export const ADD_GROUPCHAT = gql`
 export const GET_GROUPCHAT = gql`
   query getGroupChat($id: String!) {
     getGroupChat(id: $id) {
+      id
       name
       description
+      status
+      isCommunity
       links
+      image
+      courseInformation {
+        year
+        term
+        code
+        department
+        campus
+      }
     }
   }
 `;
@@ -25,6 +37,7 @@ export const GET_GROUPCHATS = gql`
         name
         description
         links
+        image
         id
         isCommunity
       }
@@ -86,11 +99,32 @@ export const ADVANCED_SEARCH_GROUPCHATS = gql`
   }
 `;
 
-export const UPDATE_GROUPCHAT = gql`
-  mutation updateGroupChat($id: String!, $status: String!) {
-    updateGroupChat(id: $id, status: $status) {
+export const UPDATE_GROUPCHAT_STATUS = gql`
+  mutation updateStatus($id: String!, $status: String!) {
+    updateStatus(id: $id, status: $status) {
       name
       id
+    }
+  }
+`;
+
+export const UPDATE_GROUPCHAT = gql`
+  mutation updateGroupChat($id: String!, $chatInfo: createGroupChatInput!) {
+    groupChat: updateGroupChat(id: $id, chatInfo: $chatInfo) {
+      id
+      name
+      description
+      links
+      isCommunity
+      status
+      image
+      courseInformation {
+        campus
+        department
+        code
+        term
+        year
+      }
     }
   }
 `;
@@ -102,5 +136,6 @@ export default {
   GET_GROUPCHAT_IDS,
   SEARCH_GROUPCHATS,
   ADVANCED_SEARCH_GROUPCHATS,
+  UPDATE_GROUPCHAT_STATUS,
   UPDATE_GROUPCHAT,
 };

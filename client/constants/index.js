@@ -33,4 +33,5 @@ export const departments = [
   "WRI",
 ];
 export const terms = ["Fall", "Winter", "Summer", "Year"];
-export const years = [2020, 2021, 2022];
+export const utscLevels = ["A", "B", "C", "D"];
+export const years = ["2021-2022", "2022-2023", "2023-2024"];
