@@ -52,6 +52,16 @@ const messages = defineMessages({
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
   },
+  viewMore: {
+    id: "view-more",
+    description: locales.en["view-more"],
+    defaultMessage: locales.en["view-more"],
+  },
+  search: {
+    id: "search",
+    description: locales.en.search,
+    defaultMessage: locales.en.search,
+  },
   noChats: {
     id: "no-chats",
     description: locales.en["no-chats"],
@@ -167,7 +177,7 @@ export default function Home({
       <div className="col-8">
         <InputGroup>
           <Input
-            placeholder="Search"
+            placeholder={formatMessage(messages.search)}
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -203,7 +213,9 @@ export default function Home({
         </Flex>
         {currentPage !== totalPageState ? (
           <Box textAlign="center">
-            <Button onClick={displayMorePages}>View More</Button>
+            <Button onClick={displayMorePages}>
+              {formatMessage(messages.viewMore)}
+            </Button>
           </Box>
         ) : null}
         <AdvancedSearchModal

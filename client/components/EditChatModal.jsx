@@ -15,7 +15,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Select,
   Text,
   Textarea,
   useToast,
@@ -23,12 +22,13 @@ import {
 import { Field, FieldArray, Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
-import * as Yup from "yup";
 
 import client from "../apollo-client";
-import { campuses, departments, terms, years } from "../constants";
+import { departments } from "../constants";
+import { ChatSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
 import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
+import CourseInfo from "./CourseInfo";
 
 const messages = defineMessages({
   name: {
@@ -103,44 +103,10 @@ const messages = defineMessages({
   },
 });
 
-const ChatSchema = Yup.object().shape({
-  name: Yup.string().min(3).max(30).required(),
-  description: Yup.string().min(3).max(200).required(),
-  links: Yup.array()
-    .of(Yup.string().url("Must be a valid URL"))
-    .required()
-    .test({
-      name: "Includes Discord/WhatsApp",
-      message: "Link must be from Discord or WhatsApp",
-      test: (value) =>
-        value.every(
-          (val) =>
-            (val && val.includes("discord")) ||
-            (val && val.includes("whatsapp"))
-        ),
-    }),
-  isCommunity: Yup.boolean().required(),
-  courseInfo: Yup.object().when("isCommunity", {
-    is: false,
-    then: Yup.object()
-      .shape({
-        campus: Yup.string().oneOf(campuses).required("Campus is required"),
-        department: Yup.string()
-          .oneOf(departments)
-          .required("Department is required"),
-        code: Yup.string().required("Code is required"),
-        term: Yup.string().oneOf(terms).required("Term is required"),
-        year: Yup.string().required("Year is required"),
-      })
-      .required(),
-    otherwise: Yup.object(),
-  }),
-});
-
 const ChatForm = ({
   errors,
   setFieldValue,
-  values: { name, description, links, courseInfo, isCommunity }, // isCommunity, courseInfo },
+  values: { name, description, links, courseInfo, isCommunity },
 }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const isValid = name || description || links || isCommunity;
@@ -183,149 +149,13 @@ const ChatForm = ({
         {hasSubmitted && <Text color="red">{errors.description}</Text>}
       </FormControl>
       {!isCommunity && (
-        <>
-          <FormControl
-            id="campus"
-            isInvalid={
-              hasSubmitted && errors.courseInfo && errors.courseInfo.campus
-            }
-            mt={2}
-          >
-            <FormLabel>{formatMessage(messages.campus)}</FormLabel>
-            <Select
-              placeholder="Select campus"
-              value={courseInfo && courseInfo.campus}
-              onChange={(e) => {
-                setFieldValue("courseInfo.campus", e.target.value);
-              }}
-            >
-              {campuses.map((campus, index) => (
-                <option key={index} value={campus}>
-                  {campus}
-                </option>
-              ))}
-            </Select>
-            {hasSubmitted && (
-              <Text color="red">
-                {errors.courseInfo && errors.courseInfo.campus}
-              </Text>
-            )}
-          </FormControl>
-          <div className="d-flex row-12 justify-content-center">
-            <FormControl
-              w="50%"
-              id="department"
-              isInvalid={
-                hasSubmitted &&
-                errors.courseInfo &&
-                errors.courseInfo.department
-              }
-              mt={2}
-              mr={2}
-            >
-              <FormLabel>{formatMessage(messages.department)}</FormLabel>
-              <Select
-                placeholder="Select department"
-                onChange={(e) => {
-                  setFieldValue("courseInfo.department", e.target.value);
-                }}
-                value={courseInfo && courseInfo.department}
-              >
-                {departments.map((department, index) => (
-                  <option key={index} value={department}>
-                    {department}
-                  </option>
-                ))}
-              </Select>
-              {hasSubmitted && (
-                <Text color="red">
-                  {errors.courseInfo && errors.courseInfo.department}
-                </Text>
-              )}
-            </FormControl>
-            <FormControl
-              w="50%"
-              id="code"
-              isInvalid={
-                hasSubmitted && errors.courseInfo && errors.courseInfo.code
-              }
-              mt={2}
-            >
-              <FormLabel>{formatMessage(messages.code)}</FormLabel>
-              <Input
-                type="text"
-                value={courseInfo && courseInfo.code}
-                onChange={(e) => {
-                  setFieldValue("courseInfo.code", e.target.value);
-                }}
-              />
-              {hasSubmitted && (
-                <Text color="red">
-                  {errors.courseInfo && errors.courseInfo.code}
-                </Text>
-              )}
-            </FormControl>
-          </div>
-          <div className="d-flex row-12 justify-content-center">
-            <FormControl
-              w="50%"
-              id="term"
-              isInvalid={
-                hasSubmitted && errors.courseInfo && errors.courseInfo.term
-              }
-              mt={2}
-              mr={2}
-            >
-              <FormLabel>{formatMessage(messages.term)}</FormLabel>
-              <Select
-                placeholder="Select term"
-                value={courseInfo && courseInfo.term}
-                onChange={(e) => {
-                  setFieldValue("courseInfo.term", e.target.value);
-                }}
-              >
-                {terms.map((term, index) => (
-                  <option key={index} value={term}>
-                    {term}
-                  </option>
-                ))}
-              </Select>
-              {hasSubmitted && (
-                <Text color="red">
-                  {errors.courseInfo && errors.courseInfo.term}
-                </Text>
-              )}
-            </FormControl>
-            <FormControl
-              w="50%"
-              id="year"
-              isInvalid={
-                hasSubmitted && errors.courseInfo && errors.courseInfo.year
-              }
-              mt={2}
-            >
-              <FormLabel>{formatMessage(messages.year)}</FormLabel>
-              <Select
-                placeholder="Select year"
-                value={courseInfo && courseInfo.year}
-                onChange={(e) => {
-                  setFieldValue("courseInfo.year", e.target.value);
-                }}
-              >
-                {years.map((year, index) => (
-                  <option key={index} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </Select>
-              {hasSubmitted && (
-                <Text color="red">
-                  {errors.courseInfo && errors.courseInfo.year}
-                </Text>
-              )}
-            </FormControl>
-          </div>
-        </>
+        <CourseInfo
+          errors={errors}
+          setFieldValue={setFieldValue}
+          hasSubmitted={hasSubmitted}
+          values={courseInfo}
+          prependCourseInfo
+        />
       )}
       <FieldArray
         name="links"
