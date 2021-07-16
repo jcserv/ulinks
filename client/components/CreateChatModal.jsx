@@ -3,6 +3,7 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   HStack,
   IconButton,
@@ -34,6 +35,7 @@ import client from "../apollo-client";
 import { campuses, departments, terms, utscLevels, years } from "../constants";
 import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
+import { capitallize } from "../helpers/formatters";
 
 const messages = defineMessages({
   name: {
@@ -105,6 +107,11 @@ const messages = defineMessages({
     id: "community",
     description: locales.en.community,
     defaultMessage: locales.en.community,
+  },
+  gcNameTip: {
+    id: "gc-name-tip",
+    description: locales.en["gc-name-tip"],
+    defaultMessage: locales.en["gc-name-tip"],
   },
 });
 
@@ -183,6 +190,20 @@ const ChatForm = ({
     }
   };
 
+  const inferTerm = (val) => {
+    if (!val) return;
+    const term = capitallize(val);
+    if (terms.includes(term)) {
+      setFieldValue("courseInfo.term", term);
+    }
+  };
+
+  const inferYear = (val) => {
+    const yearMatches = years.filter((x) => x.split("-")[0] === val);
+    if (yearMatches.length === 1)
+      setFieldValue("courseInfo.year", yearMatches[0]);
+  };
+
   return (
     <Form className="col-6 w-100">
       <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
@@ -193,12 +214,19 @@ const ChatForm = ({
             setFieldValue("name", e.target.value);
             const words = e.target.value.split(" ");
             words.forEach((word) => {
-              inferDepartment(word);
-              inferCode(word);
-              inferCampus(word);
+              if (word.length >= 3) {
+                inferDepartment(word);
+                inferCode(word);
+                inferCampus(word);
+                inferTerm(word);
+                inferYear(word);
+              }
             });
           }}
         />
+        {!isCommunity && (
+          <FormHelperText>{formatMessage(messages.gcNameTip)}</FormHelperText>
+        )}
         {hasSubmitted && <Text color="red">{errors.name}</Text>}
       </FormControl>
       <FormControl
@@ -325,6 +353,7 @@ const ChatForm = ({
             >
               <FormLabel>{formatMessage(messages.term)}</FormLabel>
               <Select
+                value={courseInfo && courseInfo.term}
                 placeholder="Select term"
                 onChange={(e) => {
                   setFieldValue("courseInfo.term", e.target.value);
@@ -352,6 +381,7 @@ const ChatForm = ({
             >
               <FormLabel>{formatMessage(messages.year)}</FormLabel>
               <Select
+                value={courseInfo && courseInfo.year}
                 placeholder="Select year"
                 onChange={(e) => {
                   setFieldValue("courseInfo.year", e.target.value);

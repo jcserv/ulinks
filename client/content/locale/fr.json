@@ -47,5 +47,6 @@
   "confirm": "Confirmer",
   "delete-message": "Supprimer une message",
   "confirm-deletion": "Êtes-vous sûr que vous vouliez supprimer ce tchat? Cette action ne peux pas être renversé.",
-  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!"
+  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!",
+  "gc-name-tip": "Tip: Try typing UTM CSC108 Fall 2021 - we'll set the course info automatically!"
 }
