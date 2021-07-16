@@ -5,7 +5,8 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import "dotenv/config";
 import { IUser } from "../database/schema";
-import { generateRandomString, sendEmail } from "../helpers";
+import { generateRandomString } from "../helpers";
+import { emailTypeToContent, sendEmail } from "../helpers/email";
 
 @Resolver()
 export class AuthenticationResolver {
@@ -62,7 +63,7 @@ export class AuthenticationResolver {
       password: await bcrypt.hash(password, 10),
       groupChatsCreated: [],
     });
-    await sendEmail(email, `http://localhost:5000/verify/${newHash}`);
+    await sendEmail(email, emailTypeToContent("confirmEmail", newHash));
     return {
       status: "OK",
       jwtToken: jsonwebtoken.sign(
