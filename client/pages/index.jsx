@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -60,6 +61,11 @@ const messages = defineMessages({
     id: "search",
     description: locales.en.search,
     defaultMessage: locales.en.search,
+  },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
   },
 });
 
@@ -195,6 +201,11 @@ export default function Home({
             </ButtonGroup>
           </InputRightElement>
         </InputGroup>
+        {filteredGroupChats.length === 0 && (
+          <Center mt="10vh">
+            <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+          </Center>
+        )}
         <Flex wrap="wrap" justifyContent="flex-start">
           {filteredGroupChats.map((groupChat, index) => (
             <Card key={index} {...groupChat} />
@@ -218,7 +229,7 @@ export default function Home({
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const {
     data: { groupChats },
   } = await client.query({

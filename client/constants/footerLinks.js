@@ -32,6 +32,11 @@ export const links = [
     icon: "devpost",
     url: "https://devpost.com/software/connectu-q2cm8o",
   },
+  {
+    label: "Submit bug report",
+    icon: "bug",
+    url: "https://github.com/jcserv/ulinks/issues/new/choose",
+  },
 ];
 
 export default {

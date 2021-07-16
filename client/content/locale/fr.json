@@ -57,5 +57,6 @@
   "select-year": "Sélectionnez l'année",
   "view-more": "Voir Plus",
   "submit-group-chat": "Soumettre une Tchat",
-  "search": "Cherche"
+  "search": "Cherche",
+  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!"
 }

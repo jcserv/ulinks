@@ -56,5 +56,6 @@
   "select-year": "Select year",
   "view-more": "View More",
   "submit-group-chat": "Submit a Group Chat",
-  "search": "Search"
+  "search": "Search",
+  "no-chats": "No group chats found—try making one!"
 }
