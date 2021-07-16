@@ -58,5 +58,8 @@
   "view-more": "View More",
   "submit-group-chat": "Submit a Group Chat",
   "search": "Search",
-  "no-chats": "No group chats found—try making one!"
+  "no-chats": "No group chats found—try making one!",
+  "verificationSuccess": "Your email address has been verified.",
+  "verificationFailure": "An error has occurred while verifying your email.",
+  "continue": "Continue"
 }

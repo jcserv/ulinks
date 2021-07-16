@@ -59,5 +59,8 @@
   "view-more": "Voir Plus",
   "submit-group-chat": "Soumettre une Tchat",
   "search": "Cherche",
-  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!"
+  "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!",
+  "verificationSuccess": "Your email address has been verified.",
+  "verificationFailure": "An error has occurred while verifying your email.",
+  "continue": "Continue"
 }

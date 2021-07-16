@@ -34,6 +34,7 @@ import { campuses, departments, terms, utscLevels, years } from "../constants";
 import { ChatSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
+import { redirect } from "../helpers";
 import { capitallize } from "../helpers/formatters";
 import CourseInfo from "./CourseInfo";
 
@@ -348,7 +349,7 @@ const EnhancedChatForm = withFormik({
       isCommunity,
       courseInfo,
     },
-    { props: { onClose, redirect, toast } }
+    { props: { onClose, redirectToChat, toast } }
   ) => {
     const email = cookie.get("email");
     const {
@@ -382,7 +383,7 @@ const EnhancedChatForm = withFormik({
       isCloseable: false,
     });
     onClose();
-    redirect(id);
+    redirectToChat(id);
   },
   mapPropsToValues: () => ({
     name: "",
@@ -408,8 +409,8 @@ export default function CreateChatModal({ isOpen, onClose }) {
   const toast = useToast();
   const { locale, defaultLocale, push } = useRouter();
 
-  const redirect = (id) => {
-    push(`${locale !== defaultLocale ? locale : ""}/chat/${id}`);
+  const redirectToChat = (id) => {
+    redirect(`/chat/${id}`, push, locale, defaultLocale);
   };
 
   return (
@@ -421,7 +422,7 @@ export default function CreateChatModal({ isOpen, onClose }) {
         <ModalBody>
           <EnhancedChatForm
             onClose={onClose}
-            redirect={redirect}
+            redirectToChat={redirectToChat}
             toast={toast}
           />
         </ModalBody>

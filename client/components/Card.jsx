@@ -4,13 +4,11 @@ import React from "react";
 import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import Tilt from "react-vanilla-tilt";
 
-const Icon = ({ index, link, textColor }) => (
+const Icon = ({ link, textColor }) => (
   <>
-    {link.includes("discord.gg") && <FaDiscord key={index} color={textColor} />}
-    {link.includes("chat.whatsapp.com") && (
-      <FaWhatsapp key={index} color={textColor} />
-    )}
-    {link.includes("linktr.ee") && <FaTree key={index} color={textColor} />}
+    {link.includes("discord.gg") && <FaDiscord color={textColor} />}
+    {link.includes("chat.whatsapp.com") && <FaWhatsapp color={textColor} />}
+    {link.includes("linktr.ee") && <FaTree color={textColor} />}
   </>
 );
 
@@ -76,7 +74,7 @@ export const Card = ({ name, description, image, links, id }) => {
           </Box>
           <Box mt="2">
             {links.map((link, index) => (
-              <Icon index={index} color={textColor} link={link} />
+              <Icon key={index} color={textColor} link={link} />
             ))}
           </Box>
         </Box>

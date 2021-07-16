@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = exports.emailTypeToContent = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const constants_1 = require("./constants");
 const HOSTNAME = process.env.NODE_ENV === "production"
-    ? "https://ulinks.io/"
-    : "http://localhost:3000/";
+    ? "https://ulinks.io"
+    : "http://localhost:3000";
 const transporter = nodemailer_1.default.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
@@ -24,7 +25,7 @@ const emailTypeToContent = (type, verificationHash = "") => {
     };
     if (type === "confirmEmail") {
         emailContent.subject = "Verify Email";
-        emailContent.html = `Thanks for signing up to Ulinks.io! <br> To get started creating group chat entries, click this link to verify your email: <br> ${HOSTNAME}/verify/${verificationHash}`;
+        emailContent.html = constants_1.verifyEmail(`${HOSTNAME}/verify/${verificationHash}`);
         emailContent.text = `Thanks for signing up to Ulinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
     }
     return emailContent;
@@ -32,7 +33,7 @@ const emailTypeToContent = (type, verificationHash = "") => {
 exports.emailTypeToContent = emailTypeToContent;
 function getMail(recipient, subject, emailHtml, emailText) {
     return {
-        from: '"Ulinks" <no.reply@ulinks.io>',
+        from: '"Ulinks" <admin@ulinks.io>',
         to: recipient,
         subject: `Ulinks - ${subject}`,
         text: emailText,
