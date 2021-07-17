@@ -6,11 +6,11 @@ import Tilt from "react-vanilla-tilt";
 
 const Icon = ({ index, link, titleColor }) => (
   <>
-    {link.includes("discord.gg") && <FaDiscord key={index} color={titleColor} style={{ marginRight: "5px" }}/>}
+    {link.includes("discord.gg") && <FaDiscord key={index} color={titleColor} style={{ marginRight: "5px" }} />}
     {link.includes("chat.whatsapp.com") && (
-      <FaWhatsapp key={index} color={titleColor} style={{ marginRight: "5px" }}/>
+      <FaWhatsapp key={index} color={titleColor} style={{ marginRight: "5px" }} />
     )}
-    {link.includes("linktr.ee") && <FaTree key={index} color={titleColor} style={{ marginRight: "5px" }}/>}
+    {link.includes("linktr.ee") && <FaTree key={index} color={titleColor} style={{ marginRight: "5px" }} />}
   </>
 );
 
@@ -75,7 +75,7 @@ export const Card = ({ name, description, image, links, id }) => {
           >
             {description}
           </Box>
-          <Box mt="2">
+          <Box className="d-flex" mt="2" >
             {links.map((link, index) => (
               <Icon index={index} color={titleColor} link={link} />
             ))}

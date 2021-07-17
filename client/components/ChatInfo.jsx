@@ -112,12 +112,12 @@ const ChatDetails = ({
         ml={2}
       />
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(created? created : new Date()))}
+        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(new Date(created))}
       </Text>
       {
         updated &&
         <Text fontSize="sm" color="grey" m={2}>
-          {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(Date.parse(updated))}
+          {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(new Date(updated))}
         </Text>
       }
       <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>
@@ -179,7 +179,7 @@ const ChatInfo = ({
   updated,
   setChatInfo,
 }) => {
-    console.log(updated);
+
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
   const desc = (
