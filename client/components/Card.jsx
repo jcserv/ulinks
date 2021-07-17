@@ -29,7 +29,7 @@ const Icon = ({ index, link, titleColor }) => (
 export const Card = ({ name, description, image, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
-  const descriptionColor = useColorModeValue("gray.500", "gray.400");
+  const descriptionColor = useColorModeValue("gray.600", "gray.400");
   const titleColor = useColorModeValue("black", "white");
 
   const cardStyle = {
