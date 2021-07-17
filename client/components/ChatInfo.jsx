@@ -44,18 +44,18 @@ const messages = defineMessages({
 function getLinkMetadata(url) {
   if (url.includes("chat.whatsapp.com")) {
     return {
-      label: "WhatsApp",
+      label: "Join the WhatsApp group",
       icon: "whatsapp",
     };
   }
   if (url.includes("linktr.ee")) {
     return {
-      label: "Linktree",
+      label: "Visit the Linktree page",
       icon: "linktree",
     };
   }
   return {
-    label: "Discord",
+    label: "Join the Discord server",
     icon: "discord",
   };
 }
