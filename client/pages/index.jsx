@@ -64,13 +64,25 @@ export default function Home() {
     query: { q, iscommunity },
   } = useRouter();
 
+  const parseIsCommunity = (isCommunity) => {
+    if (isCommunity !== undefined) {
+      if (isCommunity === "false") {
+        return 1;
+      }
+      if (isCommunity === "true") {
+        return 2;
+      }
+    }
+    return 0;
+  };
+
   const [curSearchQuery, setSearchQuery] = useState(q ?? "");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPageState, setTotalPage] = useState(0);
   const [groupChatStates, setGroupChats] = useState([]);
-  const [curIsCommunity, setCommunity] = useState(0);
+  const isCommunity = parseIsCommunity(iscommunity);
 
-  const search = async (searchQuery, isCommunity = 0, page = 0) => {
+  const search = async (searchQuery, curIsCommunity = 0, page = 0) => {
     const {
       data: {
         groupChats: {
@@ -80,11 +92,11 @@ export default function Home() {
         },
       },
     } = await client.query({
-      query: isCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
+      query: curIsCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
       variables: {
         page,
         ...(searchQuery === "" ? {} : { text: searchQuery }),
-        ...(isCommunity === 0 ? { isCommunity: isCommunity === 2 } : {}),
+        ...(curIsCommunity !== 0 ? { isCommunity: curIsCommunity === 2 } : {}),
       },
     });
     return {
@@ -95,14 +107,14 @@ export default function Home() {
   };
 
   useEffect(async () => {
-    const { groupChats, totalPages, pageNumber } = await search();
+    const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
     setGroupChats([...groupChats]);
     setTotalPage(totalPages);
     setCurrentPage(pageNumber);
   }, []);
 
   useEffect(async () => {
-    const { groupChats, totalPages, pageNumber } = await search(q, iscommunity);
+    const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
     setGroupChats([...groupChats]);
     setTotalPage(totalPages);
     setCurrentPage(pageNumber);
@@ -123,20 +135,10 @@ export default function Home() {
     },
   ];
 
-  function applyGroupChatFilter(groupchatstates) {
-    if (curIsCommunity === 0) {
-      return groupchatstates;
-    }
-    if (curIsCommunity === 1) {
-      return groupchatstates.filter((groupChat) => !groupChat.isCommunity);
-    }
-    return groupchatstates.filter((groupChat) => groupChat.isCommunity);
-  }
-
   const handleSearch = async (e) => {
     e.preventDefault();
     setCurrentPage(0);
-    if (curIsCommunity === 0) {
+    if (isCommunity === 0) {
       push(
         `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
         undefined,
@@ -146,7 +148,7 @@ export default function Home() {
       push(
         `${
           locale !== defaultLocale ? locale : ""
-        }/?q=${curSearchQuery}&iscommunity=${curIsCommunity === 1}`,
+        }/?q=${curSearchQuery}&iscommunity=${isCommunity === 2}`,
         undefined,
         { shallow: true }
       );
@@ -159,10 +161,28 @@ export default function Home() {
       groupChats: newGroupChats,
       totalPages: newTotalPages,
       pageNumber: newPageNumber,
-    } = await search(curSearchQuery, curIsCommunity, currentPage + 1);
+    } = await search(curSearchQuery, isCommunity, currentPage + 1);
     setGroupChats((oldGroupChats) => [...oldGroupChats, ...newGroupChats]);
     setTotalPage(newTotalPages);
     setCurrentPage(newPageNumber);
+  };
+  const handleCommunityChange = (newIsCommunity) => {
+    setCurrentPage(0);
+    if (newIsCommunity === 0) {
+      push(
+        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      push(
+        `${
+          locale !== defaultLocale ? locale : ""
+        }/?q=${curSearchQuery}&iscommunity=${newIsCommunity === 2}`,
+        undefined,
+        { shallow: true }
+      );
+    }
   };
   return (
     <div className="page-container">
@@ -180,7 +200,11 @@ export default function Home() {
           <br />
         </div>
         <div className="d-flex row-12">
-          <TabSelect tabs={tabs} onChange={setCommunity} />
+          <TabSelect
+            tabs={tabs}
+            selectedTab={isCommunity}
+            onChange={handleCommunityChange}
+          />
         </div>
       </div>
       <div className="col-8">
@@ -194,14 +218,14 @@ export default function Home() {
               }}
               mb={4}
             />
-            <InputRightElement pr={curIsCommunity !== 2 ? 10 : 0}>
+            <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
               <ButtonGroup isAttached>
                 <IconButton
                   aria-label="Search"
                   icon={<SearchIcon />}
                   type="submit"
                 />
-                {curIsCommunity !== 2 && (
+                {isCommunity !== 2 && (
                   <IconButton
                     aria-label="Advanced search settings"
                     icon={<GoSettings />}
@@ -212,7 +236,7 @@ export default function Home() {
             </InputRightElement>
           </InputGroup>
           <Flex wrap="wrap" justifyContent="flex-start">
-            {applyGroupChatFilter(groupChatStates).map((groupChat, index) => (
+            {groupChatStates.map((groupChat, index) => (
               <Card key={index} {...groupChat} />
             ))}
           </Flex>
