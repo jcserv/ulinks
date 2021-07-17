@@ -67,7 +67,13 @@ const messages = defineMessages({
 });
 
 const Logo = ({ locale }) => (
-  <Heading as={Link} href="/" m={4} size="lg" style={{ textDecoration: "none" }}>
+  <Heading
+    as={Link}
+    href="/"
+    m={4}
+    size="lg"
+    style={{ textDecoration: "none" }}
+  >
     <NextLink href="/" locale={locale}>
       ulinks
     </NextLink>
@@ -128,7 +134,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
           {btn.label}
         </Button>
       ) : (
-        <Link href={btn.href} >
+        <Link href={btn.href}>
           <NextLink href={btn.href} locale={locale}>
             {btn.label}
           </NextLink>
@@ -164,25 +170,25 @@ const ColorModeButton = ({ mr }) => {
 };
 
 const LocaleSelect = () => (
-    <Menu>
-      <Tooltip label={"Choose language"} aria-label={"Choose language"}>
-        <MenuButton
-          title="language-btn"
-          as={IconButton}
-          icon={<FaGlobe />}
-          size="md"
-          variant="ghost"
-        />
-      </Tooltip>
-      <MenuList size="sm">
-        <NextLink href="/" locale="en">
-          <MenuItem>English</MenuItem>
-        </NextLink>
-        <NextLink href="/" locale="fr">
-          <MenuItem>French</MenuItem>
-        </NextLink>
-      </MenuList>
-    </Menu>
+  <Menu>
+    <Tooltip label="Choose language" aria-label="Choose language">
+      <MenuButton
+        title="language-btn"
+        as={IconButton}
+        icon={<FaGlobe />}
+        size="md"
+        variant="ghost"
+      />
+    </Tooltip>
+    <MenuList size="sm">
+      <NextLink href="/" locale="en">
+        <MenuItem>English</MenuItem>
+      </NextLink>
+      <NextLink href="/" locale="fr">
+        <MenuItem>French</MenuItem>
+      </NextLink>
+    </MenuList>
+  </Menu>
 );
 
 const MenuLinks = ({ locale, onModalOpen, onClose }) => (

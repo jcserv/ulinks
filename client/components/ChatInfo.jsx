@@ -80,7 +80,6 @@ const ChatDetails = ({
   updated,
   setChatInfo,
 }) => {
-
   const { formatMessage } = useIntl();
   const linkIcons = links ? links.map((link) => transformLink(link)) : [];
   const {
@@ -112,14 +111,15 @@ const ChatDetails = ({
         ml={2}
       />
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.created)}: {new Intl.DateTimeFormat('en-GB').format(new Date(created))}
+        {formatMessage(messages.created)}:{" "}
+        {new Intl.DateTimeFormat("en-GB").format(new Date(created))}
       </Text>
-      {
-        updated &&
+      {updated && (
         <Text fontSize="sm" color="grey" m={2}>
-          {formatMessage(messages.lastModified)}: {new Intl.DateTimeFormat('en-GB').format(new Date(updated))}
+          {formatMessage(messages.lastModified)}:{" "}
+          {new Intl.DateTimeFormat("en-GB").format(new Date(updated))}
         </Text>
-      }
+      )}
       <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>
         <Button onClick={onModalOpen} m={1}>
           {formatMessage(messages.edit)}
@@ -179,7 +179,6 @@ const ChatInfo = ({
   updated,
   setChatInfo,
 }) => {
-
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
   const img = <ChatImage image={image} />;
   const desc = (
@@ -210,6 +209,5 @@ const ChatInfo = ({
     </SimpleGrid>
   );
 };
-
 
 export default ChatInfo;
