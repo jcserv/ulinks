@@ -41,10 +41,29 @@ const messages = defineMessages({
   },
 });
 
-function transformLink(url) {
+function getLinkMetadata(url) {
+  if (url.includes("chat.whatsapp.com")) {
+    return {
+      label: "WhatsApp",
+      icon: "whatsapp",
+    };
+  }
+  if (url.includes("linktr.ee")) {
+    return {
+      label: "Linktree",
+      icon: "linktree",
+    };
+  }
   return {
-    label: url.includes("whatsapp") ? "Join the WhatsApp group" : "Join the Discord server",
-    icon: url.includes("whatsapp") ? "whatsapp" : "discord",
+    label: "Discord",
+    icon: "discord",
+  };
+}
+
+function transformLink(url) {
+  const data = getLinkMetadata(url);
+  return {
+    ...data,
     url,
   };
 }

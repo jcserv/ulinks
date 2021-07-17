@@ -1,20 +1,24 @@
 import { Box, Center, Image, useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import { FaDiscord, FaWhatsapp } from "react-icons/fa";
+import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import Tilt from "react-vanilla-tilt";
+
+const Icon = ({ index, link, titleColor }) => (
+  <>
+    {link.includes("discord.gg") && <FaDiscord key={index} color={titleColor} />}
+    {link.includes("chat.whatsapp.com") && (
+      <FaWhatsapp key={index} color={titleColor} />
+    )}
+    {link.includes("linktr.ee") && <FaTree key={index} color={titleColor} />}
+  </>
+);
 
 export const Card = ({ name, description, image, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
-  const titleColor = useColorModeValue("black", "white");
   const descriptionColor = useColorModeValue("gray.500", "gray.400");
-  const LinksMapped = links.map((link) => {
-    if (link.includes("discord")) {
-      return { type: "discord" };
-    }
-    return { type: "whatsapp" };
-  });
+  const titleColor = useColorModeValue("black", "white");
 
   const cardStyle = {
     background: backgroundColor,
@@ -71,14 +75,10 @@ export const Card = ({ name, description, image, links, id }) => {
           >
             {description}
           </Box>
-          <Box className="d-flex" mt="2" >
-            {LinksMapped.map(({ type }, index) =>
-              type === "discord" ? (
-                <FaDiscord color={titleColor} key={index} style={{ marginRight: "5px" }}/>
-              ) : (
-                <FaWhatsapp color={titleColor} key={index} style={{ marginRight: "5px" }}/>
-              )
-            )}
+          <Box mt="2">
+            {links.map((link, index) => (
+              <Icon index={index} color={titleColor} link={link} style={{ marginRight: "5px" }}/>
+            ))}
           </Box>
         </Box>
       </Box>

@@ -89,6 +89,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   const navBtnsAll = [
     {
       label: formatMessage(messages.create),
+      href: "Create",
     },
     {
       label: formatMessage(messages.admin),
@@ -118,11 +119,11 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
     }
     const data = await getUserData(email);
     setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
-  }, [email]);
+  }, [email, locale]);
 
   const btns = navBtns.map((btn) => (
     <Button key={btn.label} size={size} variant="link" mb={2} onClick={onClose}>
-      {btn.label === "Create" ? (
+      {btn.href === "Create" ? ( // forgive me father for this is jank
         <Button variant="link" onClick={onModalOpen}>
           {btn.label}
         </Button>
