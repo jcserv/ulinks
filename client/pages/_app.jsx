@@ -32,6 +32,10 @@ const SiteHead = ({ title }) => (
     <meta property="twitter:title" content={TITLE} />
     <meta property="twitter:description" content={DESCRIPTION} />
     <meta property="twitter:image" content="/logo.png" />
+    <meta
+      name="google-site-verification"
+      content="cqejQy3NErZCE6yNtNbUuKVsyNZjUaBrvNthsuBoksU"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
