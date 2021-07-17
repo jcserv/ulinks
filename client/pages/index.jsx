@@ -133,7 +133,8 @@ export default function Home() {
     return groupchatstates.filter((groupChat) => groupChat.isCommunity);
   }
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setCurrentPage(0);
     if (curIsCommunity === 0) {
       push(
@@ -183,48 +184,50 @@ export default function Home() {
         </div>
       </div>
       <div className="col-8">
-        <InputGroup>
-          <Input
-            placeholder="Search"
-            value={curSearchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-            mb={4}
-          />
-          <InputRightElement pr={curIsCommunity !== 2 ? 10 : 0}>
-            <ButtonGroup isAttached>
-              <IconButton
-                aria-label="Search"
-                icon={<SearchIcon />}
-                onClick={handleSearch}
-              />
-              {curIsCommunity !== 2 && (
+        <form onSubmit={handleSearch}>
+          <InputGroup>
+            <Input
+              placeholder="Search"
+              value={curSearchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
+              mb={4}
+            />
+            <InputRightElement pr={curIsCommunity !== 2 ? 10 : 0}>
+              <ButtonGroup isAttached>
                 <IconButton
-                  aria-label="Advanced search settings"
-                  icon={<GoSettings />}
-                  onClick={onOpen}
+                  aria-label="Search"
+                  icon={<SearchIcon />}
+                  type="submit"
                 />
-              )}
-            </ButtonGroup>
-          </InputRightElement>
-        </InputGroup>
-        <Flex wrap="wrap" justifyContent="flex-start">
-          {applyGroupChatFilter(groupChatStates).map((groupChat, index) => (
-            <Card key={index} {...groupChat} />
-          ))}
-        </Flex>
-        {currentPage !== totalPageState ? (
-          <Box textAlign="center">
-            <Button onClick={displayMorePages}>View More</Button>
-          </Box>
-        ) : null}
-        <AdvancedSearchModal
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          setGroupChats={setGroupChats}
-        />
+                {curIsCommunity !== 2 && (
+                  <IconButton
+                    aria-label="Advanced search settings"
+                    icon={<GoSettings />}
+                    onClick={onOpen}
+                  />
+                )}
+              </ButtonGroup>
+            </InputRightElement>
+          </InputGroup>
+          <Flex wrap="wrap" justifyContent="flex-start">
+            {applyGroupChatFilter(groupChatStates).map((groupChat, index) => (
+              <Card key={index} {...groupChat} />
+            ))}
+          </Flex>
+          {currentPage !== totalPageState ? (
+            <Box textAlign="center">
+              <Button onClick={displayMorePages}>View More</Button>
+            </Box>
+          ) : null}
+          <AdvancedSearchModal
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            setGroupChats={setGroupChats}
+          />
+        </form>
       </div>
     </div>
   );
