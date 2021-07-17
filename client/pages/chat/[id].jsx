@@ -32,7 +32,6 @@ export async function getServerSideProps(context) {
       query: GET_GROUPCHAT,
       variables: { id },
     });
-
     if (!getGroupChat) {
       return {
         notFound: true,

@@ -69,7 +69,7 @@ const messages = defineMessages({
 const Logo = ({ locale }) => (
   <Heading as={Link} href="/" m={4} size="lg" style={{ textDecoration: "none" }}>
     <NextLink href="/" locale={locale}>
-      Ulinks
+      ulinks
     </NextLink>
   </Heading>
 );
