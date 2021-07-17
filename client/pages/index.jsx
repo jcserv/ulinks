@@ -235,24 +235,29 @@ export default function Home() {
               </ButtonGroup>
             </InputRightElement>
           </InputGroup>
-          <Flex wrap="wrap" justifyContent="flex-start">
-            {groupChatStates.map((groupChat, index) => (
-              <Card key={index} {...groupChat} />
-            ))}
-          </Flex>
-          {currentPage !== totalPageState ? (
-            <Box textAlign="center">
-              <Button onClick={displayMorePages}>View More</Button>
-            </Box>
-          ) : null}
-          <AdvancedSearchModal
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            setGroupChats={setGroupChats}
-          />
         </form>
       </div>
+      <Flex
+        className="col-9 center"
+        marginLeft="110px"
+        wrap="wrap"
+        justifyContent="flex-start"
+      >
+        {groupChatStates.map((groupChat, index) => (
+          <Card key={index} {...groupChat} />
+        ))}
+      </Flex>
+      {currentPage !== totalPageState ? (
+        <Box textAlign="center">
+          <Button onClick={displayMorePages}>View More</Button>
+        </Box>
+      ) : null}
+      <AdvancedSearchModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        setGroupChats={setGroupChats}
+      />
     </div>
   );
 }
