@@ -25,6 +25,8 @@ services:
       - PORT=4000
       - SECRET=${SECRET}
       - MONGO_URI=${MONGO_URI}
+      - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
+      - NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
     volumes:
       - ./server:/server
       - /server/node_modules

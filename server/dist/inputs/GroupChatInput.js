@@ -63,6 +63,18 @@ __decorate([
     type_graphql_1.Field(),
     __metadata("design:type", String)
 ], createGroupChatInput.prototype, "status", void 0);
+__decorate([
+    type_graphql_1.Field({ defaultValue: new Date() }),
+    __metadata("design:type", Date)
+], createGroupChatInput.prototype, "created", void 0);
+__decorate([
+    type_graphql_1.Field({ defaultValue: 0 }),
+    __metadata("design:type", Number)
+], createGroupChatInput.prototype, "views", void 0);
+__decorate([
+    type_graphql_1.Field({ defaultValue: 0 }),
+    __metadata("design:type", Number)
+], createGroupChatInput.prototype, "likes", void 0);
 createGroupChatInput = __decorate([
     type_graphql_1.InputType()
 ], createGroupChatInput);

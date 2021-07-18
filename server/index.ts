@@ -5,6 +5,7 @@ import { AuthChecker, buildSchema } from "type-graphql";
 import mongoose from "mongoose";
 import "dotenv/config";
 import jwt, { secretType } from "express-jwt";
+import { User } from "./database";
 
 import {
   AuthenticationResolver,
@@ -50,6 +51,23 @@ const main = async () => {
       algorithms: ["HS256"],
     })
   );
+
+  // Verification
+  app.get("/verify/:hashId", async function (req, res) {
+    const { hashId } = req.params;
+    const user = await User.findOne({ verifyHash: hashId });
+    if (!user) {
+      res.sendStatus(404);
+      return;
+    }
+    if (user.verifyHash == hashId && !user.verified) {
+      user.verified = true;
+      await user.save();
+      res.sendStatus(200);
+      return;
+    }
+    res.sendStatus(404);
+  });
 
   apolloServer.applyMiddleware({ app, path });
 

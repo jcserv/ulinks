@@ -32,6 +32,6 @@ export class createGroupChatInput {
   @Field({ defaultValue: new Date() }) created: Date;
 
   @Field({ defaultValue: 0 }) views: number;
-  
+
   @Field({ defaultValue: 0 }) likes: number;
 }

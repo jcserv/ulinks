@@ -14,6 +14,10 @@ export declare class GroupChat {
     courseInformation?: CourseInformation;
     status: string;
     image: string;
+    created: Date;
+    updated: Date;
+    views: number;
+    likes: number;
 }
 export declare class GroupChatIds {
     groupChats: string[];

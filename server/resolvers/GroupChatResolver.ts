@@ -117,10 +117,10 @@ export class GroupChatResolver {
     @Arg("email") email: string,
     @Arg("info") groupchatInfo: createGroupChatInput
   ) {
-    const user = UserModel.findOne({ email });
-    if (!user) {
-      return null;
-    }
+    const user = await UserModel.findOne({ email });
+
+    if (!user) return null;
+    if (!user.verified) return null;
 
     const image = groupchatInfo.isCommunity
       ? departmentToImage.Community

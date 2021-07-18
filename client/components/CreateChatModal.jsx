@@ -34,6 +34,7 @@ import { campuses, departments, terms, utscLevels, years } from "../constants";
 import { ChatSchema } from "../constants/YupSchemas";
 import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
+import { redirect } from "../helpers";
 import { capitallize } from "../helpers/formatters";
 import CourseInfo from "./CourseInfo";
 
@@ -348,13 +349,11 @@ const EnhancedChatForm = withFormik({
       isCommunity,
       courseInfo,
     },
-    { props: { onClose, redirect, toast } }
+    { props: { onClose, redirectToChat, toast } }
   ) => {
     const email = cookie.get("email");
     const {
-      data: {
-        groupChat: { name: groupChatName, id },
-      },
+      data: { groupChat },
     } = await client.mutate({
       mutation: ADD_GROUPCHAT,
       variables: {
@@ -369,20 +368,33 @@ const EnhancedChatForm = withFormik({
         },
       },
     });
-    toast({
-      title: "Success",
-      description: `${
-        isCommunity
-          ? "Request has been submitted"
-          : `${groupChatName} has been created`
-      }`,
-      status: "success",
-      position: "bottom-left",
-      duration: 5000,
-      isCloseable: false,
-    });
-    onClose();
-    redirect(id);
+    if (groupChat) {
+      const { name: groupChatName, id } = groupChat;
+      toast({
+        title: "Success",
+        description: `${
+          isCommunity
+            ? "Request has been submitted"
+            : `${groupChatName} has been created`
+        }`,
+        status: "success",
+        position: "bottom-left",
+        duration: 5000,
+        isCloseable: false,
+      });
+      onClose();
+      redirectToChat(id);
+    } else {
+      toast({
+        title: "Error",
+        description: "An error has occurred, please try again.",
+        status: "error",
+        position: "bottom-left",
+        duration: 5000,
+        isCloseable: false,
+      });
+      onClose();
+    }
   },
   mapPropsToValues: () => ({
     name: "",
@@ -408,8 +420,8 @@ export default function CreateChatModal({ isOpen, onClose }) {
   const toast = useToast();
   const { locale, defaultLocale, push } = useRouter();
 
-  const redirect = (id) => {
-    push(`${locale !== defaultLocale ? locale : ""}/chat/${id}`);
+  const redirectToChat = (id) => {
+    redirect(`/chat/${id}`, push, locale, defaultLocale);
   };
 
   return (
@@ -421,7 +433,7 @@ export default function CreateChatModal({ isOpen, onClose }) {
         <ModalBody>
           <EnhancedChatForm
             onClose={onClose}
-            redirect={redirect}
+            redirectToChat={redirectToChat}
             toast={toast}
           />
         </ModalBody>

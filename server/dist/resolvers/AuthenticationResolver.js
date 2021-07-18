@@ -22,6 +22,8 @@ const database_1 = require("../database");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
+const helpers_1 = require("../helpers");
+const email_1 = require("../helpers/email");
 let AuthenticationResolver = class AuthenticationResolver {
     async me() {
         return "Hello";
@@ -51,11 +53,16 @@ let AuthenticationResolver = class AuthenticationResolver {
                 status: "USER_EXISTS",
             };
         }
+        const newHash = helpers_1.generateRandomString();
+        //send an email
         const newUser = await database_1.User.create({
             email,
+            verified: false,
+            verifyHash: newHash,
             password: await bcrypt_1.default.hash(password, 10),
             groupChatsCreated: [],
         });
+        await email_1.sendEmail(email, email_1.emailTypeToContent("confirmEmail", newHash));
         return {
             status: "OK",
             jwtToken: jsonwebtoken_1.default.sign({ email, status: `${newUser.status}` }, `${process.env.SECRET}`, { expiresIn: "1y" }),
