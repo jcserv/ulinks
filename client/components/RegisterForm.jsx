@@ -10,40 +10,12 @@ import {
 import { Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import React, { useState } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import client from "../apollo-client";
-import locales from "../content/locale";
+import { messages } from "../constants/intl/components/RegisterForm";
 import { SIGNUP } from "../gql/Auth";
-
-const messages = defineMessages({
-  createAcct: {
-    id: "create-acct",
-    description: locales.en["create-acct"],
-    defaultMessage: locales.en.test,
-  },
-  emailAddress: {
-    id: "email-address",
-    description: locales.en["email-address"],
-    defaultMessage: locales.en["email-address"],
-  },
-  emailHelperText: {
-    id: "email-helper-text",
-    description: locales.en["email-helper-text"],
-    defaultMessage: locales.en["email-helper-text"],
-  },
-  password: {
-    id: "password",
-    description: locales.en.password,
-    defaultMessage: locales.en.password,
-  },
-  confirmPassword: {
-    id: "confirm-password",
-    description: locales.en["confirm-password"],
-    defaultMessage: locales.en["confirm-password"],
-  },
-});
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()

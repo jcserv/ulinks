@@ -1,6 +1,6 @@
 import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 import client from "../../apollo-client";
 import Autocomplete from "../../components/Autocomplete";
@@ -9,50 +9,12 @@ import CheckPermissions from "../../components/CheckPermissions";
 import RequestsList from "../../components/RequestsList";
 import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
-import locales from "../../content/locale";
+import { messages } from "../../constants/intl/pages/admin";
 import { GET_ADMIN_DATA } from "../../gql";
 import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
 import { SEARCH_USERS } from "../../gql/User";
 import { mapAsOption } from "../../helpers";
 import { checkAdmin } from "../../helpers/permissions";
-
-const messages = defineMessages({
-  requestManagement: {
-    id: "request-management",
-    description: locales.en["request-management"],
-    defaultMessage: locales.en["request-management"],
-  },
-  userManagement: {
-    id: "user-management",
-    description: locales.en["user-management"],
-    defaultMessage: locales.en["user-management"],
-  },
-  pendingRequests: {
-    id: "pending-requests",
-    description: locales.en["pending-requests"],
-    defaultMessage: locales.en["pending-requests"],
-  },
-  rejectedRequests: {
-    id: "rejected-requests",
-    description: locales.en["rejected-requests"],
-    defaultMessage: locales.en["rejected-requests"],
-  },
-  bannedUsers: {
-    id: "banned-users",
-    description: locales.en["banned-users"],
-    defaultMessage: locales.en["banned-users"],
-  },
-  noRequests: {
-    id: "no-requests",
-    description: locales.en["no-requests"],
-    defaultMessage: locales.en["no-requests"],
-  },
-  noUsers: {
-    id: "no-users",
-    description: locales.en["no-users"],
-    defaultMessage: locales.en["no-users"],
-  },
-});
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
