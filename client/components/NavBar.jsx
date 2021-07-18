@@ -67,9 +67,15 @@ const messages = defineMessages({
 });
 
 const Logo = ({ locale }) => (
-  <Heading as={Link} href="/" m={4} size="lg">
+  <Heading
+    as={Link}
+    href="/"
+    m={4}
+    size="lg"
+    style={{ textDecoration: "none" }}
+  >
     <NextLink href="/" locale={locale}>
-      ulinks
+      ULinks
     </NextLink>
   </Heading>
 );
@@ -165,13 +171,15 @@ const ColorModeButton = ({ mr }) => {
 
 const LocaleSelect = () => (
   <Menu>
-    <MenuButton
-      title="language-btn"
-      as={IconButton}
-      icon={<FaGlobe />}
-      size="md"
-      variant="ghost"
-    />
+    <Tooltip label="Choose language" aria-label="Choose language">
+      <MenuButton
+        title="language-btn"
+        as={IconButton}
+        icon={<FaGlobe />}
+        size="md"
+        variant="ghost"
+      />
+    </Tooltip>
     <MenuList size="sm">
       <NextLink href="/" locale="en">
         <MenuItem>English</MenuItem>

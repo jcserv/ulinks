@@ -4,18 +4,25 @@ import React from "react";
 import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import Tilt from "react-vanilla-tilt";
 
-const Icon = ({ link, textColor }) => (
+const Icon = ({ link, titleColor }) => (
   <>
-    {link.includes("discord.gg") && <FaDiscord color={textColor} />}
-    {link.includes("chat.whatsapp.com") && <FaWhatsapp color={textColor} />}
-    {link.includes("linktr.ee") && <FaTree color={textColor} />}
+    {link.includes("discord") && (
+      <FaDiscord color={titleColor} style={{ marginRight: "5px" }} />
+    )}
+    {link.includes("chat.whatsapp.com") && (
+      <FaWhatsapp color={titleColor} style={{ marginRight: "5px" }} />
+    )}
+    {link.includes("linktr.ee") && (
+      <FaTree color={titleColor} style={{ marginRight: "5px" }} />
+    )}
   </>
 );
 
 export const Card = ({ name, description, image, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
-  const textColor = useColorModeValue("black", "white");
+  const descriptionColor = useColorModeValue("gray.600", "gray.400");
+  const titleColor = useColorModeValue("black", "white");
 
   const cardStyle = {
     background: backgroundColor,
@@ -58,23 +65,23 @@ export const Card = ({ name, description, image, links, id }) => {
             fontWeight="semibold"
             as="h2"
             lineHeight="tight"
-            color={textColor}
+            color={titleColor}
           >
             {name}
           </Box>
 
           <Box
             mt="1"
-            color={textColor}
+            color={descriptionColor}
             fontWeight="semibold"
             as="h2"
             isTruncated
           >
             {description}
           </Box>
-          <Box mt="2">
+          <Box className="d-flex" mt="2">
             {links.map((link, index) => (
-              <Icon key={index} color={textColor} link={link} />
+              <Icon key={index} color={titleColor} link={link} />
             ))}
           </Box>
         </Box>

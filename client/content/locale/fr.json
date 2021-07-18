@@ -60,7 +60,10 @@
   "submit-group-chat": "Soumettre une Tchat",
   "search": "Cherche",
   "no-chats": "Aucune discussion de groupe trouvée - essayez d'en créer une!",
-  "verificationSuccess": "Your email address has been verified.",
-  "verificationFailure": "An error has occurred while verifying your email.",
-  "continue": "Continue"
+  "verificationSuccess": "Votre adresse e-mail a été vérifiée.",
+  "verificationFailure": "Une erreur s'est produite lors de la vérification de votre e-mail.",
+  "continue": "Continuer",
+  "join-discord": "Joignez le serveur Discord",
+  "join-whatsapp": "Joignez le tchat WhatsApp",
+  "visit-linktree": "Visitez la siteweb Linktree"
 }

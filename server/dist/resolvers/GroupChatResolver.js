@@ -21,7 +21,7 @@ const Groupchat_1 = require("../models/Groupchat");
 const helpers_1 = require("../helpers");
 let GroupChatResolver = class GroupChatResolver {
     constructor() {
-        this.pageSize = 8;
+        this.pageSize = 9;
     }
     async getAllGroupChatIds() {
         const groupChats = await database_1.GroupChat.find();
@@ -134,6 +134,7 @@ let GroupChatResolver = class GroupChatResolver {
         if (chatInfo.courseInformation != undefined) {
             groupChat.courseInformation.set(chatInfo.courseInformation);
         }
+        groupChat.updated = new Date();
         const result = await groupChat.save();
         return result;
     }

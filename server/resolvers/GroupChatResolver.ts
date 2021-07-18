@@ -7,7 +7,7 @@ import { departmentToImage, escapeRegex } from "../helpers";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
-  pageSize = 8;
+  pageSize = 9;
 
   @Query(() => GroupChatIds)
   async getAllGroupChatIds(): Promise<GroupChatIds> {
@@ -164,6 +164,7 @@ export class GroupChatResolver {
     if (chatInfo.courseInformation != undefined) {
       groupChat.courseInformation.set(chatInfo.courseInformation);
     }
+    groupChat.updated = new Date();
     const result = await groupChat.save();
     return result;
   }

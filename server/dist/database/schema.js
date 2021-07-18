@@ -46,6 +46,10 @@ const GroupChatSchema = new mongoose_1.Schema({
         enum: ["approved", "pending", "rejected"],
         default: ["pending"],
     },
+    created: Date,
+    updated: Date,
+    views: Number,
+    likes: Number,
 }, { toObject: { versionKey: false } });
 // Schema for User
 const UserSchema = new mongoose_1.Schema({

@@ -23,6 +23,10 @@ interface IGroupChat extends Document {
     image: string;
     courseInformation: ICourseInformation;
     status: string;
+    created: Date;
+    updated: Date;
+    views: number;
+    likes: number;
 }
 declare const User: Model<IUser>;
 declare const GroupChat: Model<IGroupChat>;
