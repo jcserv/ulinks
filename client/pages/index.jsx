@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -51,6 +52,21 @@ const messages = defineMessages({
     id: "communities",
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
+  },
+  viewMore: {
+    id: "view-more",
+    description: locales.en["view-more"],
+    defaultMessage: locales.en["view-more"],
+  },
+  search: {
+    id: "search",
+    description: locales.en.search,
+    defaultMessage: locales.en.search,
+  },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
   },
 });
 
@@ -211,7 +227,7 @@ export default function Home() {
         <form onSubmit={handleSearch}>
           <InputGroup>
             <Input
-              placeholder="Search"
+              placeholder={formatMessage(messages.search)}
               value={curSearchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -223,7 +239,7 @@ export default function Home() {
                 <IconButton
                   aria-label="Search"
                   icon={<SearchIcon />}
-                  type="submit"
+                  onClick={handleSearch}
                 />
                 {isCommunity !== 2 && (
                   <IconButton
@@ -237,10 +253,15 @@ export default function Home() {
           </InputGroup>
         </form>
       </div>
+      {groupChatStates.length === 0 && (
+        <Center mt="10vh">
+          <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+        </Center>
+      )}
       <Flex
-        className="col-9 center"
-        marginLeft="110px"
         wrap="wrap"
+        className="col-9"
+        marginLeft="100px"
         justifyContent="flex-start"
       >
         {groupChatStates.map((groupChat, index) => (
@@ -249,7 +270,9 @@ export default function Home() {
       </Flex>
       {currentPage !== totalPageState ? (
         <Box textAlign="center">
-          <Button onClick={displayMorePages}>View More</Button>
+          <Button onClick={displayMorePages}>
+            {formatMessage(messages.viewMore)}
+          </Button>
         </Box>
       ) : null}
       <AdvancedSearchModal

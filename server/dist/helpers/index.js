@@ -1,10 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.departmentToImage = exports.escapeRegex = void 0;
+exports.departmentToImage = exports.generateRandomString = exports.escapeRegex = void 0;
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 exports.escapeRegex = escapeRegex;
+function generateRandomString() {
+    return (Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15));
+}
+exports.generateRandomString = generateRandomString;
 exports.departmentToImage = {
     ANT: "https://images.unsplash.com/flagged/photo-1552863473-6e5ffe5e052f",
     AST: "https://images.unsplash.com/photo-1464802686167-b939a6910659",

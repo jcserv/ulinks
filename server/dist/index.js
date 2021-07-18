@@ -10,6 +10,7 @@ const type_graphql_1 = require("type-graphql");
 const mongoose_1 = __importDefault(require("mongoose"));
 require("dotenv/config");
 const express_jwt_1 = __importDefault(require("express-jwt"));
+const database_1 = require("./database");
 const resolvers_1 = require("./resolvers");
 mongoose_1.default.connect(`${process.env.MONGO_URI}`, {
     useNewUrlParser: true,
@@ -37,6 +38,22 @@ const main = async () => {
         credentialsRequired: false,
         algorithms: ["HS256"],
     }));
+    // Verification
+    app.get("/verify/:hashId", async function (req, res) {
+        const { hashId } = req.params;
+        const user = await database_1.User.findOne({ verifyHash: hashId });
+        if (!user) {
+            res.sendStatus(404);
+            return;
+        }
+        if (user.verifyHash == hashId && !user.verified) {
+            user.verified = true;
+            await user.save();
+            res.sendStatus(200);
+            return;
+        }
+        res.sendStatus(404);
+    });
     apolloServer.applyMiddleware({ app, path });
     app.listen(process.env.PORT || 4000, () => {
         console.log(`Server started on http://localhost:${process.env.PORT || 4000}/graphql`);

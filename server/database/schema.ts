@@ -26,6 +26,10 @@ const GroupChatSchema: Schema = new Schema(
       enum: ["approved", "pending", "rejected"],
       default: ["pending"],
     },
+    created: Date,
+    updated: Date,
+    views: Number,
+    likes: Number,
   },
   { toObject: { versionKey: false } }
 );
@@ -35,6 +39,8 @@ const UserSchema: Schema = new Schema(
   {
     email: String,
     password: String,
+    verified: Boolean,
+    verifyHash: String,
     groupChatsCreated: [Schema.Types.ObjectId],
     status: {
       type: String,
@@ -50,6 +56,8 @@ interface IUser extends Document {
   password: string;
   groupChatsCreated: [string];
   status: string;
+  verified: boolean;
+  verifyHash: string;
 }
 
 interface ICourseInformation extends Document {
@@ -68,6 +76,10 @@ interface IGroupChat extends Document {
   image: string;
   courseInformation: ICourseInformation;
   status: string;
+  created: Date;
+  updated: Date;
+  views: number;
+  likes: number;
 }
 
 const User: Model<IUser> = mongoose.model("Users", UserSchema);

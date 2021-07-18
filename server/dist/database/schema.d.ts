@@ -4,6 +4,8 @@ interface IUser extends Document {
     password: string;
     groupChatsCreated: [string];
     status: string;
+    verified: boolean;
+    verifyHash: string;
 }
 interface ICourseInformation extends Document {
     campus: string;
@@ -21,6 +23,10 @@ interface IGroupChat extends Document {
     image: string;
     courseInformation: ICourseInformation;
     status: string;
+    created: Date;
+    updated: Date;
+    views: number;
+    likes: number;
 }
 declare const User: Model<IUser>;
 declare const GroupChat: Model<IGroupChat>;

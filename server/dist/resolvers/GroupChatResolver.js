@@ -21,7 +21,7 @@ const Groupchat_1 = require("../models/Groupchat");
 const helpers_1 = require("../helpers");
 let GroupChatResolver = class GroupChatResolver {
     constructor() {
-        this.pageSize = 8;
+        this.pageSize = 9;
     }
     async getAllGroupChatIds() {
         const groupChats = await database_1.GroupChat.find();
@@ -98,10 +98,11 @@ let GroupChatResolver = class GroupChatResolver {
     }
     async addGroupChat(email, groupchatInfo) {
         var _a;
-        const user = database_1.User.findOne({ email });
-        if (!user) {
+        const user = await database_1.User.findOne({ email });
+        if (!user)
             return null;
-        }
+        if (!user.verified)
+            return null;
         const image = groupchatInfo.isCommunity
             ? helpers_1.departmentToImage.Community
             : helpers_1.departmentToImage[((_a = groupchatInfo === null || groupchatInfo === void 0 ? void 0 : groupchatInfo.courseInformation) === null || _a === void 0 ? void 0 : _a.department) || "Community"];
@@ -133,6 +134,7 @@ let GroupChatResolver = class GroupChatResolver {
         if (chatInfo.courseInformation != undefined) {
             groupChat.courseInformation.set(chatInfo.courseInformation);
         }
+        groupChat.updated = new Date();
         const result = await groupChat.save();
         return result;
     }

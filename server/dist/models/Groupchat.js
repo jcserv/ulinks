@@ -71,6 +71,22 @@ __decorate([
     type_graphql_1.Field({ nullable: true }),
     __metadata("design:type", String)
 ], GroupChat.prototype, "image", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", Date)
+], GroupChat.prototype, "created", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", Date)
+], GroupChat.prototype, "updated", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", Number)
+], GroupChat.prototype, "views", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", Number)
+], GroupChat.prototype, "likes", void 0);
 GroupChat = __decorate([
     type_graphql_1.ObjectType()
 ], GroupChat);

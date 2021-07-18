@@ -7,7 +7,7 @@ import { departmentToImage, escapeRegex } from "../helpers";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
-  pageSize = 8;
+  pageSize = 9;
 
   @Query(() => GroupChatIds)
   async getAllGroupChatIds(): Promise<GroupChatIds> {
@@ -117,10 +117,10 @@ export class GroupChatResolver {
     @Arg("email") email: string,
     @Arg("info") groupchatInfo: createGroupChatInput
   ) {
-    const user = UserModel.findOne({ email });
-    if (!user) {
-      return null;
-    }
+    const user = await UserModel.findOne({ email });
+
+    if (!user) return null;
+    if (!user.verified) return null;
 
     const image = groupchatInfo.isCommunity
       ? departmentToImage.Community
@@ -164,6 +164,7 @@ export class GroupChatResolver {
     if (chatInfo.courseInformation != undefined) {
       groupChat.courseInformation.set(chatInfo.courseInformation);
     }
+    groupChat.updated = new Date();
     const result = await groupChat.save();
     return result;
   }

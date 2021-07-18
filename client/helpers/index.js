@@ -29,6 +29,10 @@ export const createMockUser = ({ email, password, groupChats, status }) => ({
   status,
 });
 
+export const redirect = (path, push, locale, defaultLocale) => {
+  push(`${locale !== defaultLocale ? locale : ""}${path}`);
+};
+
 export default {
   createMockGroupChat,
   createMockUser,

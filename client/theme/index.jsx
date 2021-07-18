@@ -19,7 +19,7 @@ export const colors = {
     dark: "#FFFFFF",
   },
   bg: {
-    light: "",
+    light: "gray.400",
     dark: "#343a40",
   },
 };
