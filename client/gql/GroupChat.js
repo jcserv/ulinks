@@ -73,8 +73,27 @@ export const SEARCH_GROUPCHATS = gql`
       groupChats {
         name
         description
+        image
         links
         id
+        isCommunity
+      }
+      totalPages
+      pageNumber
+    }
+  }
+`;
+
+export const SEARCH_ALL_GROUPCHATS = gql`
+  query searchGroupChats($page: Float, $text: String) {
+    groupChats: searchGroupChats(page: $page, text: $text) {
+      groupChats {
+        name
+        description
+        image
+        links
+        id
+        isCommunity
       }
       totalPages
       pageNumber
@@ -100,6 +119,8 @@ export const ADVANCED_SEARCH_GROUPCHATS = gql`
       groupChats {
         name
         description
+        image
+        isCommunity
         links
         id
       }
