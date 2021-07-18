@@ -124,7 +124,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
       return;
     }
     const data = await getUserData(email);
-    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
+    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
   }, [email, locale]);
 
   const btns = navBtns.map((btn) => (
