@@ -39,23 +39,39 @@ const messages = defineMessages({
     description: locales.en.edit,
     defaultMessage: locales.en.details,
   },
+  joinDiscord: {
+    id: "join-discord",
+    description: locales.en["join-discord"],
+    defaultMessage: locales.en["join-discord"],
+  },
+  joinWhatsapp: {
+    id: "join-whatsapp",
+    description: locales.en["join-whatsapp"],
+    defaultMessage: locales.en["join-whatsapp"],
+  },
+  visitLinktree: {
+    id: "visit-linktree",
+    description: locales.en["visit-linktree"],
+    defaultMessage: locales.en["visit-linktree"],
+  },
 });
 
 function getLinkMetadata(url) {
+  const { formatMessage } = useIntl();
   if (url.includes("chat.whatsapp.com")) {
     return {
-      label: "Join the WhatsApp group",
+      label: formatMessage(messages.joinWhatsapp),
       icon: "whatsapp",
     };
   }
   if (url.includes("linktr.ee")) {
     return {
-      label: "Visit the Linktree page",
+      label: formatMessage(messages.visitLinktree),
       icon: "linktree",
     };
   }
   return {
-    label: "Join the Discord server",
+    label: formatMessage(messages.joinDiscord),
     icon: "discord",
   };
 }

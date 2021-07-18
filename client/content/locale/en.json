@@ -58,5 +58,8 @@
   "view-more": "View More",
   "submit-group-chat": "Submit a Group Chat",
   "search": "Search",
-  "no-chats": "No group chats found—try making one!"
+  "no-chats": "No group chats found—try making one!",
+  "join-discord": "Join the Discord server",
+  "join-whatsapp": "Join the WhatsApp group",
+  "visit-linktree": "Visit the Linktree page"
 }
