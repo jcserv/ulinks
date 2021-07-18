@@ -39,12 +39,47 @@ const messages = defineMessages({
     description: locales.en.edit,
     defaultMessage: locales.en.details,
   },
+  joinDiscord: {
+    id: "join-discord",
+    description: locales.en["join-discord"],
+    defaultMessage: locales.en["join-discord"],
+  },
+  joinWhatsapp: {
+    id: "join-whatsapp",
+    description: locales.en["join-whatsapp"],
+    defaultMessage: locales.en["join-whatsapp"],
+  },
+  visitLinktree: {
+    id: "visit-linktree",
+    description: locales.en["visit-linktree"],
+    defaultMessage: locales.en["visit-linktree"],
+  },
 });
 
-function transformLink(url) {
+function getLinkMetadata(url) {
+  const { formatMessage } = useIntl();
+  if (url.includes("chat.whatsapp.com")) {
+    return {
+      label: formatMessage(messages.joinWhatsapp),
+      icon: "whatsapp",
+    };
+  }
+  if (url.includes("linktr.ee")) {
+    return {
+      label: formatMessage(messages.visitLinktree),
+      icon: "linktree",
+    };
+  }
   return {
-    label: url.includes("whatsapp") ? "WhatsApp" : "Discord",
-    icon: url.includes("whatsapp") ? "whatsapp" : "discord",
+    label: formatMessage(messages.joinDiscord),
+    icon: "discord",
+  };
+}
+
+function transformLink(url) {
+  const data = getLinkMetadata(url);
+  return {
+    ...data,
     url,
   };
 }
@@ -57,6 +92,8 @@ const ChatDetails = ({
   status,
   courseInformation,
   isCommunity,
+  created,
+  updated,
   setChatInfo,
 }) => {
   const { formatMessage } = useIntl();
@@ -90,11 +127,15 @@ const ChatDetails = ({
         ml={2}
       />
       <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.created)}: 01/01/20
+        {formatMessage(messages.created)}:{" "}
+        {new Intl.DateTimeFormat("en-GB").format(new Date(created))}
       </Text>
-      <Text fontSize="sm" color="grey" m={2}>
-        {formatMessage(messages.lastModified)}: 01/04/20
-      </Text>
+      {updated && (
+        <Text fontSize="sm" color="grey" m={2}>
+          {formatMessage(messages.lastModified)}:{" "}
+          {new Intl.DateTimeFormat("en-GB").format(new Date(updated))}
+        </Text>
+      )}
       <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>
         <Button onClick={onModalOpen} m={1}>
           {formatMessage(messages.edit)}
@@ -150,6 +191,8 @@ const ChatInfo = ({
   courseInformation,
   isCommunity,
   image,
+  created,
+  updated,
   setChatInfo,
 }) => {
   const shouldAlternate = useBreakpointValue({ base: false, md: true });
@@ -163,6 +206,8 @@ const ChatInfo = ({
       status={status}
       courseInformation={courseInformation}
       isCommunity={isCommunity}
+      created={created}
+      updated={updated}
       setChatInfo={setChatInfo}
     />
   );

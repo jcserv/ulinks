@@ -32,6 +32,14 @@ export class GroupChat {
   @Field() status: string;
 
   @Field({ nullable: true }) image: string;
+
+  @Field({ nullable: true }) created: Date;
+
+  @Field({ nullable: true }) updated: Date;
+
+  @Field({ nullable: true }) views: number;
+
+  @Field({ nullable: true }) likes: number;
 }
 
 @ObjectType()

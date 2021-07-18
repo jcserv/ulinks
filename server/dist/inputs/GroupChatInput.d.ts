@@ -12,4 +12,7 @@ export declare class createGroupChatInput {
     links: string[];
     courseInformation?: courseInformationInput;
     status: string;
+    created: Date;
+    views: number;
+    likes: number;
 }

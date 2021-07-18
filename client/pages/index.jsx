@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -12,7 +13,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { BsFillGridFill, BsPeopleFill } from "react-icons/bs";
 import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
@@ -23,7 +25,7 @@ import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
 import locales from "../content/locale";
-import { GET_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import { SEARCH_ALL_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
 
 const messages = defineMessages({
   discover: {
@@ -51,20 +53,88 @@ const messages = defineMessages({
     description: locales.en.communities,
     defaultMessage: locales.en.communities,
   },
+  viewMore: {
+    id: "view-more",
+    description: locales.en["view-more"],
+    defaultMessage: locales.en["view-more"],
+  },
+  search: {
+    id: "search",
+    description: locales.en.search,
+    defaultMessage: locales.en.search,
+  },
+  noChats: {
+    id: "no-chats",
+    description: locales.en["no-chats"],
+    defaultMessage: locales.en["no-chats"],
+  },
 });
 
-export default function Home({
-  groupChats: { groupChats, totalPages, pageNumber },
-}) {
+export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { formatMessage } = useIntl();
-  const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [totalPageState, setTotalPage] = useState(totalPages);
-  const [groupChatStates, setGroupChats] = useState(groupChats);
-  const [isCommunity, setCommunity] = useState(0);
+  const {
+    locale,
+    defaultLocale,
+    push,
+    query: { q, iscommunity },
+  } = useRouter();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [oldSearchQuery, setOldSearchQuery] = useState("");
+  const parseIsCommunity = (isCommunity) => {
+    if (isCommunity !== undefined) {
+      if (isCommunity === "false") {
+        return 1;
+      }
+      if (isCommunity === "true") {
+        return 2;
+      }
+    }
+    return 0;
+  };
+
+  const [curSearchQuery, setSearchQuery] = useState(q ?? "");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPageState, setTotalPage] = useState(0);
+  const [groupChatStates, setGroupChats] = useState([]);
+  const isCommunity = parseIsCommunity(iscommunity);
+
+  const search = async (searchQuery, curIsCommunity = 0, page = 0) => {
+    const {
+      data: {
+        groupChats: {
+          groupChats: newGroupChats,
+          totalPages: newTotalPages,
+          pageNumber: newPageNumber,
+        },
+      },
+    } = await client.query({
+      query: curIsCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
+      variables: {
+        page,
+        ...(searchQuery === "" ? {} : { text: searchQuery }),
+        ...(curIsCommunity !== 0 ? { isCommunity: curIsCommunity === 2 } : {}),
+      },
+    });
+    return {
+      groupChats: newGroupChats,
+      totalPages: newTotalPages,
+      pageNumber: newPageNumber,
+    };
+  };
+
+  useEffect(async () => {
+    const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
+    setGroupChats([...groupChats]);
+    setTotalPage(totalPages);
+    setCurrentPage(pageNumber);
+  }, []);
+
+  useEffect(async () => {
+    const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
+    setGroupChats([...groupChats]);
+    setTotalPage(totalPages);
+    setCurrentPage(pageNumber);
+  }, [q, iscommunity]);
 
   const tabs = [
     {
@@ -81,63 +151,54 @@ export default function Home({
     },
   ];
 
-  function applyGroupChatFilter() {
-    if (isCommunity === 0) {
-      return groupChatStates;
-    }
-    if (isCommunity === 1) {
-      return groupChatStates.filter((groupChat) => !groupChat.isCommunity);
-    }
-    return groupChatStates.filter((groupChat) => groupChat.isCommunity);
-  }
-
-  const filteredGroupChats = applyGroupChatFilter();
-
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setCurrentPage(0);
-    setOldSearchQuery(searchQuery);
-    const {
-      data: {
-        groupChats: {
-          groupChats: newGroupChats,
-          totalPages: newTotalPages,
-          pageNumber: newPageNumber,
-        },
-      },
-    } = await client.query({
-      query: SEARCH_GROUPCHATS,
-      variables: {
-        page: 0,
-        text: searchQuery,
-        isCommunity: isCommunity === 2,
-      },
-    });
-    setGroupChats([...newGroupChats]);
-    setTotalPage(newTotalPages);
-    setCurrentPage(newPageNumber);
+    if (isCommunity === 0) {
+      push(
+        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      push(
+        `${
+          locale !== defaultLocale ? locale : ""
+        }/?q=${curSearchQuery}&iscommunity=${isCommunity === 2}`,
+        undefined,
+        { shallow: true }
+      );
+    }
   };
 
   const displayMorePages = async () => {
     setCurrentPage((page) => page + 1);
     const {
-      data: {
-        groupChats: {
-          groupChats: newGroupChats,
-          totalPages: newTotalPages,
-          pageNumber: newPageNumber,
-        },
-      },
-    } = await client.query({
-      query: SEARCH_GROUPCHATS,
-      variables: {
-        page: currentPage + 1,
-        text: oldSearchQuery,
-        isCommunity: isCommunity === 2,
-      },
-    });
+      groupChats: newGroupChats,
+      totalPages: newTotalPages,
+      pageNumber: newPageNumber,
+    } = await search(curSearchQuery, isCommunity, currentPage + 1);
     setGroupChats((oldGroupChats) => [...oldGroupChats, ...newGroupChats]);
     setTotalPage(newTotalPages);
     setCurrentPage(newPageNumber);
+  };
+  const handleCommunityChange = (newIsCommunity) => {
+    setCurrentPage(0);
+    if (newIsCommunity === 0) {
+      push(
+        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      push(
+        `${
+          locale !== defaultLocale ? locale : ""
+        }/?q=${curSearchQuery}&iscommunity=${newIsCommunity === 2}`,
+        undefined,
+        { shallow: true }
+      );
+    }
   };
   return (
     <div className="page-container">
@@ -155,66 +216,71 @@ export default function Home({
           <br />
         </div>
         <div className="d-flex row-12">
-          <TabSelect tabs={tabs} onChange={setCommunity} />
+          <TabSelect
+            tabs={tabs}
+            selectedTab={isCommunity}
+            onChange={handleCommunityChange}
+          />
         </div>
       </div>
       <div className="col-8">
-        <InputGroup>
-          <Input
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-            mb={4}
-          />
-          <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
-            <ButtonGroup isAttached>
-              <IconButton
-                aria-label="Search"
-                icon={<SearchIcon />}
-                onClick={handleSearch}
-              />
-              {isCommunity !== 2 && (
+        <form onSubmit={handleSearch}>
+          <InputGroup>
+            <Input
+              placeholder={formatMessage(messages.search)}
+              value={curSearchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
+              mb={4}
+            />
+            <InputRightElement pr={isCommunity !== 2 ? 10 : 0}>
+              <ButtonGroup isAttached>
                 <IconButton
-                  aria-label="Advanced search settings"
-                  icon={<GoSettings />}
-                  onClick={onOpen}
+                  aria-label="Search"
+                  icon={<SearchIcon />}
+                  onClick={handleSearch}
                 />
-              )}
-            </ButtonGroup>
-          </InputRightElement>
-        </InputGroup>
-        <Flex wrap="wrap" justifyContent="flex-start">
-          {filteredGroupChats.map((groupChat, index) => (
-            <Card key={index} {...groupChat} />
-          ))}
-        </Flex>
-        {currentPage !== totalPageState ? (
-          <Box textAlign="center">
-            <Button onClick={displayMorePages}>View More</Button>
-          </Box>
-        ) : null}
-        <AdvancedSearchModal
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          setGroupChats={setGroupChats}
-        />
+                {isCommunity !== 2 && (
+                  <IconButton
+                    aria-label="Advanced search settings"
+                    icon={<GoSettings />}
+                    onClick={onOpen}
+                  />
+                )}
+              </ButtonGroup>
+            </InputRightElement>
+          </InputGroup>
+        </form>
       </div>
+      {groupChatStates.length === 0 && (
+        <Center mt="10vh">
+          <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+        </Center>
+      )}
+      <Flex
+        wrap="wrap"
+        className="col-9"
+        marginLeft="100px"
+        justifyContent="flex-start"
+      >
+        {groupChatStates.map((groupChat, index) => (
+          <Card key={index} {...groupChat} />
+        ))}
+      </Flex>
+      {currentPage !== totalPageState ? (
+        <Box textAlign="center">
+          <Button onClick={displayMorePages}>
+            {formatMessage(messages.viewMore)}
+          </Button>
+        </Box>
+      ) : null}
+      <AdvancedSearchModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        setGroupChats={setGroupChats}
+      />
     </div>
   );
-}
-
-export async function getStaticProps() {
-  const {
-    data: { groupChats },
-  } = await client.query({
-    query: GET_GROUPCHATS,
-  });
-  return {
-    props: {
-      groupChats,
-    },
-  };
 }

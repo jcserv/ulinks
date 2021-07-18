@@ -13,7 +13,6 @@ services:
       - PORT=80
       - HOST=http://host.docker.internal:4000
       - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_IMGUR_CLIENT_ID=${REACT_APP_IMGUR_CLIENT_ID}
     depends_on:
       - server
   server:
@@ -26,6 +25,8 @@ services:
       - PORT=4000
       - SECRET=${SECRET}
       - MONGO_URI=${MONGO_URI}
+      - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
+      - NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
     volumes:
       - ./server:/server
       - /server/node_modules

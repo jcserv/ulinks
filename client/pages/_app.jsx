@@ -11,7 +11,7 @@ import NavBar from "../components/NavBar";
 import locales from "../content/locale";
 import theme from "../theme";
 
-const TITLE = "ulinks | Find all your school communities in one place";
+const TITLE = "ULinks | Find all your school communities in one place";
 const DESCRIPTION = "Find all your school communities in one place";
 const URL = "http://ulinks.io";
 
@@ -32,6 +32,18 @@ const SiteHead = ({ title }) => (
     <meta property="twitter:title" content={TITLE} />
     <meta property="twitter:description" content={DESCRIPTION} />
     <meta property="twitter:image" content="/logo.png" />
+    <script
+      async
+      defer
+      src="https://scripts.simpleanalyticscdn.com/latest.js"
+    />
+    <noscript>
+      <img
+        src="https://queue.simpleanalyticscdn.com/noscript.gif"
+        alt=""
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+    </noscript>
     <meta
       name="google-site-verification"
       content="cqejQy3NErZCE6yNtNbUuKVsyNZjUaBrvNthsuBoksU"
@@ -59,9 +71,9 @@ function App({ Component, pageProps }) {
 
   const pathToTitle = {
     "/": TITLE,
-    "/admin": "Admin Panel | ulinks",
-    "/login": "Sign in to ulinks | ulinks",
-    "/register": "Join ulinks | ulinks",
+    "/admin": "Admin Panel | ULinks",
+    "/login": "Sign in to ULinks | ULinks",
+    "/register": "Join ULinks | ULinks",
   };
 
   const messages = locales[locale];
