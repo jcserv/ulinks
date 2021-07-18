@@ -26,6 +26,10 @@ const GroupChatSchema: Schema = new Schema(
       enum: ["approved", "pending", "rejected"],
       default: ["pending"],
     },
+    created: Date,
+    updated: Date,
+    views: Number,
+    likes: Number,
   },
   { toObject: { versionKey: false } }
 );
@@ -68,6 +72,10 @@ interface IGroupChat extends Document {
   image: string;
   courseInformation: ICourseInformation;
   status: string;
+  created: Date;
+  updated: Date;
+  views: number;
+  likes: number;
 }
 
 const User: Model<IUser> = mongoose.model("Users", UserSchema);

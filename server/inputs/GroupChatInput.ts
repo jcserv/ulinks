@@ -28,4 +28,10 @@ export class createGroupChatInput {
   courseInformation?: courseInformationInput;
 
   @Field() status: string;
+
+  @Field({ defaultValue: new Date() }) created: Date;
+
+  @Field({ defaultValue: 0 }) views: number;
+  
+  @Field({ defaultValue: 0 }) likes: number;
 }

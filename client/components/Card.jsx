@@ -4,20 +4,33 @@ import React from "react";
 import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import Tilt from "react-vanilla-tilt";
 
-const Icon = ({ index, link, textColor }) => (
+const Icon = ({ index, link, titleColor }) => (
   <>
-    {link.includes("discord.gg") && <FaDiscord key={index} color={textColor} />}
-    {link.includes("chat.whatsapp.com") && (
-      <FaWhatsapp key={index} color={textColor} />
+    {link.includes("discord.gg") && (
+      <FaDiscord
+        key={index}
+        color={titleColor}
+        style={{ marginRight: "5px" }}
+      />
     )}
-    {link.includes("linktr.ee") && <FaTree key={index} color={textColor} />}
+    {link.includes("chat.whatsapp.com") && (
+      <FaWhatsapp
+        key={index}
+        color={titleColor}
+        style={{ marginRight: "5px" }}
+      />
+    )}
+    {link.includes("linktr.ee") && (
+      <FaTree key={index} color={titleColor} style={{ marginRight: "5px" }} />
+    )}
   </>
 );
 
 export const Card = ({ name, description, image, links, id }) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
-  const textColor = useColorModeValue("black", "white");
+  const descriptionColor = useColorModeValue("gray.600", "gray.400");
+  const titleColor = useColorModeValue("black", "white");
 
   const cardStyle = {
     background: backgroundColor,
@@ -60,23 +73,23 @@ export const Card = ({ name, description, image, links, id }) => {
             fontWeight="semibold"
             as="h2"
             lineHeight="tight"
-            color={textColor}
+            color={titleColor}
           >
             {name}
           </Box>
 
           <Box
             mt="1"
-            color={textColor}
+            color={descriptionColor}
             fontWeight="semibold"
             as="h2"
             isTruncated
           >
             {description}
           </Box>
-          <Box mt="2">
+          <Box className="d-flex" mt="2">
             {links.map((link, index) => (
-              <Icon index={index} color={textColor} link={link} />
+              <Icon index={index} color={titleColor} link={link} />
             ))}
           </Box>
         </Box>
