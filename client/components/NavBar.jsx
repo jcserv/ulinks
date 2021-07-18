@@ -75,7 +75,7 @@ const Logo = ({ locale }) => (
     style={{ textDecoration: "none" }}
   >
     <NextLink href="/" locale={locale}>
-      ulinks
+      ULinks
     </NextLink>
   </Heading>
 );

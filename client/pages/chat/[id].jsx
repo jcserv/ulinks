@@ -10,7 +10,7 @@ export default function Chat({ chat, id }) {
   return (
     <div className="page-container">
       <NextSeo
-        title={`${chat.name} | ulinks`}
+        title={`${chat.name} | ULinks`}
         description={`Join group chats for ${chat.name}`}
       />
       <ChatInfo {...chatInfo} id={id} setChatInfo={setChatInfo} />
