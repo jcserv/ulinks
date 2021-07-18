@@ -13,14 +13,27 @@ const HOSTNAME =
     ? "https://ulinks.io"
     : "http://localhost:3000";
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  auth: {
-    user: process.env.NODEMAILER_EMAIL,
-    pass: process.env.NODEMAILER_PASSWORD,
-  },
-});
+const transporter =
+  process.env.NODE_ENV === "production"
+    ? nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          type: "OAuth2",
+          user: process.env.NODEMAILER_EMAIL,
+          serviceClient: process.env.SERVICE_CLIENT,
+          privateKey: process.env.PRIVATE_KEY,
+        },
+      })
+    : nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        auth: {
+          user: process.env.NODEMAILER_EMAIL,
+          pass: process.env.NODEMAILER_PASSWORD,
+        },
+      });
 
 export const emailTypeToContent = (
   type: string,
@@ -35,7 +48,7 @@ export const emailTypeToContent = (
   if (type === "confirmEmail") {
     emailContent.subject = "Verify Email";
     emailContent.html = verifyEmail(`${HOSTNAME}/verify/${verificationHash}`);
-    emailContent.text = `Thanks for signing up to Ulinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
+    emailContent.text = `Thanks for signing up to ULinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
   }
   return emailContent;
 };
@@ -47,9 +60,9 @@ function getMail(
   emailText: string
 ) {
   return {
-    from: '"Ulinks" <admin@ulinks.io>', // TODO: create an email
+    from: '"ULinks" <admin@ulinks.io>', // TODO: create an email
     to: recipient,
-    subject: `Ulinks - ${subject}`,
+    subject: `ULinks - ${subject}`,
     text: emailText,
     html: emailHtml,
   };

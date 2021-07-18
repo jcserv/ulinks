@@ -9,14 +9,26 @@ const constants_1 = require("./constants");
 const HOSTNAME = process.env.NODE_ENV === "production"
     ? "https://ulinks.io"
     : "http://localhost:3000";
-const transporter = nodemailer_1.default.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
-    },
-});
+const transporter = process.env.NODE_ENV === "production"
+    ? nodemailer_1.default.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            type: "OAuth2",
+            user: process.env.NODEMAILER_EMAIL,
+            serviceClient: process.env.SERVICE_CLIENT,
+            privateKey: process.env.PRIVATE_KEY,
+        },
+    })
+    : nodemailer_1.default.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL,
+            pass: process.env.NODEMAILER_PASSWORD,
+        },
+    });
 const emailTypeToContent = (type, verificationHash = "") => {
     const emailContent = {
         subject: "",
@@ -26,16 +38,16 @@ const emailTypeToContent = (type, verificationHash = "") => {
     if (type === "confirmEmail") {
         emailContent.subject = "Verify Email";
         emailContent.html = constants_1.verifyEmail(`${HOSTNAME}/verify/${verificationHash}`);
-        emailContent.text = `Thanks for signing up to Ulinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
+        emailContent.text = `Thanks for signing up to ULinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
     }
     return emailContent;
 };
 exports.emailTypeToContent = emailTypeToContent;
 function getMail(recipient, subject, emailHtml, emailText) {
     return {
-        from: '"Ulinks" <admin@ulinks.io>',
+        from: '"ULinks" <admin@ulinks.io>',
         to: recipient,
-        subject: `Ulinks - ${subject}`,
+        subject: `ULinks - ${subject}`,
         text: emailText,
         html: emailHtml,
     };

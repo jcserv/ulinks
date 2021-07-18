@@ -68,6 +68,8 @@ server:
 PORT=4000
 MONGO_URI=[put your mongo URI here]
 SECRET=[secret hash for encryption]
+NODEMAILER_EMAIL=[]
+NODEMAILER_PASSWORD=[]
 ```
 
 Locally running:
