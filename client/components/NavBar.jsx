@@ -91,7 +91,6 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
       return;
     }
     const data = await getUserData(email);
-    if (!data) return;
     setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
   }, [email, locale]);
 
