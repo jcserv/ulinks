@@ -8,6 +8,7 @@ import { IntlProvider } from "react-intl";
 
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import VerifyEmailAlert from "../components/VerifyEmailAlert";
 import locales from "../content/locale";
 import theme from "../theme";
 
@@ -61,6 +62,7 @@ const PageWrapper = ({ children, title }) => (
   <div>
     <SiteHead title={title} />
     <NavBar />
+    <VerifyEmailAlert />
     <main className="main">{children}</main>
     <Footer />
   </div>

@@ -10,6 +10,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  SkeletonCircle,
+  SkeletonText,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -49,6 +51,7 @@ export default function Home() {
     return 0;
   };
 
+  const [isSearching, setIsSearching] = useState(true);
   const [curSearchQuery, setSearchQuery] = useState(q ?? "");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPageState, setTotalPage] = useState(0);
@@ -81,13 +84,16 @@ export default function Home() {
 
   useEffect(async () => {
     const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
+    setIsSearching(false);
     setGroupChats([...groupChats]);
     setTotalPage(totalPages);
     setCurrentPage(pageNumber);
   }, []);
 
   useEffect(async () => {
+    setIsSearching(true);
     const { groupChats, totalPages, pageNumber } = await search(q, isCommunity);
+    setIsSearching(false);
     setGroupChats([...groupChats]);
     setTotalPage(totalPages);
     setCurrentPage(pageNumber);
@@ -210,23 +216,32 @@ export default function Home() {
           </InputGroup>
         </form>
       </div>
-      {groupChatStates.length === 0 && (
-        <Center mt="10vh">
-          <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
-        </Center>
+      {!isSearching ? (
+        <>
+          {groupChatStates.length === 0 && (
+            <Center mt="10vh">
+              <Text fontSize="2xl">{formatMessage(messages.noChats)}</Text>
+            </Center>
+          )}
+          <Flex
+            wrap="wrap"
+            className="col-9"
+            marginLeft="100px"
+            justifyContent="flex-start"
+          >
+            {groupChatStates.map((groupChat, index) => (
+              <Card key={index} {...groupChat} />
+            ))}
+          </Flex>
+        </>
+      ) : (
+        <Box padding="6" boxShadow="lg" w="75%">
+          <SkeletonCircle size="10" />
+          <SkeletonText mt="4" noOfLines={4} spacing="4" />
+        </Box>
       )}
-      <Flex
-        wrap="wrap"
-        className="col-9"
-        marginLeft="100px"
-        justifyContent="flex-start"
-      >
-        {groupChatStates.map((groupChat, index) => (
-          <Card key={index} {...groupChat} />
-        ))}
-      </Flex>
       {currentPage !== totalPageState ? (
-        <Box textAlign="center">
+        <Box textAlign="center" pt={2}>
           <Button onClick={displayMorePages}>
             {formatMessage(messages.viewMore)}
           </Button>
