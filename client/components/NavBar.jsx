@@ -91,7 +91,6 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
       return;
     }
     const data = await getUserData(email);
-    if (!data) cookie.remove("email"); // in case a user is logged in but their user is deleted. this fixes a bug with the navbar
     setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
   }, [email, locale]);
 
