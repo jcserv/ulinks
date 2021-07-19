@@ -22,7 +22,7 @@ const emailTypeToContent = (type, verificationHash = "") => {
 exports.emailTypeToContent = emailTypeToContent;
 function getMail(recipient, subject, emailHtml, emailText) {
     return {
-        from: '"ULinks" <admin@ulinks.io>',
+        from: "admin@ulinks.io",
         to: recipient,
         subject: `ULinks - ${subject}`,
         text: emailText,

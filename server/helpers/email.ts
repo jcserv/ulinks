@@ -37,7 +37,7 @@ function getMail(
   emailText: string
 ) {
   return {
-    from: '"ULinks" <admin@ulinks.io>',
+    from: "admin@ulinks.io",
     to: recipient,
     subject: `ULinks - ${subject}`,
     text: emailText,
