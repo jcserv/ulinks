@@ -1,4 +1,4 @@
-import { getTransporter } from "../config/email";
+import mailgun from "mailgun-js";
 import { verifyEmail } from "./constants";
 
 interface EmailContent {
@@ -11,6 +11,11 @@ const HOSTNAME =
   process.env.NODE_ENV === "production"
     ? "https://ulinks.io"
     : "http://localhost:3000";
+
+const mg = mailgun({
+  apiKey: process.env.MAILGUN_API_KEY as string,
+  domain: "ulinks.io",
+});
 
 export const emailTypeToContent = (
   type: string,
@@ -55,11 +60,8 @@ export const sendEmail = async (
     emailContent.html,
     emailContent.text
   );
-  try {
-    const transporter = await getTransporter();
-    await transporter.verify();
-    await transporter.sendMail(mail);
-  } catch (e) {
-    console.log(e);
-  }
+  mg.messages().send(mail, function (error, body) {
+    if (error) console.log(error);
+    console.log(body);
+  });
 };
