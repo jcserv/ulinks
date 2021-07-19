@@ -72,9 +72,9 @@ let GroupChatResolver = class GroupChatResolver {
         if (year != undefined && year !== "") {
             queryObj = { ...queryObj, "courseInformation.year": year };
         }
-        if (text != undefined) {
+        if (text != undefined && text != "") {
             const regex = new RegExp(helpers_1.escapeRegex(text), "gi");
-            queryObj = { description: regex };
+            queryObj = { ...queryObj, name: regex };
         }
         if (type != undefined) {
             queryObj = { ...queryObj, isCommunity: type };

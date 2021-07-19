@@ -51,7 +51,7 @@ export default function Verify({ status }) {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  if (id.length !== 22) {
+  if (id.length !== 20) {
     return {
       notFound: true,
     };
