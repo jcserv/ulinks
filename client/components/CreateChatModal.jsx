@@ -36,6 +36,7 @@ import locales from "../content/locale";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
 import { redirect } from "../helpers";
 import { capitallize } from "../helpers/formatters";
+import { getUserData } from "../helpers/permissions";
 import CourseInfo from "./CourseInfo";
 
 const messages = defineMessages({
@@ -352,6 +353,7 @@ const EnhancedChatForm = withFormik({
     { props: { onClose, redirectToChat, toast } }
   ) => {
     const email = cookie.get("email");
+    const data = await getUserData(email);
     const {
       data: { groupChat },
     } = await client.mutate({
@@ -360,7 +362,10 @@ const EnhancedChatForm = withFormik({
         email,
         info: {
           name,
-          status: isCommunity ? "pending" : "approved",
+          status:
+            isCommunity && data.getUser.status !== "admin"
+              ? "pending"
+              : "approved",
           description,
           links,
           isCommunity,
@@ -373,7 +378,7 @@ const EnhancedChatForm = withFormik({
       toast({
         title: "Success",
         description: `${
-          isCommunity
+          isCommunity && data.getUser.status !== "admin"
             ? "Request has been submitted"
             : `${groupChatName} has been created`
         }`,
