@@ -1,5 +1,4 @@
-import nodemailer from "nodemailer";
-
+import { getTransporter } from "../config/email";
 import { verifyEmail } from "./constants";
 
 interface EmailContent {
@@ -12,28 +11,6 @@ const HOSTNAME =
   process.env.NODE_ENV === "production"
     ? "https://ulinks.io"
     : "http://localhost:3000";
-
-const transporter =
-  process.env.NODE_ENV === "production"
-    ? nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          type: "OAuth2",
-          user: process.env.NODEMAILER_EMAIL,
-          serviceClient: process.env.SERVICE_CLIENT,
-          privateKey: process.env.PRIVATE_KEY,
-        },
-      })
-    : nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        auth: {
-          user: process.env.NODEMAILER_EMAIL,
-          pass: process.env.NODEMAILER_PASSWORD,
-        },
-      });
 
 export const emailTypeToContent = (
   type: string,
@@ -60,7 +37,7 @@ function getMail(
   emailText: string
 ) {
   return {
-    from: '"ULinks" <admin@ulinks.io>', // TODO: create an email
+    from: '"ULinks" <admin@ulinks.io>',
     to: recipient,
     subject: `ULinks - ${subject}`,
     text: emailText,
@@ -78,6 +55,11 @@ export const sendEmail = async (
     emailContent.html,
     emailContent.text
   );
-  const result = await transporter.sendMail(mail);
-  console.log(result);
+  try {
+    const transporter = await getTransporter();
+    await transporter.verify();
+    await transporter.sendMail(mail);
+  } catch (e) {
+    console.log(e);
+  }
 };

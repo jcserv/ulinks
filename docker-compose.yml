@@ -26,7 +26,9 @@ services:
       - SECRET=${SECRET}
       - MONGO_URI=${MONGO_URI}
       - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
-      - NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REFRESH_TOKEN=${REFRESH_TOKEN}
     volumes:
       - ./server:/server
       - /server/node_modules

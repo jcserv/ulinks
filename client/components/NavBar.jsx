@@ -25,46 +25,13 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import locales from "../content/locale";
+import { messages } from "../constants/intl/components/NavBar";
 import { getUserData } from "../helpers/permissions";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
-
-const messages = defineMessages({
-  admin: {
-    id: "admin",
-    description: locales.en.admin,
-    defaultMessage: locales.en.admin,
-  },
-  create: {
-    id: "create",
-    description: locales.en.create,
-    defaultMessage: locales.en.create,
-  },
-  login: {
-    id: "login",
-    description: locales.en.login,
-    defaultMessage: locales.en.login,
-  },
-  register: {
-    id: "register",
-    description: locales.en.register,
-    defaultMessage: locales.en.register,
-  },
-  toggleLightMode: {
-    id: "toggle-light-mode",
-    description: locales.en["toggle-light-mode"],
-    defaultMessage: locales.en["toggle-light-mode"],
-  },
-  toggleDarkMode: {
-    id: "toggle-dark-mode",
-    description: locales.en["toggle-dark-mode"],
-    defaultMessage: locales.en["toggle-dark-mode"],
-  },
-});
 
 const Logo = ({ locale }) => (
   <Heading
@@ -124,7 +91,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
       return;
     }
     const data = await getUserData(email);
-    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
+    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
   }, [email, locale]);
 
   const btns = navBtns.map((btn) => (
