@@ -37,10 +37,9 @@ export default function Verify({ status }) {
           {formatMessage(messages[`verification${status}`])}
         </Heading>
         <Button
-          href="/login"
           className="w-50 mt-4"
           colorScheme="teal"
-          onClick={() => redirect("/login", push, locale, defaultLocale)}
+          onClick={() => redirect("/", push, locale, defaultLocale)}
         >
           {formatMessage(messages.btnSuccess)}
         </Button>

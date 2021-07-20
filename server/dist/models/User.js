@@ -23,6 +23,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "status", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", Boolean)
+], User.prototype, "verified", void 0);
+__decorate([
     type_graphql_1.Field(() => [Groupchat_1.GroupChat], { nullable: "items" }),
     __metadata("design:type", Array)
 ], User.prototype, "groupChatsCreated", void 0);
