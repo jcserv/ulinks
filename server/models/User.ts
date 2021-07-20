@@ -9,6 +9,9 @@ export class User {
   @Field()
   status: string;
 
+  @Field()
+  verified: boolean;
+
   @Field(() => [GroupChat], { nullable: "items" })
   groupChatsCreated: GroupChat[];
 }
