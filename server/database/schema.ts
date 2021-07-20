@@ -6,7 +6,7 @@ const CourseInformationSchema: Schema = new Schema({
   code: String,
   term: {
     type: String,
-    enum: ["Fall", "Winter", "Summer", "Year"],
+    enum: ["Fall", "Winter", "Summer", "Year", "N/A"],
     default: "Fall",
   },
   year: String,

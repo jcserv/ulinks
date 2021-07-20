@@ -30,7 +30,15 @@ import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
-import { campuses, departments, terms, utscLevels, years } from "../constants";
+import {
+  campuses,
+  departments,
+  letterToTerm,
+  numToCampus,
+  terms,
+  utscLevels,
+  years,
+} from "../constants";
 import { messages } from "../constants/intl/components/CreateChatModal";
 import { ChatSchema } from "../constants/YupSchemas";
 import { ADD_GROUPCHAT } from "../gql/GroupChat";
@@ -48,6 +56,7 @@ const ChatForm = ({
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
 
+  // UTSG, UTM, UTSC
   const inferCampus = (val) => {
     const campus = val.toUpperCase();
     if (campuses.includes(campus)) {
@@ -55,6 +64,7 @@ const ChatForm = ({
     }
   };
 
+  // CSC
   const inferDepartment = (val) => {
     const dept = val.toUpperCase();
     if (departments.includes(dept)) {
@@ -62,6 +72,7 @@ const ChatForm = ({
     }
   };
 
+  // CSC108
   const inferCode = (val) => {
     if (val.length === 6) {
       const code = val.slice(3);
@@ -80,6 +91,18 @@ const ChatForm = ({
     }
   };
 
+  // CSC108H5F
+  const inferFullCode = (val) => {
+    if (val.length === 9) {
+      // don't need to do course code since that's covered by inferCode
+      const term = letterToTerm[val[8]];
+      const campus = numToCampus[val[7]];
+      if (term) setFieldValue("courseInfo.term", term);
+      if (campus) setFieldValue("courseInfo.campus", campus);
+    }
+  };
+
+  // Fall, Winter, Summer, Year
   const inferTerm = (val) => {
     if (!val) return;
     const term = capitallize(val);
@@ -110,6 +133,7 @@ const ChatForm = ({
                 inferCampus(word);
                 inferTerm(word);
                 inferYear(word);
+                inferFullCode(word);
               }
             });
           }}

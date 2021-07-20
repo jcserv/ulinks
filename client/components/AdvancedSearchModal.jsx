@@ -14,7 +14,6 @@ import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
 import { messages } from "../constants/intl/components/AdvancedSearchModal";
-import { CourseInfoSchema } from "../constants/YupSchemas";
 import { ADVANCED_SEARCH_GROUPCHATS } from "../gql/GroupChat";
 import CourseInfo from "./CourseInfo";
 
@@ -97,7 +96,6 @@ const EnhancedSearchForm = withFormik({
     term: "",
     year: "",
   }),
-  validationSchema: () => CourseInfoSchema,
   validateOnBlur: true,
   validateOnChange: true,
   validateOnMount: true,
