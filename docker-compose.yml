@@ -25,10 +25,7 @@ services:
       - PORT=4000
       - SECRET=${SECRET}
       - MONGO_URI=${MONGO_URI}
-      - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
-      - CLIENT_ID=${CLIENT_ID}
-      - CLIENT_SECRET=${CLIENT_SECRET}
-      - REFRESH_TOKEN=${REFRESH_TOKEN}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
     volumes:
       - ./server:/server
       - /server/node_modules
