@@ -1,12 +1,9 @@
 /* eslint-disable react/jsx-boolean-value */
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
   FormHelperText,
   FormLabel,
-  HStack,
-  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -16,17 +13,15 @@ import {
   ModalOverlay,
   Radio,
   RadioGroup,
-  Spacer,
   Stack,
   Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { Field, FieldArray, Form, withFormik } from "formik";
+import { FieldArray, Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
 import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
@@ -46,6 +41,7 @@ import { redirect } from "../helpers";
 import { capitallize } from "../helpers/formatters";
 import { getUserData } from "../helpers/permissions";
 import CourseInfo from "./CourseInfo";
+import LinkFields from "./LinkFields";
 
 const ChatForm = ({
   errors,
@@ -183,88 +179,12 @@ const ChatForm = ({
       <FieldArray
         name="links"
         render={() => (
-          <div>
-            {links.map((link, index) => (
-              <FormControl
-                name={`links.${index}`}
-                key={index}
-                mt={2}
-                isInvalid={hasSubmitted && errors.links}
-              >
-                <HStack>
-                  <FormLabel>{formatMessage(messages.link)}</FormLabel>
-                  <Spacer />
-                  <IconButton
-                    aria-label="Prefill Discord link"
-                    icon={<FaDiscord />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://discord.gg/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Prefill WhatsApp link"
-                    boxSize="1.5em"
-                    icon={<FaWhatsapp />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://chat.whatsapp.com/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Prefill Linktree link"
-                    boxSize="1.5em"
-                    icon={<FaTree />}
-                    variant="ghost"
-                    onClick={() => {
-                      const newLinks = [...links];
-                      newLinks[index] = "http://linktr.ee/";
-                      setFieldValue("links", newLinks);
-                    }}
-                  />
-                </HStack>
-
-                <Input
-                  as={Field}
-                  name={`links.${index}`}
-                  type="text"
-                  value={link}
-                />
-                {hasSubmitted && <Text color="red">{errors.links}</Text>}
-              </FormControl>
-            ))}
-            <HStack>
-              <Button
-                colorScheme="blue"
-                disabled={links.length >= 2}
-                rightIcon={<AddIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length < 2) setFieldValue("links", [...links, ""]);
-                }}
-              >
-                {formatMessage(messages.addLink)}
-              </Button>
-              <Button
-                colorScheme="red"
-                disabled={links.length <= 1}
-                rightIcon={<DeleteIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length > 1)
-                    setFieldValue("links", [
-                      ...links.slice(0, links.length - 1),
-                    ]);
-                }}
-              >
-                {formatMessage(messages.removeLink)}
-              </Button>
-            </HStack>
-          </div>
+          <LinkFields
+            errors={errors}
+            hasSubmitted={hasSubmitted}
+            links={links}
+            setFieldValue={setFieldValue}
+          />
         )}
       />
       <Button

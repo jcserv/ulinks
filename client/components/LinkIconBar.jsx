@@ -6,18 +6,19 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaDev, FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
+import { FaDev, FaDiscord, FaSlack, FaTree, FaWhatsapp } from "react-icons/fa";
 import { VscGithubInverted, VscIssues } from "react-icons/vsc";
 
 import { colors } from "../theme";
 
 const icons = {
+  bug: VscIssues,
+  devpost: FaDev,
   discord: FaDiscord,
   github: VscGithubInverted,
-  devpost: FaDev,
-  whatsapp: FaWhatsapp,
-  bug: VscIssues,
   linktree: FaTree,
+  slack: FaSlack,
+  whatsapp: FaWhatsapp,
 };
 
 const LinkIcon = ({
