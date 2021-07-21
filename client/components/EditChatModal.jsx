@@ -2,12 +2,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-boolean-value */
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   Modal,
   ModalBody,
@@ -19,7 +17,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { Field, FieldArray, Form, withFormik } from "formik";
+import { FieldArray, Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
@@ -29,6 +27,7 @@ import { messages } from "../constants/intl/components/CreateChatModal";
 import { ChatSchema } from "../constants/YupSchemas";
 import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 import CourseInfo from "./CourseInfo";
+import LinkFields from "./LinkFields";
 
 const ChatForm = ({
   errors,
@@ -87,52 +86,12 @@ const ChatForm = ({
       <FieldArray
         name="links"
         render={() => (
-          <div>
-            {links.map((link, index) => (
-              <FormControl
-                name={`links.${index}`}
-                key={index}
-                mt={2}
-                isInvalid={hasSubmitted && errors.links}
-              >
-                <FormLabel>{formatMessage(messages.link)}</FormLabel>
-                <Input
-                  as={Field}
-                  name={`links.${index}`}
-                  type="text"
-                  value={link}
-                />
-                {hasSubmitted && <Text color="red">{errors.links}</Text>}
-              </FormControl>
-            ))}
-            <HStack>
-              <Button
-                colorScheme="blue"
-                disabled={links.length >= 2}
-                rightIcon={<AddIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length < 2) setFieldValue("links", [...links, ""]);
-                }}
-              >
-                {formatMessage(messages.addLink)}
-              </Button>
-              <Button
-                colorScheme="red"
-                disabled={links.length <= 1}
-                rightIcon={<DeleteIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length > 1)
-                    setFieldValue("links", [
-                      ...links.slice(0, links.length - 1),
-                    ]);
-                }}
-              >
-                {formatMessage(messages.removeLink)}
-              </Button>
-            </HStack>
-          </div>
+          <LinkFields
+            errors={errors}
+            hasSubmitted={hasSubmitted}
+            links={links}
+            setFieldValue={setFieldValue}
+          />
         )}
       />
       <Button

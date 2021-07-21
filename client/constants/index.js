@@ -45,3 +45,11 @@ export const letterToTerm = {
   S: "Winter",
   Y: "Year",
 };
+export const supportedLinks = {
+  discord: "http://discord.gg/",
+  whatsapp: "http://chat.whatsapp.com/",
+  slack: "https://join.slack.com/t/",
+  linktree: "http://linktr.ee/",
+};
+export const MIN_NUM_LINKS = 1;
+export const MAX_NUM_LINKS = 4;

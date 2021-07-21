@@ -28,6 +28,11 @@ export const messages = defineMessages({
     description: locales.en["join-discord"],
     defaultMessage: locales.en["join-discord"],
   },
+  joinSlack: {
+    id: "join-slack",
+    description: locales.en["join-slack"],
+    defaultMessage: locales.en["join-slack"],
+  },
   joinWhatsapp: {
     id: "join-whatsapp",
     description: locales.en["join-whatsapp"],

@@ -32,6 +32,12 @@ function getLinkMetadata(url) {
       icon: "linktree",
     };
   }
+  if (url.includes("slack")) {
+    return {
+      label: formatMessage(messages.joinSlack),
+      icon: "slack",
+    };
+  }
   return {
     label: formatMessage(messages.joinDiscord),
     icon: "discord",
