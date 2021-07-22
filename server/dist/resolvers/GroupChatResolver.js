@@ -21,7 +21,7 @@ const Groupchat_1 = require("../models/Groupchat");
 const helpers_1 = require("../helpers");
 let GroupChatResolver = class GroupChatResolver {
     constructor() {
-        this.pageSize = 9;
+        this.pageSize = 8;
     }
     async getAllGroupChatIds() {
         const groupChats = await database_1.GroupChat.find();

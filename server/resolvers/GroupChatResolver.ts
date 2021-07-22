@@ -7,7 +7,7 @@ import { departmentToImage, escapeRegex } from "../helpers";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
-  pageSize = 9;
+  pageSize = 8;
 
   @Query(() => GroupChatIds)
   async getAllGroupChatIds(): Promise<GroupChatIds> {
