@@ -5,7 +5,7 @@ title: "\U0001F680 Feature Request: {{Feature Request Title}}"
 assignees: ""
 ---
 
-### Problem Overview 👁️‍🗨️
+### Overview 👁️‍🗨️
 
 <!-- A clear and concise description of what why you would like this feature. -->
 
@@ -16,14 +16,6 @@ assignees: ""
 <!-- A clear and concise description of what you'd like to see. -->
 
 (Please describe your proposed solution here.)
-
-### What alternatives have you considered? 🔍
-
-<!--
-  A description of other solutions you've tried or researched.
--->
-
-(Please write your answer here.)
 
 ### Additional details ℹ️
 

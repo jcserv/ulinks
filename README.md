@@ -2,7 +2,7 @@
 
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/ulinks/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/ulinks/)
 
-ulinks is a platform for students to browse & upload academic group chats to stay connected during online school.
+ULinks is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
 Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
@@ -17,15 +17,18 @@ Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/soft
 
 ## 💡 Contributing
 
-ulinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
+ULinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
 
 ```
 ──────────────────────── main ────────────────────────────────────    # Deployments
         │                                   │
         └───────────── develop ─────────────                          # Development work
             │                           │
-            └───────── feature/[name] ───                             # Feature branches
+            └───────── feat/[feat-name] ───                             # Feature branches
 ```
+
+Dev branches should be appended with an indicator to describe the type of work being done, including but not limited to:
+feat, hot-fix, refactor, tweak, docs, chore
 
 For internal team:
 1. Clone the repo
@@ -45,7 +48,7 @@ Frontend Acceptance Criteria:
 
 ## ⛏️ Featurework:
 
-1. `git checkout -b DEV-XXX` (where XXX corresponds to the github issue number)
+1. `git checkout -b feat/[feat-name]`
 2. Write your code
 3. Open a PR from that branch to develop (in the main repo)
 4. Fill out the pull request template accordingly
