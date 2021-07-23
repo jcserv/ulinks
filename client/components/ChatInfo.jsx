@@ -143,7 +143,7 @@ const ChatImage = ({ image }) => (
       alt="Chat image"
       src={image}
       placeholder="/logo.png"
-      width="400"
+      width="600"
       height="400"
     />
   </GridItem>
