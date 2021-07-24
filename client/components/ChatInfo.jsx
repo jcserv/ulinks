@@ -12,6 +12,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "../constants/intl/components/ChatInfo";
+import { incrementLikes } from "../helpers/groupchats";
 import { checkAdminOrCreated } from "../helpers/permissions";
 import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
@@ -93,6 +94,7 @@ const ChatDetails = ({
         boxSize="2em"
         justify="flex-start"
         ml={2}
+        sideEffect={() => incrementLikes(id)}
       />
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.created)}:{" "}
