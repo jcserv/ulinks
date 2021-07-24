@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Button,
   Modal,
@@ -14,8 +13,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import client from "../apollo-client";
 import locales from "../content/locale";
+import { deleteGroupChat } from "../requests/groupChats";
 
 const messages = defineMessages({
   confirm: {
@@ -39,19 +38,9 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
   const toast = useToast();
   const { formatMessage } = useIntl();
   const { locale, defaultLocale, push } = useRouter();
+
   const deleteAction = async () => {
-    const {
-      data: { deleteGroupChat: deleteResult },
-    } = await client.mutate({
-      mutation: gql`
-        mutation deleteGroupChat($id: String!) {
-          deleteGroupChat(id: $id)
-        }
-      `,
-      variables: {
-        id,
-      },
-    });
+    const deleteResult = await deleteGroupChat(id);
     if (deleteResult) {
       toast({
         title: "Success",

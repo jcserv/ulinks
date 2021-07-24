@@ -3,7 +3,7 @@ import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { getUserData } from "../helpers/permissions";
+import { getUserData } from "../requests/permissions";
 
 export default function VerifyEmailAlert() {
   const email = cookie.get("email");

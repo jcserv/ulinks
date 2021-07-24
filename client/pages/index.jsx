@@ -23,12 +23,11 @@ import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
 import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
 import { messages } from "../constants/intl/pages/index";
-import { SEARCH_ALL_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import { searchChats } from "../requests/groupChats";
 
 export default function Home() {
   const ml = useBreakpointValue({ base: 0, sm: 100 });
@@ -61,22 +60,11 @@ export default function Home() {
   const isCommunity = parseIsCommunity(iscommunity);
 
   const search = async (searchQuery, curIsCommunity = 0, page = 0) => {
-    const {
-      data: {
-        groupChats: {
-          groupChats: newGroupChats,
-          totalPages: newTotalPages,
-          pageNumber: newPageNumber,
-        },
-      },
-    } = await client.query({
-      query: curIsCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
-      variables: {
-        page,
-        ...(searchQuery === "" ? {} : { text: searchQuery }),
-        ...(curIsCommunity !== 0 ? { isCommunity: curIsCommunity === 2 } : {}),
-      },
-    });
+    const { newGroupChats, newTotalPages, newPageNumber } = await searchChats(
+      searchQuery,
+      curIsCommunity,
+      page
+    );
     return {
       groupChats: newGroupChats,
       totalPages: newTotalPages,

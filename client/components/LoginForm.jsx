@@ -12,9 +12,8 @@ import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
-import client from "../apollo-client";
 import locales from "../content/locale";
-import { LOGIN } from "../gql/Auth";
+import { login } from "../requests/auth";
 
 const messages = defineMessages({
   createAcct: {
@@ -99,14 +98,7 @@ export const EnhancedLoginForm = withFormik({
     { email, password },
     { props: { redirectToHomepage, toast } }
   ) => {
-    const {
-      data: {
-        login: { status, jwtToken },
-      },
-    } = await client.query({
-      query: LOGIN,
-      variables: { email, password },
-    });
+    const { status, jwtToken } = await login(email, password);
     if (status === "OK") {
       cookie.set("email", email, 24);
       cookie.set("authToken", jwtToken, 24);

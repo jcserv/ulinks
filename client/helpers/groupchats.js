@@ -5,11 +5,11 @@ export function incrementLikes(id) {
   client.mutate({
     mutation: INCREMENT_LIKES,
     variables: {
-        id,
+      id,
     },
   });
 }
 
 export default {
-    incrementLikes,
+  incrementLikes,
 };

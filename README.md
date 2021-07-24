@@ -11,6 +11,16 @@ Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/soft
 ```text
 .
 ├── client
+│   ├── components     
+│   ├── constants
+│   ├── content                     # Language jsons
+│   ├── gql                         # GraphQL Queries
+│   ├── helpers
+│   ├── pages
+│   ├── requests                    # Apollo query/mutate functions
+│   ├── styles
+│   ├── tests                      
+│   └──  theme
 ├── server
 └── README.md                       # You are here! :)
 ```
@@ -75,10 +85,11 @@ MAILGUN_API_KEY=[]
 ```
 
 Locally running:
-1. `cd client && yarn`
-2. `yarn dev`
-3. `cd server && yarn`
-4. `yarn dev`
+1. `yarn`               # install husky for pre-commit hooks
+2. `cd client && yarn`
+3. `yarn dev`
+4. `cd server && yarn`
+5. `yarn dev`
 
 ### With Docker 🐳
 

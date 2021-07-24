@@ -9,6 +9,12 @@ export const ADD_GROUPCHAT = gql`
   }
 `;
 
+export const DELETE_GROUPCHAT = gql`
+  mutation deleteGroupChat($id: String!) {
+    deleteGroupChat(id: $id)
+  }
+`;
+
 export const GET_GROUPCHAT = gql`
   query getGroupChat($id: String!) {
     getGroupChat(id: $id) {
@@ -170,6 +176,7 @@ export const INCREMENT_LIKES = gql`
 
 export default {
   ADD_GROUPCHAT,
+  DELETE_GROUPCHAT,
   GET_GROUPCHAT,
   GET_GROUPCHATS,
   GET_GROUPCHAT_IDS,

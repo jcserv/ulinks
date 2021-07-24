@@ -13,9 +13,8 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import * as Yup from "yup";
 
-import client from "../apollo-client";
 import { messages } from "../constants/intl/components/RegisterForm";
-import { SIGNUP } from "../gql/Auth";
+import { register } from "../requests/auth";
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -102,14 +101,7 @@ export const EnhancedRegisterForm = withFormik({
     { email, password },
     { props: { redirectToHomepage, toast } }
   ) => {
-    const {
-      data: {
-        signup: { status, jwtToken },
-      },
-    } = await client.mutate({
-      mutation: SIGNUP,
-      variables: { email, password },
-    });
+    const { status, jwtToken } = await register(email, password);
 
     if (status === "USER_EXISTS") {
       toast({
