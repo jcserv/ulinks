@@ -23,12 +23,13 @@ const icons = {
 
 const LinkIcon = ({
   index,
-  boxSize,
-  color,
-  onHoverColor,
   url,
   label,
   icon,
+  sideEffect,
+  boxSize,
+  color,
+  onHoverColor,
 }) => (
   <Tooltip label={label} aria-label={`${label}-tooltip`} key={`link-${index}`}>
     <Link
@@ -36,6 +37,7 @@ const LinkIcon = ({
       data-testid={label}
       display="inline-block"
       href={url}
+      onClick={sideEffect}
       isExternal
     >
       <Icon
@@ -50,6 +52,7 @@ const LinkIcon = ({
 
 const LinkIconBar = ({
   links,
+  sideEffect = () => {},
   color,
   onHoverColor,
   boxSize = "1.5em",
@@ -75,6 +78,7 @@ const LinkIconBar = ({
           <LinkIcon
             key={link.label}
             index={index}
+            sideEffect={sideEffect}
             boxSize={boxSize}
             color={iconColor}
             onHoverColor={hoverColor}

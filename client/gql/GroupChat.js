@@ -160,6 +160,14 @@ export const UPDATE_GROUPCHAT = gql`
   }
 `;
 
+export const INCREMENT_LIKES = gql`
+  mutation incrementLikes($id: String!) {
+    incrementLikes(id: $id) {
+      id
+    }
+  }
+`;
+
 export default {
   ADD_GROUPCHAT,
   GET_GROUPCHAT,
