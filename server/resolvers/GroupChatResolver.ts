@@ -22,7 +22,7 @@ export class GroupChatResolver {
     @Arg("page", { nullable: true })
     page: number = 0
   ) {
-    const groupChats = await GroupChatModel.find().sort({views: -1}).sort({ likes: -1})
+    const groupChats = await GroupChatModel.find().sort({views: -1, likes: -1})
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find().countDocuments();
@@ -94,7 +94,7 @@ export class GroupChatResolver {
     if (type != undefined) {
       queryObj = { ...queryObj, isCommunity: type };
     }
-    const groupChats = await GroupChatModel.find(queryObj).sort({views: -1}).sort({ likes: -1})
+    const groupChats = await GroupChatModel.find(queryObj).sort({views: -1, likes: -1})
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
