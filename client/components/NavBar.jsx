@@ -29,7 +29,7 @@ import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
 import { messages } from "../constants/intl/components/NavBar";
-import { getUserData } from "../helpers/permissions";
+import { getUserData } from "../requests/permissions";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
 

@@ -13,7 +13,7 @@ import { useIntl } from "react-intl";
 
 import { messages } from "../constants/intl/components/ChatInfo";
 import { incrementLikes } from "../helpers/groupchats";
-import { checkAdminOrCreated } from "../helpers/permissions";
+import { checkAdminOrCreated } from "../requests/permissions";
 import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";

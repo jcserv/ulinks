@@ -12,9 +12,8 @@ import { Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
 import { messages } from "../constants/intl/components/AdvancedSearchModal";
-import { ADVANCED_SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import { advancedSearch } from "../requests/groupChats";
 import CourseInfo from "./CourseInfo";
 
 const SearchForm = ({
@@ -53,19 +52,12 @@ const EnhancedSearchForm = withFormik({
     { campus, department, code, term, year },
     { props: { onClose, setGroupChats, toast } }
   ) => {
-    const {
-      data: {
-        groupChats: { groupChats: newGroupChats },
-      },
-    } = await client.query({
-      query: ADVANCED_SEARCH_GROUPCHATS,
-      variables: {
-        campus,
-        department,
-        code,
-        term,
-        year,
-      },
+    const newGroupChats = await advancedSearch({
+      campus,
+      department,
+      code,
+      term,
+      year,
     });
     if (newGroupChats.length === 0) {
       toast({

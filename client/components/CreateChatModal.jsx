@@ -24,7 +24,6 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
 import {
   campuses,
   departments,
@@ -36,10 +35,10 @@ import {
 } from "../constants";
 import { messages } from "../constants/intl/components/CreateChatModal";
 import { ChatSchema } from "../constants/YupSchemas";
-import { ADD_GROUPCHAT } from "../gql/GroupChat";
 import { redirect } from "../helpers";
 import { capitallize } from "../helpers/formatters";
-import { getUserData } from "../helpers/permissions";
+import { createChat } from "../requests/groupChats";
+import { getUserData } from "../requests/permissions";
 import CourseInfo from "./CourseInfo";
 import LinkFields from "./LinkFields";
 
@@ -215,25 +214,16 @@ const EnhancedChatForm = withFormik({
   ) => {
     const email = cookie.get("email");
     const data = await getUserData(email);
-    const {
-      data: { groupChat },
-    } = await client.mutate({
-      mutation: ADD_GROUPCHAT,
-      variables: {
-        email,
-        info: {
-          name,
-          status:
-            isCommunity && data.getUser.status !== "admin"
-              ? "pending"
-              : "approved",
-          description,
-          links,
-          isCommunity,
-          ...(!isCommunity ? { courseInformation: courseInfo } : {}),
-        },
-      },
-    });
+    const userStatus = data.getUser.status;
+    const groupChat = await createChat(
+      email,
+      name,
+      isCommunity,
+      userStatus,
+      description,
+      links,
+      courseInfo
+    );
     if (groupChat) {
       const { name: groupChatName, id } = groupChat;
       toast({

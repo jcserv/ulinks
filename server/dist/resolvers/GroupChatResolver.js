@@ -30,7 +30,7 @@ let GroupChatResolver = class GroupChatResolver {
         };
     }
     async getGroupChats(page = 0) {
-        const groupChats = await database_1.GroupChat.find()
+        const groupChats = await database_1.GroupChat.find().sort({ views: -1, likes: -1 })
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find().countDocuments();
@@ -52,7 +52,7 @@ let GroupChatResolver = class GroupChatResolver {
         return GroupChat;
     }
     async getGroupChat(id) {
-        const GroupChat = await database_1.GroupChat.findOne({ _id: id });
+        const GroupChat = await database_1.GroupChat.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } });
         return GroupChat;
     }
     async searchGroupChats(campus, department, code, term, year, text, type, page = 0) {
@@ -79,7 +79,7 @@ let GroupChatResolver = class GroupChatResolver {
         if (type != undefined) {
             queryObj = { ...queryObj, isCommunity: type };
         }
-        const groupChats = await database_1.GroupChat.find(queryObj)
+        const groupChats = await database_1.GroupChat.find(queryObj).sort({ views: -1, likes: -1 })
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find(queryObj).countDocuments();
@@ -156,6 +156,10 @@ let GroupChatResolver = class GroupChatResolver {
         }
         return false;
     }
+    async incrementLikes(id) {
+        const GroupChat = await database_1.GroupChat.findOneAndUpdate({ _id: id }, { $inc: { likes: 1 } });
+        return GroupChat;
+    }
 };
 __decorate([
     type_graphql_1.Query(() => Groupchat_1.GroupChatIds),
@@ -228,6 +232,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], GroupChatResolver.prototype, "deleteGroupChat", null);
+__decorate([
+    type_graphql_1.Mutation(() => models_1.GroupChat, { nullable: true }),
+    __param(0, type_graphql_1.Arg("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GroupChatResolver.prototype, "incrementLikes", null);
 GroupChatResolver = __decorate([
     type_graphql_1.Resolver(models_1.GroupChat)
 ], GroupChatResolver);

@@ -11,20 +11,12 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import client from "../apollo-client";
-import { userStatuses } from "../constants";
-import { UPDATE_USER } from "../gql/User";
+import { banUser } from "../requests/users";
 
 export default function BanUserModal({ isOpen, onClose, selectedUser }) {
   const toast = useToast();
   const onClick = async () => {
-    const { data } = await client.mutate({
-      mutation: UPDATE_USER,
-      variables: {
-        status: userStatuses.banned,
-        email: selectedUser,
-      },
-    });
+    const data = await banUser(selectedUser);
     if (!data.updateUser) {
       toast({
         description: "Request has failed",
