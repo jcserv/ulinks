@@ -48,7 +48,7 @@ export class GroupChatResolver {
 
   @Query(() => GroupChat, { nullable: true })
   async getGroupChat(@Arg("id") id: string) {
-    const GroupChat = await GroupChatModel.findOne({ _id: id });
+    const GroupChat = await GroupChatModel.findOneAndUpdate({ _id: id }, {$inc : {views: 1}});
     return GroupChat;
   }
 
@@ -94,7 +94,7 @@ export class GroupChatResolver {
     if (type != undefined) {
       queryObj = { ...queryObj, isCommunity: type };
     }
-    const groupChats = await GroupChatModel.find(queryObj)
+    const groupChats = await GroupChatModel.find(queryObj).sort({views: -1})
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
