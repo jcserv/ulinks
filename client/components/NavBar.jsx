@@ -19,12 +19,14 @@ import {
   useColorMode,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import cookie from "js-cookie";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
+import { MdSettings } from "react-icons/md";
 import { defineMessages, useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
@@ -169,6 +171,52 @@ const ColorModeButton = ({ mr }) => {
   );
 };
 
+const Settings = () => {
+
+  const {
+      locale,
+    } = useRouter();
+
+  const toast = useToast();
+
+  const logout = async () => {
+    cookie.remove("email");
+    //redirect("", push, locale, defaultLocale);
+    return toast({
+      title: "Success",
+      description: "Successfully logged out",
+      status: "success",
+      position: "bottom-left",
+      duration: 5000,
+      isCloseable: false,
+    });
+  };
+
+  if (typeof cookie.get("email") !== "undefined") {
+    return (
+      <Menu>
+        <Tooltip label="Settings" aria-label="Settings">
+          <MenuButton
+            title="settings-btn"
+            as={IconButton}
+            icon={<MdSettings />}
+            size="lg"
+            variant="ghost"
+          />
+        </Tooltip>
+        <MenuList size="sm">
+          <NextLink href="/" locale={locale}>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </NextLink>
+        </MenuList>
+      </Menu>
+    );
+  }
+
+  return null;
+
+};
+
 const LocaleSelect = () => (
   <Menu>
     <Tooltip label="Choose language" aria-label="Choose language">
@@ -205,6 +253,7 @@ const MenuLinks = ({ locale, onModalOpen, onClose }) => (
       onModalOpen={onModalOpen}
       onClose={onClose}
     />
+    <Settings />
     <LocaleSelect />
     <ColorModeButton mr="12px" />
   </Stack>
@@ -228,6 +277,7 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
               onModalOpen={onModalOpen}
               onClose={onClose}
             />
+            <Settings />
             <LocaleSelect />
             <ColorModeButton />
           </Stack>
