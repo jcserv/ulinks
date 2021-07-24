@@ -2,12 +2,12 @@ import {
   Button,
   GridItem,
   Heading,
-  Img,
   SimpleGrid,
   Text,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import React from "react";
 import { useIntl } from "react-intl";
 
@@ -139,12 +139,11 @@ const ChatDetails = ({
 
 const ChatImage = ({ image }) => (
   <GridItem>
-    <Img
+    <Image
       alt="Chat image"
-      src={
-        image || "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
-      }
-      width="400"
+      src={image}
+      placeholder="/logo.png"
+      width="600"
       height="400"
     />
   </GridItem>
