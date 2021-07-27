@@ -107,21 +107,11 @@ export default function Home() {
   const handleSearch = async (e) => {
     e.preventDefault();
     setCurrentPage(0);
-    if (isCommunity === 0) {
-      push(
-        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
-        undefined,
-        { shallow: true }
-      );
-    } else {
-      push(
-        `${
-          locale !== defaultLocale ? locale : ""
-        }/?q=${curSearchQuery}&iscommunity=${isCommunity === 2}`,
-        undefined,
-        { shallow: true }
-      );
-    }
+    push(
+      `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+      undefined,
+      { shallow: true }
+    );
   };
 
   const displayMorePages = async () => {
