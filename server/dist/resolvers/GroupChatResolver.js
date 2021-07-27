@@ -30,7 +30,8 @@ let GroupChatResolver = class GroupChatResolver {
         };
     }
     async getGroupChats(page = 0) {
-        const groupChats = await database_1.GroupChat.find().sort({ views: -1, likes: -1 })
+        const groupChats = await database_1.GroupChat.find()
+            .sort({ views: -1, likes: -1 })
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find().countDocuments();
@@ -79,7 +80,8 @@ let GroupChatResolver = class GroupChatResolver {
         if (type != undefined) {
             queryObj = { ...queryObj, isCommunity: type };
         }
-        const groupChats = await database_1.GroupChat.find(queryObj).sort({ views: -1, likes: -1 })
+        const groupChats = await database_1.GroupChat.find(queryObj)
+            .sort({ views: -1, likes: -1 })
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find(queryObj).countDocuments();
