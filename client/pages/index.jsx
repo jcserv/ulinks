@@ -128,20 +128,19 @@ export default function Home() {
   const handleCommunityChange = (newIsCommunity) => {
     setCurrentPage(0);
     if (newIsCommunity === 0) {
-      push(
-        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
-        undefined,
-        { shallow: true }
-      );
+      push(`${locale !== defaultLocale ? locale : ""}/`, undefined, {
+        shallow: true,
+      });
     } else {
       push(
-        `${
-          locale !== defaultLocale ? locale : ""
-        }/?q=${curSearchQuery}&iscommunity=${newIsCommunity === 2}`,
+        `${locale !== defaultLocale ? locale : ""}/?iscommunity=${
+          newIsCommunity === 2
+        }`,
         undefined,
         { shallow: true }
       );
     }
+    setSearchQuery("");
   };
   return (
     <div className="page-container">
