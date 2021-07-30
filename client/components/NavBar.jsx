@@ -25,8 +25,8 @@ import cookie from "js-cookie";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { BsGearFill } from "react-icons/bs";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
-import { MdSettings } from "react-icons/md";
 import { defineMessages, useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
@@ -56,6 +56,11 @@ const messages = defineMessages({
     description: locales.en.register,
     defaultMessage: locales.en.register,
   },
+  languages: {
+    id: "languages",
+    description: locales.en.languages,
+    defaultMessage: locales.en.languages,
+  },
   toggleLightMode: {
     id: "toggle-light-mode",
     description: locales.en["toggle-light-mode"],
@@ -65,6 +70,11 @@ const messages = defineMessages({
     id: "toggle-dark-mode",
     description: locales.en["toggle-dark-mode"],
     defaultMessage: locales.en["toggle-dark-mode"],
+  },
+  settings: {
+    id: "settings",
+    description: locales.en.settings,
+    defaultMessage: locales.en.settings,
   },
 });
 
@@ -147,7 +157,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   return <>{btns}</>;
 };
 
-const ColorModeButton = ({ mr }) => {
+const ColorModeButton = () => {
   const { toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
@@ -165,23 +175,63 @@ const ColorModeButton = ({ mr }) => {
         color="current"
         onClick={toggleColorMode}
         icon={<SwitchIcon />}
-        style={{ marginRight: mr }}
       />
     </Tooltip>
   );
 };
 
-const Settings = () => {
+const LocaleSelect = () => {
 
-  const {
-      locale,
-    } = useRouter();
+  const { pathname, query } = useRouter();
+  const { formatMessage } = useIntl();
 
+  let currentPath = pathname
+
+  if (typeof query.id !== "undefined") {
+    currentPath = `/chat/${query.id}`
+  } else if (typeof query.q !== "undefined") {
+    currentPath = `?q=${query.q.replaceAll(" ", "%20")}`
+  }
+
+  const [margin, setMargin] = useState("15px")
+  const email = cookie.get("email");
+  useEffect( () => {
+    setMargin(typeof email === "undefined" ? "15px" : "0px")
+  }, [email]);
+
+  return (
+    <Menu>
+      <Tooltip label={formatMessage(messages.languages)} aria-label={formatMessage(messages.languages)}>
+        <MenuButton
+          title="language-btn"
+          as={IconButton}
+          icon={<FaGlobe />}
+          size="md"
+          variant="ghost"
+          style={{ marginRight: margin }}
+        />
+      </Tooltip>
+      <MenuList size="sm">
+        <NextLink href={currentPath} locale="en">
+          <MenuItem>English</MenuItem>
+        </NextLink>
+        <NextLink href={currentPath} locale="fr">
+          <MenuItem>French</MenuItem>
+        </NextLink>
+      </MenuList>
+    </Menu>
+  )
+
+}
+
+const Settings = ({ mr }) => {
+
+  const { locale } = useRouter();
+  const { formatMessage } = useIntl();
   const toast = useToast();
 
   const logout = async () => {
     cookie.remove("email");
-    //redirect("", push, locale, defaultLocale);
     return toast({
       title: "Success",
       description: "Successfully logged out",
@@ -192,16 +242,20 @@ const Settings = () => {
     });
   };
 
+  //console.log("Settings email:")
+  //console.log(typeof cookie.get("email") === "undefined")
+
   if (typeof cookie.get("email") !== "undefined") {
     return (
       <Menu>
-        <Tooltip label="Settings" aria-label="Settings">
+        <Tooltip label={formatMessage(messages.settings)} aria-label={formatMessage(messages.settings)}>
           <MenuButton
             title="settings-btn"
             as={IconButton}
-            icon={<MdSettings />}
+            icon={<BsGearFill />}
             size="lg"
             variant="ghost"
+            style={{ marginRight: mr }}
           />
         </Tooltip>
         <MenuList size="sm">
@@ -212,52 +266,32 @@ const Settings = () => {
       </Menu>
     );
   }
-
   return null;
-
 };
 
-const LocaleSelect = () => (
-  <Menu>
-    <Tooltip label="Choose language" aria-label="Choose language">
-      <MenuButton
-        title="language-btn"
-        as={IconButton}
-        icon={<FaGlobe />}
-        size="md"
-        variant="ghost"
-      />
-    </Tooltip>
-    <MenuList size="sm">
-      <NextLink href="/" locale="en">
-        <MenuItem>English</MenuItem>
-      </NextLink>
-      <NextLink href="/" locale="fr">
-        <MenuItem>French</MenuItem>
-      </NextLink>
-    </MenuList>
-  </Menu>
-);
+const MenuLinks = ({ locale, onModalOpen, onClose }) => {
 
-const MenuLinks = ({ locale, onModalOpen, onClose }) => (
-  <Stack
-    display={{ base: "none", sm: "none", md: "block" }}
-    width={{ sm: "full", md: "auto" }}
-    spacing="24px"
-    direction={["column", "row", "row", "row"]}
-    alignItems="center"
-  >
-    <NavButtons
-      locale={locale}
-      size="sm"
-      onModalOpen={onModalOpen}
-      onClose={onClose}
-    />
-    <Settings />
-    <LocaleSelect />
-    <ColorModeButton mr="12px" />
-  </Stack>
-);
+  return (
+    <Stack
+      display={{ base: "none", sm: "none", md: "block" }}
+      width={{ sm: "full", md: "auto" }}
+      spacing="24px"
+      direction={["column", "row", "row", "row"]}
+      alignItems="center"
+    >
+      <NavButtons
+        locale={locale}
+        size="sm"
+        onModalOpen={onModalOpen}
+        onClose={onClose}
+      />
+      <ColorModeButton />
+      <LocaleSelect />
+      <Settings mr="15px" />
+    </Stack>
+  )
+
+}
 
 const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
@@ -277,9 +311,9 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
               onModalOpen={onModalOpen}
               onClose={onClose}
             />
-            <Settings />
-            <LocaleSelect />
             <ColorModeButton />
+            <LocaleSelect />
+            <Settings />
           </Stack>
         </DrawerBody>
       </DrawerContent>
