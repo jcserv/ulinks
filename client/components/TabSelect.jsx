@@ -11,16 +11,16 @@ const TabSelect = ({ tabs, onChange, selectedTab = 1 }) => {
       mt="auto"
       mb="auto"
       mr="10vw"
-      onChange={(index) => onChange(index)}
       index={selectedTab}
     >
       <TabList>
         {tabs &&
-          tabs.map((tab) => (
+          tabs.map((tab, index) => (
             <Tab
               aria-label={tab.label}
               key={tab.label}
               _hover={{ color: highlightedColor }}
+              onClick={() => onChange(index)}
             >
               <tab.icon style={{ marginRight: "5px" }} />
               {tab.label || ""}

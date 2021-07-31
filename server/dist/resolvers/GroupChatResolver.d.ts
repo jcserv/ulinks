@@ -19,4 +19,5 @@ export declare class GroupChatResolver {
     updateGroupChat(id: string, chatInfo: createGroupChatInput): Promise<import("../database/schema").IGroupChat | null>;
     updateStatus(id: string, status: string): Promise<import("../database/schema").IGroupChat | null>;
     deleteGroupChat(id: string): Promise<boolean>;
+    incrementLikes(id: string): Promise<import("../database/schema").IGroupChat | null>;
 }

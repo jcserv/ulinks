@@ -1,4 +1,4 @@
-import { createMockGroupChat, createMockUser } from "../helpers";
+import { createMockGroupChat, createMockUser } from "../helpers/testing";
 
 const mockGroupChats = [
   createMockGroupChat({

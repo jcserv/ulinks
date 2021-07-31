@@ -2,12 +2,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-boolean-value */
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   Modal,
   ModalBody,
@@ -19,89 +17,17 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { Field, FieldArray, Form, withFormik } from "formik";
+import { FieldArray, Form, withFormik } from "formik";
 import React, { useState } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
 import { departments } from "../constants";
+import { messages } from "../constants/intl/components/CreateChatModal";
 import { ChatSchema } from "../constants/YupSchemas";
-import locales from "../content/locale";
 import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 import CourseInfo from "./CourseInfo";
-
-const messages = defineMessages({
-  name: {
-    id: "name",
-    description: locales.en.name,
-    defaultMessage: locales.en.name,
-  },
-  description: {
-    id: "description",
-    description: locales.en.description,
-    defaultMessage: locales.en.description,
-  },
-  link: {
-    id: "link",
-    description: locales.en.link,
-    defaultMessage: locales.en.link,
-  },
-  type: {
-    id: "type",
-    description: locales.en.type,
-    defaultMessage: locales.en.type,
-  },
-  addLink: {
-    id: "add-link",
-    description: locales.en["add-link"],
-    defaultMessage: locales.en["add-link"],
-  },
-  removeLink: {
-    id: "remove-link",
-    description: locales.en["remove-link"],
-    defaultMessage: locales.en["remove-link"],
-  },
-  submit: {
-    id: "submit",
-    description: locales.en.submit,
-    defaultMessage: locales.en.submit,
-  },
-  campus: {
-    id: "campus",
-    description: locales.en.campus,
-    defaultMessage: locales.en.campus,
-  },
-  department: {
-    id: "department",
-    description: locales.en.department,
-    defaultMessage: locales.en.department,
-  },
-  code: {
-    id: "code",
-    description: locales.en.code,
-    defaultMessage: locales.en.code,
-  },
-  term: {
-    id: "term",
-    description: locales.en.term,
-    defaultMessage: locales.en.term,
-  },
-  year: {
-    id: "year",
-    description: locales.en.year,
-    defaultMessage: locales.en.year,
-  },
-  course: {
-    id: "course",
-    description: locales.en.course,
-    defaultMessage: locales.en.course,
-  },
-  community: {
-    id: "community",
-    description: locales.en.community,
-    defaultMessage: locales.en.community,
-  },
-});
+import LinkFields from "./LinkFields";
 
 const ChatForm = ({
   errors,
@@ -160,52 +86,12 @@ const ChatForm = ({
       <FieldArray
         name="links"
         render={() => (
-          <div>
-            {links.map((link, index) => (
-              <FormControl
-                name={`links.${index}`}
-                key={index}
-                mt={2}
-                isInvalid={hasSubmitted && errors.links}
-              >
-                <FormLabel>{formatMessage(messages.link)}</FormLabel>
-                <Input
-                  as={Field}
-                  name={`links.${index}`}
-                  type="text"
-                  value={link}
-                />
-                {hasSubmitted && <Text color="red">{errors.links}</Text>}
-              </FormControl>
-            ))}
-            <HStack>
-              <Button
-                colorScheme="blue"
-                disabled={links.length >= 2}
-                rightIcon={<AddIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length < 2) setFieldValue("links", [...links, ""]);
-                }}
-              >
-                {formatMessage(messages.addLink)}
-              </Button>
-              <Button
-                colorScheme="red"
-                disabled={links.length <= 1}
-                rightIcon={<DeleteIcon />}
-                className="w-50 mt-4"
-                onClick={() => {
-                  if (links.length > 1)
-                    setFieldValue("links", [
-                      ...links.slice(0, links.length - 1),
-                    ]);
-                }}
-              >
-                {formatMessage(messages.removeLink)}
-              </Button>
-            </HStack>
-          </div>
+          <LinkFields
+            errors={errors}
+            hasSubmitted={hasSubmitted}
+            links={links}
+            setFieldValue={setFieldValue}
+          />
         )}
       />
       <Button

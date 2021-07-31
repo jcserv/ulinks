@@ -1,26 +1,3 @@
-export const contributors = [
-  {
-    name: "Ritvik Bhardwaj",
-    href: "https://github.com/aipioxtechson/",
-  },
-  {
-    name: "Nina Ricci",
-    href: "https://ca.linkedin.com/in/ninaricci29",
-  },
-  {
-    name: "Jarrod Servilla",
-    href: "https://linkedin.com/in/jarrod-servilla",
-  },
-  {
-    name: "Michael Phung",
-    href: "https://www.linkedin.com/in/michael-phung-508b5a175/",
-  },
-  {
-    name: "Yousef Bulbulia",
-    href: "https://www.linkedin.com/in/yousef-bulbulia/",
-  },
-];
-
 export const links = [
   {
     label: "Github",
@@ -39,7 +16,4 @@ export const links = [
   },
 ];
 
-export default {
-  contributors,
-  links,
-};
+export default links;

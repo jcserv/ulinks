@@ -1,72 +1,9 @@
 import { FormControl, FormLabel, Input, Select, Text } from "@chakra-ui/react";
 import React from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 import { campuses, departments, terms, years } from "../constants";
-import locales from "../content/locale";
-
-const messages = defineMessages({
-  submit: {
-    id: "submit",
-    description: locales.en.submit,
-    defaultMessage: locales.en.submit,
-  },
-  campus: {
-    id: "campus",
-    description: locales.en.campus,
-    defaultMessage: locales.en.campus,
-  },
-  department: {
-    id: "department",
-    description: locales.en.department,
-    defaultMessage: locales.en.department,
-  },
-  code: {
-    id: "code",
-    description: locales.en.code,
-    defaultMessage: locales.en.code,
-  },
-  term: {
-    id: "term",
-    description: locales.en.term,
-    defaultMessage: locales.en.term,
-  },
-  year: {
-    id: "year",
-    description: locales.en.year,
-    defaultMessage: locales.en.year,
-  },
-  course: {
-    id: "course",
-    description: locales.en.course,
-    defaultMessage: locales.en.course,
-  },
-  advancedSearch: {
-    id: "advanced-search",
-    description: locales.en["advanced-search"],
-    defaultMessage: locales.en["advanced-search"],
-  },
-  selectCampus: {
-    id: "select-campus",
-    description: locales.en["select-campus"],
-    defaultMessage: locales.en["select-campus"],
-  },
-  selectDepartment: {
-    id: "select-department",
-    description: locales.en["select-department"],
-    defaultMessage: locales.en["select-department"],
-  },
-  selectTerm: {
-    id: "select-term",
-    description: locales.en["select-term"],
-    defaultMessage: locales.en["select-term"],
-  },
-  selectYear: {
-    id: "select-year",
-    description: locales.en["select-year"],
-    defaultMessage: locales.en["select-year"],
-  },
-});
+import { messages } from "../constants/intl/components/CourseInfo";
 
 const CourseInfo = ({
   errors,

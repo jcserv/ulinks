@@ -4,5 +4,6 @@ export const formatAsList = (str, index, arr, delimiter = ", ") =>
 export const capitallize = (str) => `${str[0].toUpperCase() + str.slice(1)}`;
 
 export default {
+  capitallize,
   formatAsList,
 };

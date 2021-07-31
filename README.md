@@ -2,7 +2,7 @@
 
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/jcserv/ulinks/main>.svg?style=flat-square)](https://codecov.io/gh/jcserv/ulinks/)
 
-ulinks is a platform for students to browse & upload academic group chats to stay connected during online school.
+ULinks is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
 Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
@@ -11,21 +11,34 @@ Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/soft
 ```text
 .
 ├── client
+│   ├── components     
+│   ├── constants
+│   ├── content                     # Language jsons
+│   ├── gql                         # GraphQL Queries
+│   ├── helpers
+│   ├── pages
+│   ├── requests                    # Apollo query/mutate functions
+│   ├── styles
+│   ├── tests                      
+│   └──  theme
 ├── server
 └── README.md                       # You are here! :)
 ```
 
 ## 💡 Contributing
 
-ulinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
+ULinks follows Gitflow. We practice CI/CD where we continuously deploy off of main and use develop for feature work/integration.
 
 ```
 ──────────────────────── main ────────────────────────────────────    # Deployments
         │                                   │
         └───────────── develop ─────────────                          # Development work
             │                           │
-            └───────── feature/[name] ───                             # Feature branches
+            └───────── feat/[feat-name] ───                             # Feature branches
 ```
+
+Dev branches should be appended with an indicator to describe the type of work being done, including but not limited to:
+feat, hot-fix, refactor, tweak, docs, chore
 
 For internal team:
 1. Clone the repo
@@ -45,7 +58,7 @@ Frontend Acceptance Criteria:
 
 ## ⛏️ Featurework:
 
-1. `git checkout -b DEV-XXX` (where XXX corresponds to the github issue number)
+1. `git checkout -b feat/[feat-name]`
 2. Write your code
 3. Open a PR from that branch to develop (in the main repo)
 4. Fill out the pull request template accordingly
@@ -68,15 +81,15 @@ server:
 PORT=4000
 MONGO_URI=[put your mongo URI here]
 SECRET=[secret hash for encryption]
-NODEMAILER_EMAIL=[]
-NODEMAILER_PASSWORD=[]
+MAILGUN_API_KEY=[]
 ```
 
 Locally running:
-1. `cd client && yarn`
-2. `yarn dev`
-3. `cd server && yarn`
-4. `yarn dev`
+1. `yarn`               # install husky for pre-commit hooks
+2. `cd client && yarn`
+3. `yarn dev`
+4. `cd server && yarn`
+5. `yarn dev`
 
 ### With Docker 🐳
 

@@ -27,56 +27,13 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { BsGearFill } from "react-icons/bs";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import locales from "../content/locale";
-import { getUserData } from "../helpers/permissions";
+import { messages } from "../constants/intl/components/NavBar";
+import { getUserData } from "../requests/permissions";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
-
-const messages = defineMessages({
-  admin: {
-    id: "admin",
-    description: locales.en.admin,
-    defaultMessage: locales.en.admin,
-  },
-  create: {
-    id: "create",
-    description: locales.en.create,
-    defaultMessage: locales.en.create,
-  },
-  login: {
-    id: "login",
-    description: locales.en.login,
-    defaultMessage: locales.en.login,
-  },
-  register: {
-    id: "register",
-    description: locales.en.register,
-    defaultMessage: locales.en.register,
-  },
-  languages: {
-    id: "languages",
-    description: locales.en.languages,
-    defaultMessage: locales.en.languages,
-  },
-  toggleLightMode: {
-    id: "toggle-light-mode",
-    description: locales.en["toggle-light-mode"],
-    defaultMessage: locales.en["toggle-light-mode"],
-  },
-  toggleDarkMode: {
-    id: "toggle-dark-mode",
-    description: locales.en["toggle-dark-mode"],
-    defaultMessage: locales.en["toggle-dark-mode"],
-  },
-  settings: {
-    id: "settings",
-    description: locales.en.settings,
-    defaultMessage: locales.en.settings,
-  },
-});
 
 const Logo = ({ locale }) => (
   <Heading
@@ -136,7 +93,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
       return;
     }
     const data = await getUserData(email);
-    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data.getUser.status]));
+    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
   }, [email, locale]);
 
   const btns = navBtns.map((btn) => (

@@ -4,31 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = exports.emailTypeToContent = void 0;
-const nodemailer_1 = __importDefault(require("nodemailer"));
+const mailgun_js_1 = __importDefault(require("mailgun-js"));
 const constants_1 = require("./constants");
 const HOSTNAME = process.env.NODE_ENV === "production"
     ? "https://ulinks.io"
     : "http://localhost:3000";
-const transporter = process.env.NODE_ENV === "production"
-    ? nodemailer_1.default.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-            type: "OAuth2",
-            user: process.env.NODEMAILER_EMAIL,
-            serviceClient: process.env.SERVICE_CLIENT,
-            privateKey: process.env.PRIVATE_KEY,
-        },
-    })
-    : nodemailer_1.default.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        auth: {
-            user: process.env.NODEMAILER_EMAIL,
-            pass: process.env.NODEMAILER_PASSWORD,
-        },
-    });
+const mg = mailgun_js_1.default({
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: "ulinks.io",
+});
 const emailTypeToContent = (type, verificationHash = "") => {
     const emailContent = {
         subject: "",
@@ -54,8 +38,11 @@ function getMail(recipient, subject, emailHtml, emailText) {
 }
 const sendEmail = async (recipient, emailContent) => {
     const mail = getMail(recipient, emailContent.subject, emailContent.html, emailContent.text);
-    const result = await transporter.sendMail(mail);
-    console.log(result);
+    mg.messages().send(mail, function (error, body) {
+        if (error)
+            console.log(error);
+        console.log(body);
+    });
 };
 exports.sendEmail = sendEmail;
 //# sourceMappingURL=email.js.map

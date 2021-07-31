@@ -9,6 +9,9 @@ module.exports = {
     defaultLocale: "en",
     localeDetection: true,
   },
+  images: {
+    domains: ["i.imgur.com", "cssc.utm.utoronto.ca"],
+  },
   env: {
     HOST: process.env.HOST,
   },

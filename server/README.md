@@ -12,8 +12,9 @@ For server, you'll need this .env file:
 PORT=4000
 MONGO_URI=[put your mongo URI here]
 SECRET=[secret hash for encryption]
-NODEMAILER_EMAIL=[]
-NODEMAILER_PASSWORD=[]
+MAILGUN_API_KEY=[]
+```
+
 ```
 
 You can create a testing email with: https://ethereal.email/create
@@ -30,3 +31,4 @@ You can create a testing email with: https://ethereal.email/create
 - [GraphQL](https://graphql.org/)
 - Node.js
 - Express
+```

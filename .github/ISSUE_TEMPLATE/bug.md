@@ -5,15 +5,9 @@ title: "\U0001F41B Bug: {{Enter Bug Title}}"
 assignees: ""
 ---
 
-### Expected Behavior 🧭
+### Expected/Current Behavior 🧭
 
-<!--- A description of what should happen. -->
-
-(Please write your answer here.)
-
-### Current Behavior 🔍
-
-<!--- A description happens instead of the expected behavior. -->
+<!--- A description of what should happen and what happens instead. -->
 
 (Please write your answer here.)
 
@@ -27,32 +21,6 @@ assignees: ""
 2.
 3.
 4.
-
-**Acceptence Criteria for Fix ✅**
-
-<!--- A checklist of points that break down the expected behavior of a solution that fixes the bug. -->
-
-(Please write your answer here.)
-
-- [ ]
-- [ ]
-- [ ]
-
-### Possible Solution 🛠️
-
-<!---  Do you have an idea for how to fix the bug? -->
-
-(Please write your answer here.)
-
-**Implementation Details 🧰**
-
-<!--- Not obligatory, but you may suggest an idea for implementing additions or changes that would fix this bug. -->
-
-(Please write your answer here.)
-
--
--
--
 
 ### Additional details ℹ️
 

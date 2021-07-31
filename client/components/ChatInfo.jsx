@@ -2,59 +2,22 @@ import {
   Button,
   GridItem,
   Heading,
-  Img,
   SimpleGrid,
   Text,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import React from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
-import locales from "../content/locale";
-import { checkAdminOrCreated } from "../helpers/permissions";
+import { messages } from "../constants/intl/components/ChatInfo";
+import { incrementLikes } from "../helpers/groupchats";
+import { checkAdminOrCreated } from "../requests/permissions";
 import CheckPermissions from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
-
-const messages = defineMessages({
-  details: {
-    id: "details",
-    description: locales.en.details,
-    defaultMessage: locales.en.details,
-  },
-  created: {
-    id: "created",
-    description: locales.en.created,
-    defaultMessage: locales.en.created,
-  },
-  lastModified: {
-    id: "last-modified",
-    description: locales.en["last-modified"],
-    defaultMessage: locales.en["last-modified"],
-  },
-  edit: {
-    id: "edit",
-    description: locales.en.edit,
-    defaultMessage: locales.en.details,
-  },
-  joinDiscord: {
-    id: "join-discord",
-    description: locales.en["join-discord"],
-    defaultMessage: locales.en["join-discord"],
-  },
-  joinWhatsapp: {
-    id: "join-whatsapp",
-    description: locales.en["join-whatsapp"],
-    defaultMessage: locales.en["join-whatsapp"],
-  },
-  visitLinktree: {
-    id: "visit-linktree",
-    description: locales.en["visit-linktree"],
-    defaultMessage: locales.en["visit-linktree"],
-  },
-});
 
 function getLinkMetadata(url) {
   const { formatMessage } = useIntl();
@@ -68,6 +31,12 @@ function getLinkMetadata(url) {
     return {
       label: formatMessage(messages.visitLinktree),
       icon: "linktree",
+    };
+  }
+  if (url.includes("slack")) {
+    return {
+      label: formatMessage(messages.joinSlack),
+      icon: "slack",
     };
   }
   return {
@@ -125,6 +94,7 @@ const ChatDetails = ({
         boxSize="2em"
         justify="flex-start"
         ml={2}
+        sideEffect={() => incrementLikes(id)}
       />
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.created)}:{" "}
@@ -171,12 +141,11 @@ const ChatDetails = ({
 
 const ChatImage = ({ image }) => (
   <GridItem>
-    <Img
+    <Image
       alt="Chat image"
-      src={
-        image || "https://images.unsplash.com/photo-1415201179613-bd037ff5eb29"
-      }
-      width="400"
+      src={image}
+      placeholder="/logo.png"
+      width="600"
       height="400"
     />
   </GridItem>

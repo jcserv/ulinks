@@ -1,58 +1,19 @@
 import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
-import client from "../../apollo-client";
 import Autocomplete from "../../components/Autocomplete";
 import BanUserModal from "../../components/BanUserModal";
 import CheckPermissions from "../../components/CheckPermissions";
 import RequestsList from "../../components/RequestsList";
 import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
-import locales from "../../content/locale";
-import { GET_ADMIN_DATA } from "../../gql";
-import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
-import { SEARCH_USERS } from "../../gql/User";
+import { messages } from "../../constants/intl/pages/admin";
 import { mapAsOption } from "../../helpers";
-import { checkAdmin } from "../../helpers/permissions";
-
-const messages = defineMessages({
-  requestManagement: {
-    id: "request-management",
-    description: locales.en["request-management"],
-    defaultMessage: locales.en["request-management"],
-  },
-  userManagement: {
-    id: "user-management",
-    description: locales.en["user-management"],
-    defaultMessage: locales.en["user-management"],
-  },
-  pendingRequests: {
-    id: "pending-requests",
-    description: locales.en["pending-requests"],
-    defaultMessage: locales.en["pending-requests"],
-  },
-  rejectedRequests: {
-    id: "rejected-requests",
-    description: locales.en["rejected-requests"],
-    defaultMessage: locales.en["rejected-requests"],
-  },
-  bannedUsers: {
-    id: "banned-users",
-    description: locales.en["banned-users"],
-    defaultMessage: locales.en["banned-users"],
-  },
-  noRequests: {
-    id: "no-requests",
-    description: locales.en["no-requests"],
-    defaultMessage: locales.en["no-requests"],
-  },
-  noUsers: {
-    id: "no-users",
-    description: locales.en["no-users"],
-    defaultMessage: locales.en["no-users"],
-  },
-});
+import { getAdminData } from "../../requests";
+import { modifyGroupchatStatus } from "../../requests/groupChats";
+import { checkAdmin } from "../../requests/permissions";
+import { searchUsersReq } from "../../requests/users";
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,15 +26,7 @@ export default function Admin() {
   const toast = useToast();
 
   useEffect(async () => {
-    const { data: adminData } = await client.query({
-      query: GET_ADMIN_DATA,
-      variables: {
-        status1: "pending",
-        status2: "rejected",
-        limit: 50,
-        userStatus: "banned",
-      },
-    });
+    const adminData = await getAdminData();
     setPending(adminData.pendingChats);
     setRejected(adminData.rejectedChats);
     setBanned(adminData.bannedUsers);
@@ -81,17 +34,7 @@ export default function Admin() {
   }, []);
 
   const modifyRequest = async (id, status) => {
-    const {
-      data: {
-        updateStatus: { name, id: groupChatId },
-      },
-    } = await client.mutate({
-      mutation: UPDATE_GROUPCHAT_STATUS,
-      variables: {
-        id,
-        status,
-      },
-    });
+    const { name, groupChatId } = await modifyGroupchatStatus(id, status);
     if (status === "rejected") {
       setRejected((rejectedGroups) => [
         ...rejectedGroups,
@@ -111,14 +54,7 @@ export default function Admin() {
   };
 
   const searchForUsers = async (text) => {
-    const {
-      data: { searchUsers },
-    } = await client.query({
-      query: SEARCH_USERS,
-      variables: {
-        text,
-      },
-    });
+    const searchUsers = await searchUsersReq(text);
     return mapAsOption(searchUsers, "email");
   };
 

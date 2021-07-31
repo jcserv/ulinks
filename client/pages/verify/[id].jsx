@@ -37,10 +37,9 @@ export default function Verify({ status }) {
           {formatMessage(messages[`verification${status}`])}
         </Heading>
         <Button
-          href="/login"
           className="w-50 mt-4"
           colorScheme="teal"
-          onClick={() => redirect("/login", push, locale, defaultLocale)}
+          onClick={() => redirect("/", push, locale, defaultLocale)}
         >
           {formatMessage(messages.btnSuccess)}
         </Button>
@@ -51,7 +50,7 @@ export default function Verify({ status }) {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  if (id.length !== 22) {
+  if (id.length !== 20) {
     return {
       notFound: true,
     };

@@ -7,7 +7,7 @@ import { departmentToImage, escapeRegex } from "../helpers";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
-  pageSize = 9;
+  pageSize = 8;
 
   @Query(() => GroupChatIds)
   async getAllGroupChatIds(): Promise<GroupChatIds> {
@@ -23,6 +23,7 @@ export class GroupChatResolver {
     page: number = 0
   ) {
     const groupChats = await GroupChatModel.find()
+      .sort({ views: -1, likes: -1 })
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find().countDocuments();
@@ -48,7 +49,10 @@ export class GroupChatResolver {
 
   @Query(() => GroupChat, { nullable: true })
   async getGroupChat(@Arg("id") id: string) {
-    const GroupChat = await GroupChatModel.findOne({ _id: id });
+    const GroupChat = await GroupChatModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { views: 1 } }
+    );
     return GroupChat;
   }
 
@@ -95,6 +99,7 @@ export class GroupChatResolver {
       queryObj = { ...queryObj, isCommunity: type };
     }
     const groupChats = await GroupChatModel.find(queryObj)
+      .sort({ views: -1, likes: -1 })
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
@@ -192,5 +197,14 @@ export class GroupChatResolver {
       return result && result2.n == 1;
     }
     return false;
+  }
+
+  @Mutation(() => GroupChat, { nullable: true })
+  async incrementLikes(@Arg("id") id: string) {
+    const GroupChat = await GroupChatModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { likes: 1 } }
+    );
+    return GroupChat;
   }
 }
