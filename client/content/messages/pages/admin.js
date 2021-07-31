@@ -1,6 +1,6 @@
 import { defineMessages } from "react-intl";
 
-import locales from "../../../content/locale";
+import locales from "../../locale";
 
 export const messages = defineMessages({
   requestManagement: {

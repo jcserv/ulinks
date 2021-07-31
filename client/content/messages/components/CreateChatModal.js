@@ -1,6 +1,6 @@
 import { defineMessages } from "react-intl";
 
-import locales from "../../../content/locale";
+import locales from "../../locale";
 
 // Note: these are also used by EditChatModal
 

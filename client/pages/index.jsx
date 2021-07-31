@@ -26,7 +26,7 @@ import { useIntl } from "react-intl";
 import AdvancedSearchModal from "../components/AdvancedSearchModal";
 import { Card } from "../components/Card";
 import TabSelect from "../components/TabSelect";
-import { messages } from "../constants/intl/pages/index";
+import { messages } from "../content/messages/pages/index";
 import { searchChats } from "../requests/groupChats";
 
 export default function Home() {

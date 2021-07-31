@@ -13,8 +13,8 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import * as Yup from "yup";
 
-import { messages } from "../constants/intl/components/RegisterForm";
 import { USER_EXISTS } from "../constants/toasts";
+import { messages } from "../content/messages/components/RegisterForm";
 import { register } from "../requests/auth";
 
 const RegisterSchema = Yup.object().shape({

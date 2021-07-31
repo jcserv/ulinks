@@ -21,9 +21,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import { messages } from "../constants/intl/components/CreateChatModal";
 import { CREATE_CHAT_SUCCESS, GENERIC_ERROR } from "../constants/toasts";
 import { ChatSchema } from "../constants/YupSchemas";
+import { messages } from "../content/messages/components/CreateChatModal";
 import { redirect } from "../helpers";
 import { createChat } from "../requests/groupChats";
 import { getUserData } from "../requests/permissions";

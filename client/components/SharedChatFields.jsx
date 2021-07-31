@@ -18,7 +18,7 @@ import {
   utscLevels,
   years,
 } from "../constants";
-import { messages } from "../constants/intl/components/SharedChatFields";
+import { messages } from "../content/messages/components/SharedChatFields";
 import { capitallize } from "../helpers/formatters";
 
 const SharedChatFields = ({

@@ -12,8 +12,8 @@ import { Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import { messages } from "../constants/intl/components/AdvancedSearchModal";
 import { NO_RESULTS, RESULTS_RECEIVED } from "../constants/toasts";
+import { messages } from "../content/messages/components/AdvancedSearchModal";
 import { advancedSearch } from "../requests/groupChats";
 import CourseInfo from "./CourseInfo";
 

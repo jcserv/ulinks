@@ -30,7 +30,7 @@ import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import { messages } from "../constants/intl/components/NavBar";
+import { messages } from "../content/messages/components/NavBar";
 import { getUserData } from "../requests/permissions";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
