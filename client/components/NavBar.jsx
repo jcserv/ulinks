@@ -19,11 +19,13 @@ import {
   useColorMode,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import cookie from "js-cookie";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { BsGearFill } from "react-icons/bs";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
@@ -112,7 +114,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   return <>{btns}</>;
 };
 
-const ColorModeButton = ({ mr }) => {
+const ColorModeButton = () => {
   const { toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
@@ -130,52 +132,113 @@ const ColorModeButton = ({ mr }) => {
         color="current"
         onClick={toggleColorMode}
         icon={<SwitchIcon />}
-        style={{ marginRight: mr }}
       />
     </Tooltip>
   );
 };
 
-const LocaleSelect = () => (
-  <Menu>
-    <Tooltip label="Choose language" aria-label="Choose language">
-      <MenuButton
-        title="language-btn"
-        as={IconButton}
-        icon={<FaGlobe />}
-        size="md"
-        variant="ghost"
-      />
-    </Tooltip>
-    <MenuList size="sm">
-      <NextLink href="/" locale="en">
-        <MenuItem>English</MenuItem>
-      </NextLink>
-      <NextLink href="/" locale="fr">
-        <MenuItem>French</MenuItem>
-      </NextLink>
-    </MenuList>
-  </Menu>
-);
+const LocaleSelect = ({ mr }) => {
+  const { formatMessage } = useIntl();
 
-const MenuLinks = ({ locale, onModalOpen, onClose }) => (
-  <Stack
-    display={{ base: "none", sm: "none", md: "block" }}
-    width={{ sm: "full", md: "auto" }}
-    spacing="24px"
-    direction={["column", "row", "row", "row"]}
-    alignItems="center"
-  >
-    <NavButtons
-      locale={locale}
-      size="sm"
-      onModalOpen={onModalOpen}
-      onClose={onClose}
-    />
-    <LocaleSelect />
-    <ColorModeButton mr="12px" />
-  </Stack>
-);
+  return (
+    <Menu>
+      <Tooltip
+        label={formatMessage(messages.languages)}
+        aria-label={formatMessage(messages.languages)}
+      >
+        <MenuButton
+          title="language-btn"
+          as={IconButton}
+          icon={<FaGlobe />}
+          size="md"
+          variant="ghost"
+          style={{ marginRight: mr }}
+        />
+      </Tooltip>
+      <MenuList size="sm">
+        <NextLink href="/" locale="en">
+          <MenuItem>English</MenuItem>
+        </NextLink>
+        <NextLink href="/" locale="fr">
+          <MenuItem>French</MenuItem>
+        </NextLink>
+      </MenuList>
+    </Menu>
+  );
+};
+
+const Settings = ({ mr }) => {
+  const { locale } = useRouter();
+  const { formatMessage } = useIntl();
+  const toast = useToast();
+
+  const logout = async () => {
+    cookie.remove("email");
+    return toast({
+      title: "Success",
+      description: "Successfully logged out",
+      status: "success",
+      position: "bottom-left",
+      duration: 5000,
+      isCloseable: false,
+    });
+  };
+
+  if (typeof cookie.get("email") !== "undefined") {
+    return (
+      <Menu>
+        <Tooltip
+          label={formatMessage(messages.settings)}
+          aria-label={formatMessage(messages.settings)}
+        >
+          <MenuButton
+            title="settings-btn"
+            as={IconButton}
+            icon={<BsGearFill />}
+            size="lg"
+            variant="ghost"
+            style={{ marginRight: mr }}
+          />
+        </Tooltip>
+        <MenuList size="sm">
+          <NextLink href="/" locale={locale}>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </NextLink>
+        </MenuList>
+      </Menu>
+    );
+  }
+  return null;
+};
+
+const MenuLinks = ({ locale, onModalOpen, onClose }) => {
+  const [localeMargin, setLocaleMargin] = useState("15px");
+  const email = cookie.get("email");
+
+  useEffect(() => {
+    setLocaleMargin(typeof email === "undefined" ? "15px" : "0px");
+  }, [email]);
+
+  return (
+    <Stack
+      display={{ base: "none", sm: "none", md: "block" }}
+      width={{ sm: "full", md: "auto" }}
+      spacing="24px"
+      direction={["column", "row", "row", "row"]}
+      alignItems="center"
+    >
+      <NavButtons
+        locale={locale}
+        size="sm"
+        onModalOpen={onModalOpen}
+        onClose={onClose}
+      />
+      <ColorModeButton />
+      <LocaleSelect mr={localeMargin} />
+      <Settings mr="15px" />
+    </Stack>
+  );
+};
 
 const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
@@ -195,8 +258,9 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
               onModalOpen={onModalOpen}
               onClose={onClose}
             />
-            <LocaleSelect />
             <ColorModeButton />
+            <LocaleSelect />
+            <Settings />
           </Stack>
         </DrawerBody>
       </DrawerContent>

@@ -23,6 +23,11 @@ export const messages = defineMessages({
     description: locales.en.register,
     defaultMessage: locales.en.register,
   },
+  languages: {
+    id: "languages",
+    description: locales.en.languages,
+    defaultMessage: locales.en.languages,
+  },
   toggleLightMode: {
     id: "toggle-light-mode",
     description: locales.en["toggle-light-mode"],
@@ -32,6 +37,11 @@ export const messages = defineMessages({
     id: "toggle-dark-mode",
     description: locales.en["toggle-dark-mode"],
     defaultMessage: locales.en["toggle-dark-mode"],
+  },
+  settings: {
+    id: "settings",
+    description: locales.en.settings,
+    defaultMessage: locales.en.settings,
   },
 });
 
