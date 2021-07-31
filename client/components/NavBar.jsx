@@ -30,6 +30,7 @@ import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
+import { LOGOUT_SUCCESS } from "../constants/toasts";
 import { messages } from "../content/messages/components/NavBar";
 import { getUserData } from "../requests/permissions";
 import { colors } from "../theme";
@@ -174,14 +175,7 @@ const Settings = ({ mr }) => {
 
   const logout = async () => {
     cookie.remove("email");
-    return toast({
-      title: "Success",
-      description: "Successfully logged out",
-      status: "success",
-      position: "bottom-left",
-      duration: 5000,
-      isCloseable: false,
-    });
+    return toast(LOGOUT_SUCCESS);
   };
 
   if (typeof cookie.get("email") !== "undefined") {

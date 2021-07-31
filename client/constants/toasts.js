@@ -54,6 +54,11 @@ export const LOGIN_FAILURE = {
   ...errorToast,
 };
 
+export const LOGOUT_SUCCESS = {
+  description: "Successfully logged out",
+  ...successToast,
+};
+
 export const NO_RESULTS = {
   description: "No results returned, please try again.",
   ...errorToast,
