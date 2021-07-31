@@ -4,17 +4,12 @@
 /* eslint-disable react/jsx-boolean-value */
 import {
   Button,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { FieldArray, Form, withFormik } from "formik";
@@ -22,12 +17,13 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
-import { departments } from "../constants";
 import { messages } from "../constants/intl/components/CreateChatModal";
+import { EDIT_CHAT_SUCCESS } from "../constants/toasts";
 import { ChatSchema } from "../constants/YupSchemas";
 import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
 import CourseInfo from "./CourseInfo";
 import LinkFields from "./LinkFields";
+import SharedChatFields from "./SharedChatFields";
 
 const ChatForm = ({
   errors,
@@ -39,41 +35,12 @@ const ChatForm = ({
   const { formatMessage } = useIntl();
   return (
     <Form className="col-6 w-100">
-      <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
-        <FormLabel>{formatMessage(messages.name)}</FormLabel>
-        <Input
-          value={name}
-          type="text"
-          onChange={(e) => {
-            setFieldValue("name", e.target.value);
-            if (
-              e.target.value.length === 6 &&
-              departments.includes(e.target.value.slice(0, 3).toUpperCase()) &&
-              parseInt(e.target.value.slice(3), 10) >= 100 &&
-              parseInt(e.target.value.slice(3), 10) <= 499
-            ) {
-              setFieldValue(
-                "courseInfo.department",
-                name.slice(0, 3).toUpperCase()
-              );
-              setFieldValue("courseInfo.code", e.target.value.slice(3));
-            }
-          }}
-        />
-        {hasSubmitted && <Text color="red">{errors.name}</Text>}
-      </FormControl>
-      <FormControl
-        id="description"
-        mt={2}
-        isInvalid={hasSubmitted && errors.description}
-      >
-        <FormLabel>{formatMessage(messages.description)}</FormLabel>
-        <Textarea
-          value={description}
-          onChange={(e) => setFieldValue("description", e.target.value)}
-        />
-        {hasSubmitted && <Text color="red">{errors.description}</Text>}
-      </FormControl>
+      <SharedChatFields
+        errors={errors}
+        hasSubmitted={hasSubmitted}
+        isCommunity={isCommunity}
+        setFieldValue={setFieldValue}
+      />
       {!isCommunity && (
         <CourseInfo
           errors={errors}
@@ -154,14 +121,7 @@ const EnhancedChatForm = withFormik({
         },
       },
     });
-    toast({
-      title: "Success",
-      description: `${groupChatName} info has been changed`,
-      status: "success",
-      position: "bottom-left",
-      duration: 5000,
-      isCloseable: false,
-    });
+    toast(EDIT_CHAT_SUCCESS(groupChatName));
     setChatInfo({
       id: groupChatId,
       name: groupChatName,

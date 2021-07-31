@@ -14,6 +14,7 @@ import { useIntl } from "react-intl";
 import * as Yup from "yup";
 
 import { messages } from "../constants/intl/components/RegisterForm";
+import { USER_EXISTS } from "../constants/toasts";
 import { register } from "../requests/auth";
 
 const RegisterSchema = Yup.object().shape({
@@ -104,14 +105,7 @@ export const EnhancedRegisterForm = withFormik({
     const { status, jwtToken } = await register(email, password);
 
     if (status === "USER_EXISTS") {
-      toast({
-        title: "An error has occurred",
-        description: "User already exists",
-        position: "bottom-left",
-        status: "error",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(USER_EXISTS);
     } else {
       cookie.set("email", email, 24);
       cookie.set("authToken", jwtToken, 24);

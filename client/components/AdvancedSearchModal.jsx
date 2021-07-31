@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "../constants/intl/components/AdvancedSearchModal";
+import { NO_RESULTS, RESULTS_RECEIVED } from "../constants/toasts";
 import { advancedSearch } from "../requests/groupChats";
 import CourseInfo from "./CourseInfo";
 
@@ -60,24 +61,10 @@ const EnhancedSearchForm = withFormik({
       year,
     });
     if (newGroupChats.length === 0) {
-      toast({
-        title: "Error",
-        description: "No results returned, please try again.",
-        status: "error",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(NO_RESULTS);
     } else {
       setGroupChats(newGroupChats);
-      toast({
-        title: "Success",
-        description: "Search results returned",
-        status: "success",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(RESULTS_RECEIVED);
     }
     onClose();
   },
