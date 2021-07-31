@@ -180,52 +180,37 @@ const ColorModeButton = () => {
   );
 };
 
-const LocaleSelect = () => {
-
-  const { pathname, query } = useRouter();
+const LocaleSelect = ({ mr }) => {
   const { formatMessage } = useIntl();
-
-  let currentPath = pathname
-
-  if (typeof query.id !== "undefined") {
-    currentPath = `/chat/${query.id}`
-  } else if (typeof query.q !== "undefined") {
-    currentPath = `?q=${query.q.replaceAll(" ", "%20")}`
-  }
-
-  const [margin, setMargin] = useState("15px")
-  const email = cookie.get("email");
-  useEffect( () => {
-    setMargin(typeof email === "undefined" ? "15px" : "0px")
-  }, [email]);
 
   return (
     <Menu>
-      <Tooltip label={formatMessage(messages.languages)} aria-label={formatMessage(messages.languages)}>
+      <Tooltip
+        label={formatMessage(messages.languages)}
+        aria-label={formatMessage(messages.languages)}
+      >
         <MenuButton
           title="language-btn"
           as={IconButton}
           icon={<FaGlobe />}
           size="md"
           variant="ghost"
-          style={{ marginRight: margin }}
+          style={{ marginRight: mr }}
         />
       </Tooltip>
       <MenuList size="sm">
-        <NextLink href={currentPath} locale="en">
+        <NextLink href="/" locale="en">
           <MenuItem>English</MenuItem>
         </NextLink>
-        <NextLink href={currentPath} locale="fr">
+        <NextLink href="/" locale="fr">
           <MenuItem>French</MenuItem>
         </NextLink>
       </MenuList>
     </Menu>
-  )
-
-}
+  );
+};
 
 const Settings = ({ mr }) => {
-
   const { locale } = useRouter();
   const { formatMessage } = useIntl();
   const toast = useToast();
@@ -242,13 +227,13 @@ const Settings = ({ mr }) => {
     });
   };
 
-  //console.log("Settings email:")
-  //console.log(typeof cookie.get("email") === "undefined")
-
   if (typeof cookie.get("email") !== "undefined") {
     return (
       <Menu>
-        <Tooltip label={formatMessage(messages.settings)} aria-label={formatMessage(messages.settings)}>
+        <Tooltip
+          label={formatMessage(messages.settings)}
+          aria-label={formatMessage(messages.settings)}
+        >
           <MenuButton
             title="settings-btn"
             as={IconButton}
@@ -270,6 +255,12 @@ const Settings = ({ mr }) => {
 };
 
 const MenuLinks = ({ locale, onModalOpen, onClose }) => {
+  const [localeMargin, setLocaleMargin] = useState("15px");
+  const email = cookie.get("email");
+
+  useEffect(() => {
+    setLocaleMargin(typeof email === "undefined" ? "15px" : "0px");
+  }, [email]);
 
   return (
     <Stack
@@ -286,12 +277,11 @@ const MenuLinks = ({ locale, onModalOpen, onClose }) => {
         onClose={onClose}
       />
       <ColorModeButton />
-      <LocaleSelect />
+      <LocaleSelect mr={localeMargin} />
       <Settings mr="15px" />
     </Stack>
-  )
-
-}
+  );
+};
 
 const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   <Drawer placement="right" onClose={onClose} isOpen={isOpen}>

@@ -30,7 +30,6 @@ export const createMockUser = ({ email, password, groupChats, status }) => ({
 });
 
 export const redirect = (path, push, locale, defaultLocale) => {
-  console.log(`${locale !== defaultLocale ? locale : ""}${path}`);
   push(`${locale !== defaultLocale ? locale : ""}${path}`);
 };
 
