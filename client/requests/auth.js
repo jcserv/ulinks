@@ -1,5 +1,5 @@
 import client from "../apollo-client";
-import { LOGIN, SIGNUP } from "../gql/Auth";
+import { LOGIN, SIGNUP } from "../gql";
 
 export async function login(email, password) {
   const {
