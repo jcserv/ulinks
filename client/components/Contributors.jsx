@@ -1,7 +1,7 @@
 import { Avatar, HStack, Link, Tooltip } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
-import getContributors from "../helpers/getContributors";
+import { getContributors } from "../helpers/network";
 
 export default function Contributors() {
   const [contributorsList, setContributorsList] = useState([]);

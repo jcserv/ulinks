@@ -8,7 +8,8 @@ import CheckPermissions from "../../components/CheckPermissions";
 import RequestsList from "../../components/RequestsList";
 import SectionContainer from "../../components/SectionContainer";
 import UsersList from "../../components/UsersList";
-import { messages } from "../../constants/intl/pages/admin";
+import { REQUEST_RESULT } from "../../constants/toasts";
+import { messages } from "../../content/messages/pages/admin";
 import { mapAsOption } from "../../helpers";
 import { getAdminData } from "../../requests";
 import { modifyGroupchatStatus } from "../../requests/groupChats";
@@ -44,13 +45,7 @@ export default function Admin() {
     setPending((pendingGroups) =>
       pendingGroups.filter((chat) => chat.id !== groupChatId)
     );
-    toast({
-      description: `Request ${name} has been ${status}`,
-      status: status === "approved" ? "success" : "error",
-      position: "bottom-left",
-      duration: 9000,
-      isClosable: true,
-    });
+    toast(REQUEST_RESULT(name, status));
   };
 
   const searchForUsers = async (text) => {

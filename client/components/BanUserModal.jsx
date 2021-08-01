@@ -10,29 +10,39 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import { defineMessages, useIntl } from "react-intl";
 
+import { REQUEST_FAILED, USER_BANNED } from "../constants/toasts";
+import locales from "../content/locale";
 import { banUser } from "../requests/users";
 
+const messages = defineMessages({
+  banUser: {
+    id: "ban-user",
+    description: locales.en["ban-user"],
+    defaultMessage: locales.en["ban-user"],
+  },
+  banConfirm: {
+    id: "ban-confirmation",
+    description: locales.en["ban-confirmation"],
+    defaultMessage: locales.en["ban-confirmation"],
+  },
+  confirm: {
+    id: "confirm",
+    description: locales.en.confirm,
+    defaultMessage: locales.en.confirm,
+  },
+});
+
 export default function BanUserModal({ isOpen, onClose, selectedUser }) {
+  const { formatMessage } = useIntl();
   const toast = useToast();
   const onClick = async () => {
     const data = await banUser(selectedUser);
     if (!data.updateUser) {
-      toast({
-        description: "Request has failed",
-        status: "error",
-        position: "bottom-left",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast(REQUEST_FAILED);
     } else {
-      toast({
-        description: `User ${selectedUser} has been banned`,
-        status: "success",
-        position: "bottom-left",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast(USER_BANNED(selectedUser));
     }
   };
 
@@ -40,12 +50,14 @@ export default function BanUserModal({ isOpen, onClose, selectedUser }) {
     <Modal size="xl" isOpen={isOpen} onClose={onClose} preserveScrollBarGap>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Ban User</ModalHeader>
+        <ModalHeader>{formatMessage(messages.banUser)}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>Are you sure you want to ban {selectedUser}?</ModalBody>
+        <ModalBody>
+          {`${formatMessage(messages.banConfirm)} ${selectedUser}?`}
+        </ModalBody>
         <ModalFooter>
           <Button colorScheme="red" onClick={onClick}>
-            Confirm
+            {formatMessage(messages.confirm)}
           </Button>
         </ModalFooter>
       </ModalContent>

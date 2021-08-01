@@ -68,5 +68,7 @@
   "join-discord": "Joignez le serveur Discord",
   "join-whatsapp": "Joignez le tchat WhatsApp",
   "join-slack": "Joignez le tchat Slack",
-  "visit-linktree": "Visitez la siteweb Linktree"
+  "visit-linktree": "Visitez la siteweb Linktree",
+  "ban-user": "Utilisateur Banni",
+  "ban-confirmation": "Êtes-vous sûr de vouloir interdire"
 }

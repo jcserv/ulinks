@@ -11,7 +11,7 @@ import Image from "next/image";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { messages } from "../constants/intl/components/ChatInfo";
+import { messages } from "../content/messages/components/ChatInfo";
 import { incrementLikes } from "../helpers/groupchats";
 import { checkAdminOrCreated } from "../requests/permissions";
 import CheckPermissions from "./CheckPermissions";

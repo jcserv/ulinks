@@ -26,3 +26,19 @@ export function patchRequest(uri, data) {
 export function postRequest(uri, data) {
   return axios.post(enforceTrailingSlash(`${serverUrl}${uri}`), data, config);
 }
+
+const GITHUB_API_URL = "https://api.github.com/repos/jcserv/ulinks";
+
+const GITHUB_API_CONFIG = {
+  headers: {
+    Accept: "application/vnd.github.v3+json",
+  },
+};
+
+export async function getContributors() {
+  const response = await axios.get(
+    `${GITHUB_API_URL}/contributors`,
+    GITHUB_API_CONFIG
+  );
+  return response.data;
+}

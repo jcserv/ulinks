@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
+import { LOGIN_FAILURE } from "../constants/toasts";
 import locales from "../content/locale";
 import { login } from "../requests/auth";
 
@@ -104,14 +105,7 @@ export const EnhancedLoginForm = withFormik({
       cookie.set("authToken", jwtToken, 24);
       redirectToHomepage();
     } else {
-      toast({
-        title: "Login unsuccessful",
-        description: "Please try again.",
-        status: "error",
-        position: "bottom-left",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast(LOGIN_FAILURE);
     }
   },
   mapPropsToValues: () => ({

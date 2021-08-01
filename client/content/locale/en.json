@@ -67,5 +67,7 @@
   "join-discord": "Join the Discord server",
   "join-whatsapp": "Join the WhatsApp group",
   "join-slack": "Join the Slack group",
-  "visit-linktree": "Visit the Linktree page"
+  "visit-linktree": "Visit the Linktree page",
+  "ban-user": "Ban User",
+  "ban-confirmation": "Are you sure you want to ban"
 }

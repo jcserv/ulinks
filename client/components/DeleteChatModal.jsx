@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { DELETE_CHAT_FAILURE, DELETE_CHAT_SUCCESS } from "../constants/toasts";
 import locales from "../content/locale";
 import { deleteGroupChat } from "../requests/groupChats";
 
@@ -42,25 +43,11 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
   const deleteAction = async () => {
     const deleteResult = await deleteGroupChat(id);
     if (deleteResult) {
-      toast({
-        title: "Success",
-        description: `Chat has been deleted`,
-        status: "success",
-        position: "bottom-left",
-        duration: 5000,
-        isClosable: false,
-      });
+      toast(DELETE_CHAT_SUCCESS);
       onClose();
       push(`${locale !== defaultLocale ? locale : ""}/`);
     } else {
-      toast({
-        title: "Error",
-        description: `Unable to remove chat`,
-        status: "error",
-        position: "bottom-left",
-        duration: 5000,
-        isClosable: false,
-      });
+      toast(DELETE_CHAT_FAILURE);
     }
     onClose();
   };
