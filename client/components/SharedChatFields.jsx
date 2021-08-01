@@ -19,9 +19,9 @@ import {
   years,
 } from "../constants";
 import { messages } from "../content/messages/components/SharedChatFields";
-import { capitallize } from "../helpers/formatters";
+import { capitallize } from "../helpers";
 
-const SharedChatFields = ({
+export const SharedChatFields = ({
   errors,
   hasSubmitted,
   isCommunity,

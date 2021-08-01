@@ -13,9 +13,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import { DELETE_CHAT_FAILURE, DELETE_CHAT_SUCCESS } from "../constants/toasts";
+import { DELETE_CHAT_FAILURE, DELETE_CHAT_SUCCESS } from "../constants";
 import locales from "../content/locale";
-import { deleteGroupChat } from "../requests/groupChats";
+import { deleteGroupChat } from "../requests";
 
 const messages = defineMessages({
   confirm: {

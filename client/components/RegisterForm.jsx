@@ -13,9 +13,9 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import * as Yup from "yup";
 
-import { USER_EXISTS } from "../constants/toasts";
+import { USER_EXISTS } from "../constants";
 import { messages } from "../content/messages/components/RegisterForm";
-import { register } from "../requests/auth";
+import { register } from "../requests";
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()

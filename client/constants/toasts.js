@@ -1,4 +1,4 @@
-import { userStatuses } from "./index";
+import { userStatuses } from "./config";
 
 const baseToast = {
   position: "bottom-left",

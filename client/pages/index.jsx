@@ -23,11 +23,9 @@ import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
 import { useIntl } from "react-intl";
 
-import AdvancedSearchModal from "../components/AdvancedSearchModal";
-import { Card } from "../components/Card";
-import TabSelect from "../components/TabSelect";
+import { AdvancedSearchModal, Card, TabSelect } from "../components";
 import { messages } from "../content/messages/pages/index";
-import { searchChats } from "../requests/groupChats";
+import { searchChats } from "../requests";
 
 export default function Home() {
   const ml = useBreakpointValue({ base: 0, sm: 100 });

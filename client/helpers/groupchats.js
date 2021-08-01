@@ -1,5 +1,5 @@
 import client from "../apollo-client";
-import { INCREMENT_LIKES } from "../gql/GroupChat";
+import { INCREMENT_LIKES } from "../gql";
 
 export function incrementLikes(id) {
   client.mutate({

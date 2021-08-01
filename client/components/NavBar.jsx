@@ -30,9 +30,9 @@ import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import { LOGOUT_SUCCESS } from "../constants/toasts";
+import { LOGOUT_SUCCESS } from "../constants";
 import { messages } from "../content/messages/components/NavBar";
-import { getUserData } from "../requests/permissions";
+import { getUserData } from "../requests";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
 
@@ -262,7 +262,7 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   </Drawer>
 );
 
-export default function Navbar() {
+export function Navbar() {
   const primary = useColorModeValue(colors.primary.light, colors.primary.dark);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -304,3 +304,5 @@ export default function Navbar() {
     </Sticky>
   );
 }
+
+export default Navbar;

@@ -15,7 +15,13 @@ const messages = defineMessages({
   },
 });
 
-const Autocomplete = ({ name, options, onSearch, onSelect, ...props }) => {
+export const Autocomplete = ({
+  name,
+  options,
+  onSearch,
+  onSelect,
+  ...props
+}) => {
   const { formatMessage } = useIntl();
   const textColor = useColorModeValue(colors.bg.light, colors.bg.dark);
   const loadOptions = (inputValue) =>

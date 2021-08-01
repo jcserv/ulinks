@@ -4,8 +4,7 @@ import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import locales from "../../content/locale";
-import { redirect } from "../../helpers";
-import { getRequest } from "../../helpers/network";
+import { getRequest, redirect } from "../../helpers";
 
 const messages = defineMessages({
   btnSuccess: {

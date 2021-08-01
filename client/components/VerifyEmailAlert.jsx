@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { getUserData } from "../requests/permissions";
 
-export default function VerifyEmailAlert() {
+export function VerifyEmailAlert() {
   const email = cookie.get("email");
   const { locale } = useRouter();
   const [show, setShow] = useState(false);
@@ -35,3 +35,5 @@ export default function VerifyEmailAlert() {
     )
   );
 }
+
+export default VerifyEmailAlert;

@@ -3,7 +3,7 @@ import React from "react";
 
 import styles from "../styles/components/SectionContainer.module.css";
 
-export default function SectionContainer({
+export function SectionContainer({
   children,
   headerMt = "",
   headerText = "",
@@ -28,3 +28,5 @@ export default function SectionContainer({
     </div>
   );
 }
+
+export default SectionContainer;

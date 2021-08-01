@@ -12,9 +12,9 @@ import React, { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import * as Yup from "yup";
 
-import { LOGIN_FAILURE } from "../constants/toasts";
+import { LOGIN_FAILURE } from "../constants";
 import locales from "../content/locale";
-import { login } from "../requests/auth";
+import { login } from "../requests";
 
 const messages = defineMessages({
   createAcct: {

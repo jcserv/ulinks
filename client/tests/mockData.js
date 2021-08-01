@@ -2,7 +2,7 @@ import {
   createMockContributor,
   createMockGroupChat,
   createMockUser,
-} from "../helpers/testing";
+} from "../helpers";
 
 const mockGroupChats = [
   createMockGroupChat({

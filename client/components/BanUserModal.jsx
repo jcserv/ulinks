@@ -12,9 +12,9 @@ import {
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import { REQUEST_FAILED, USER_BANNED } from "../constants/toasts";
+import { REQUEST_FAILED, USER_BANNED } from "../constants";
 import locales from "../content/locale";
-import { banUser } from "../requests/users";
+import { banUser } from "../requests";
 
 const messages = defineMessages({
   banUser: {
@@ -34,7 +34,7 @@ const messages = defineMessages({
   },
 });
 
-export default function BanUserModal({ isOpen, onClose, selectedUser }) {
+export function BanUserModal({ isOpen, onClose, selectedUser }) {
   const { formatMessage } = useIntl();
   const toast = useToast();
   const onClick = async () => {
@@ -64,3 +64,5 @@ export default function BanUserModal({ isOpen, onClose, selectedUser }) {
     </Modal>
   );
 }
+
+export default BanUserModal;

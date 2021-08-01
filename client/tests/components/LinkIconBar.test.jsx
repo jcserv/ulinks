@@ -2,7 +2,7 @@ import { axe, toHaveNoViolations } from "jest-axe";
 import React from "react";
 
 import LinkIconBar from "../../components/LinkIconBar";
-import { links } from "../../constants/footerLinks";
+import { links } from "../../constants";
 import { renderWrapped } from "../index";
 
 describe("LinkIconBar", () => {
