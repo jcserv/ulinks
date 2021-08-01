@@ -2,19 +2,23 @@ import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 
-import Autocomplete from "../../components/Autocomplete";
-import BanUserModal from "../../components/BanUserModal";
-import CheckPermissions from "../../components/CheckPermissions";
-import RequestsList from "../../components/RequestsList";
-import SectionContainer from "../../components/SectionContainer";
-import UsersList from "../../components/UsersList";
-import { REQUEST_RESULT } from "../../constants/toasts";
+import {
+  Autocomplete,
+  BanUserModal,
+  CheckPermissions,
+  RequestsList,
+  SectionContainer,
+  UsersList,
+} from "../../components";
+import { REQUEST_RESULT } from "../../constants";
 import { messages } from "../../content/messages/pages/admin";
 import { mapAsOption } from "../../helpers";
-import { getAdminData } from "../../requests";
-import { modifyGroupchatStatus } from "../../requests/groupChats";
-import { checkAdmin } from "../../requests/permissions";
-import { searchUsersReq } from "../../requests/users";
+import {
+  checkAdmin,
+  getAdminData,
+  modifyGroupchatStatus,
+  searchUsersReq,
+} from "../../requests";
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();

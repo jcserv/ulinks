@@ -1,9 +1,9 @@
 import { Avatar, HStack, Link, Tooltip } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
-import { getContributors } from "../helpers/network";
+import { getContributors } from "../helpers";
 
-export default function Contributors() {
+export function Contributors() {
   const [contributorsList, setContributorsList] = useState([]);
   useEffect(() => {
     async function retrieveContributors() {
@@ -31,3 +31,5 @@ export default function Contributors() {
     </HStack>
   );
 }
+
+export default Contributors;

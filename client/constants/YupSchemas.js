@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-import { campuses, departments, terms } from ".";
+import { campuses, departments, terms } from "./config";
 
 export const CourseInfoSchema = Yup.object().shape({
   campus: Yup.string().oneOf(campuses).required("Campus is required"),

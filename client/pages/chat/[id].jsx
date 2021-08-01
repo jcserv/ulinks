@@ -1,8 +1,8 @@
 import { NextSeo } from "next-seo";
 import React, { useState } from "react";
 
-import ChatInfo from "../../components/ChatInfo";
-import { getGroupchatReq } from "../../requests/groupChats";
+import { ChatInfo } from "../../components";
+import { getGroupchatReq } from "../../requests";
 
 export default function Chat({ chat, id }) {
   const [chatInfo, setChatInfo] = useState(chat);

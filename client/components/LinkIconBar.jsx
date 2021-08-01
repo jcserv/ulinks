@@ -50,7 +50,7 @@ const LinkIcon = ({
   </Tooltip>
 );
 
-const LinkIconBar = ({
+export const LinkIconBar = ({
   links,
   sideEffect = () => {},
   color,

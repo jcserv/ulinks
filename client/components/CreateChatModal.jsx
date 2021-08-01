@@ -21,12 +21,10 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import { CREATE_CHAT_SUCCESS, GENERIC_ERROR } from "../constants/toasts";
-import { ChatSchema } from "../constants/YupSchemas";
+import { ChatSchema, CREATE_CHAT_SUCCESS, GENERIC_ERROR } from "../constants";
 import { messages } from "../content/messages/components/CreateChatModal";
 import { redirect } from "../helpers";
-import { createChat } from "../requests/groupChats";
-import { getUserData } from "../requests/permissions";
+import { createChat, getUserData } from "../requests";
 import CourseInfo from "./CourseInfo";
 import LinkFields from "./LinkFields";
 import SharedChatFields from "./SharedChatFields";

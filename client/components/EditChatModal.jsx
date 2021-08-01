@@ -17,10 +17,9 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
 import client from "../apollo-client";
-import { EDIT_CHAT_SUCCESS } from "../constants/toasts";
-import { ChatSchema } from "../constants/YupSchemas";
+import { ChatSchema, EDIT_CHAT_SUCCESS } from "../constants";
 import { messages } from "../content/messages/components/CreateChatModal";
-import { UPDATE_GROUPCHAT } from "../gql/GroupChat";
+import { UPDATE_GROUPCHAT } from "../gql";
 import CourseInfo from "./CourseInfo";
 import LinkFields from "./LinkFields";
 import SharedChatFields from "./SharedChatFields";

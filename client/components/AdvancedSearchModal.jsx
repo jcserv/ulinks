@@ -12,9 +12,9 @@ import { Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import { NO_RESULTS, RESULTS_RECEIVED } from "../constants/toasts";
+import { NO_RESULTS, RESULTS_RECEIVED } from "../constants";
 import { messages } from "../content/messages/components/AdvancedSearchModal";
-import { advancedSearch } from "../requests/groupChats";
+import { advancedSearch } from "../requests";
 import CourseInfo from "./CourseInfo";
 
 const SearchForm = ({
@@ -80,11 +80,7 @@ const EnhancedSearchForm = withFormik({
   validateOnMount: true,
 })(SearchForm);
 
-export default function AdvancedSearchModal({
-  isOpen,
-  onClose,
-  setGroupChats,
-}) {
+export function AdvancedSearchModal({ isOpen, onClose, setGroupChats }) {
   const { formatMessage } = useIntl();
   const toast = useToast();
   return (
@@ -104,3 +100,5 @@ export default function AdvancedSearchModal({
     </Modal>
   );
 }
+
+export default AdvancedSearchModal;

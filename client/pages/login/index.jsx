@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import LoginForm from "../../components/LoginForm";
+import { EnhancedLoginForm as LoginForm } from "../../components";
 import locales from "../../content/locale";
 
 const messages = defineMessages({

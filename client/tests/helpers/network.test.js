@@ -7,7 +7,7 @@ import {
   patchRequest,
   postRequest,
   serverUrl,
-} from "../../helpers/network";
+} from "../../helpers";
 
 jest.mock("axios");
 

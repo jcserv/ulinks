@@ -2,7 +2,7 @@ import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-export default function CheckPermissions({
+export function CheckPermissions({
   data,
   permissionCheck,
   children,
@@ -29,3 +29,5 @@ export default function CheckPermissions({
   }, []);
   return <>{editPermissions && children}</>;
 }
+
+export default CheckPermissions;

@@ -1,12 +1,12 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
-import { links } from "../constants/footerLinks";
+import { links } from "../constants";
 import Contributors from "./Contributors";
 import Emoji from "./Emoji";
 import LinkIconBar from "./LinkIconBar";
 
-export default function Footer() {
+export function Footer() {
   return (
     <Box as="footer" mt={12} height="100%" textAlign="center" className="app">
       <HStack justify="center">
@@ -19,3 +19,5 @@ export default function Footer() {
     </Box>
   );
 }
+
+export default Footer;

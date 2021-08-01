@@ -1,7 +1,7 @@
 import { toHaveNoViolations } from "jest-axe";
 import React from "react";
 
-import GCCard from "../../components/Card";
+import Card from "../../components/Card";
 import { renderWrapped } from "../index";
 
 describe("Card", () => {
@@ -15,7 +15,7 @@ describe("Card", () => {
       links: [],
       id: "",
     };
-    return renderWrapped(<GCCard {...defaultProps} {...props} />);
+    return renderWrapped(<Card {...defaultProps} {...props} />);
   };
 
   it("Render test", () => {

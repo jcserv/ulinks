@@ -1,4 +1,4 @@
-import { capitallize, formatAsList } from "../../helpers/formatters";
+import { capitallize, formatAsList } from "../../helpers";
 
 describe("capitallize", () => {
   it("single letter lowercase", () => {

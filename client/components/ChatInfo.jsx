@@ -12,9 +12,9 @@ import React from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "../content/messages/components/ChatInfo";
-import { incrementLikes } from "../helpers/groupchats";
-import { checkAdminOrCreated } from "../requests/permissions";
-import CheckPermissions from "./CheckPermissions";
+import { incrementLikes } from "../helpers";
+import { checkAdminOrCreated } from "../requests";
+import { CheckPermissions } from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
@@ -151,7 +151,7 @@ const ChatImage = ({ image }) => (
   </GridItem>
 );
 
-const ChatInfo = ({
+export const ChatInfo = ({
   id,
   name,
   description,

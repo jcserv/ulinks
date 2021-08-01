@@ -60,7 +60,7 @@ const QuickAddButtons = ({ index, links, formatMessage, setFieldValue }) => {
   );
 };
 
-const LinkFields = ({ errors, hasSubmitted, links, setFieldValue }) => {
+export const LinkFields = ({ errors, hasSubmitted, links, setFieldValue }) => {
   const { formatMessage } = useIntl();
   return (
     <div>

@@ -7,7 +7,7 @@ import {
   SEARCH_ALL_GROUPCHATS,
   SEARCH_GROUPCHATS,
   UPDATE_GROUPCHAT_STATUS,
-} from "../gql/GroupChat";
+} from "../gql";
 
 export async function advancedSearch(searchInfo) {
   const {
