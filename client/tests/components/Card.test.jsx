@@ -1,4 +1,4 @@
-import { axe, toHaveNoViolations } from "jest-axe";
+import { toHaveNoViolations } from "jest-axe";
 import React from "react";
 
 import GCCard from "../../components/Card";
@@ -17,12 +17,6 @@ describe("Card", () => {
     };
     return renderWrapped(<GCCard {...defaultProps} {...props} />);
   };
-
-  it("Check axe violations", async () => {
-    const { container } = renderComponent();
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
 
   it("Render test", () => {
     const name = "Test";
