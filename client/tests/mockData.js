@@ -1,4 +1,8 @@
-import { createMockGroupChat, createMockUser } from "../helpers/testing";
+import {
+  createMockContributor,
+  createMockGroupChat,
+  createMockUser,
+} from "../helpers/testing";
 
 const mockGroupChats = [
   createMockGroupChat({
@@ -60,4 +64,26 @@ export const mockUsers = [
   }),
 ];
 
-export default mockGroupChats;
+export const mockContributors = [
+  createMockContributor({
+    login: "jcserv",
+    avatar_url: "",
+    html_url: "https://github.com/jcserv",
+  }),
+  createMockContributor({
+    login: "AipioxTechson",
+    avatar_url: "",
+    html_url: "https://github.com/AipioxTechson",
+  }),
+  createMockContributor({
+    login: "DigestedLime",
+    avatar_url: "",
+    html_url: "https://github.com/DigestedLime",
+  }),
+];
+
+export default {
+  mockContributors,
+  mockGroupChats,
+  mockUsers,
+};
