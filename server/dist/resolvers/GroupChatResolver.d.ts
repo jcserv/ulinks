@@ -10,7 +10,7 @@ export declare class GroupChatResolver {
     }>;
     getGroupChatByStatus(status: string): Promise<import("../database/schema").IGroupChat[]>;
     getGroupChat(id: string): Promise<import("../database/schema").IGroupChat | null>;
-    searchGroupChats(campus?: string, department?: string, code?: string, term?: string, year?: string, text?: string, type?: boolean, page?: number): Promise<{
+    searchGroupChats(campus?: string, department?: string, code?: string, term?: string, year?: string, text?: string, type?: boolean, page?: number, pageSize?: number): Promise<{
         groupChats: import("../database/schema").IGroupChat[];
         totalPages: number;
         pageNumber: number;

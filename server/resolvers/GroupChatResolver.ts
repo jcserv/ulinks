@@ -74,7 +74,9 @@ export class GroupChatResolver {
     @Arg("isCommunity", { nullable: true })
     type?: boolean,
     @Arg("page", { nullable: true })
-    page: number = 0
+    page: number = 0,
+    @Arg("pageSize", { nullable: true })
+    pageSize: number = this.pageSize
   ) {
     let queryObj = {};
     queryObj = { status: Status.approved };
@@ -102,8 +104,8 @@ export class GroupChatResolver {
     }
     const groupChats = await GroupChatModel.find(queryObj)
       .sort({ views: -1, likes: -1 })
-      .skip(page * this.pageSize)
-      .limit(this.pageSize);
+      .skip(page * pageSize)
+      .limit(pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
     if (totalCount === 0) {
       return {
@@ -114,7 +116,7 @@ export class GroupChatResolver {
     }
     return {
       groupChats,
-      totalPages: Math.ceil(totalCount / this.pageSize) - 1,
+      totalPages: Math.ceil(totalCount / pageSize) - 1,
       pageNumber: page,
     };
   }
