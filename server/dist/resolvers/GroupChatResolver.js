@@ -19,6 +19,7 @@ const models_1 = require("../models");
 const inputs_1 = require("../inputs");
 const Groupchat_1 = require("../models/Groupchat");
 const helpers_1 = require("../helpers");
+const constants_1 = require("../constants");
 let GroupChatResolver = class GroupChatResolver {
     constructor() {
         this.pageSize = 8;
@@ -58,7 +59,7 @@ let GroupChatResolver = class GroupChatResolver {
     }
     async searchGroupChats(campus, department, code, term, year, text, type, page = 0) {
         let queryObj = {};
-        queryObj = { status: "approved" };
+        queryObj = { status: constants_1.Status.approved };
         if (campus != undefined && campus !== "") {
             queryObj = { ...queryObj, "courseInformation.campus": campus };
         }
