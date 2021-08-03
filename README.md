@@ -105,9 +105,11 @@ Server: We opted to use Google Cloud Run, which can be set to auto deploy on pus
 ## ✍️ Contributors <a name = "authors"></a>
 - [@AipioxTechson](https://github.com/AipioxTechson)
 - [@jcserv](https://jarrodservilla.com)
-- [@imphungky](https://github.com/imphungky)
-- [@CometWhoosh](https://github.com/CometWhoosh) 
+- [@CometWhoosh](https://github.com/CometWhoosh)
+- [@imphungky](https://github.com/imphungky) 
+- [@jordanburr](https://github.com/jordanburr22)
 - [@ninaricci29](https://github.com/ninaricci29)
+- [@nandomancini](https://github.com/NandoMancini)
 - [@DigestedLime](https://github.com/DigestedLime) - 🇫🇷 translation support <3
 
 # 🔗 Relevant Links
