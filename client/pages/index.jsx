@@ -15,6 +15,7 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -29,6 +30,10 @@ import { searchChats } from "../requests";
 
 export default function Home() {
   const ml = useBreakpointValue({ base: 0, sm: 100 });
+  const [isLargerThan1300, isLargerThan1760] = useMediaQuery([
+    "(min-width: 1300px)",
+    "(max-width: 1760px)",
+  ]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { formatMessage } = useIntl();
   const {
@@ -61,7 +66,8 @@ export default function Home() {
     const { newGroupChats, newTotalPages, newPageNumber } = await searchChats(
       searchQuery,
       curIsCommunity,
-      page
+      page,
+      isLargerThan1300 && isLargerThan1760 ? 9 : 8
     );
     return {
       groupChats: newGroupChats,

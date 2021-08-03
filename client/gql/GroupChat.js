@@ -70,11 +70,17 @@ export const GET_GROUPCHAT_IDS = gql`
 `;
 
 export const SEARCH_GROUPCHATS = gql`
-  query searchGroupChats($page: Float, $text: String, $isCommunity: Boolean) {
+  query searchGroupChats(
+    $page: Float
+    $text: String
+    $isCommunity: Boolean
+    $pageSize: Float
+  ) {
     groupChats: searchGroupChats(
       page: $page
       text: $text
       isCommunity: $isCommunity
+      pageSize: $pageSize
     ) {
       groupChats {
         name
@@ -91,8 +97,12 @@ export const SEARCH_GROUPCHATS = gql`
 `;
 
 export const SEARCH_ALL_GROUPCHATS = gql`
-  query searchGroupChats($page: Float, $text: String) {
-    groupChats: searchGroupChats(page: $page, text: $text) {
+  query searchGroupChats($page: Float, $text: String, $pageSize: Float) {
+    groupChats: searchGroupChats(
+      page: $page
+      text: $text
+      pageSize: $pageSize
+    ) {
       groupChats {
         name
         description

@@ -86,7 +86,12 @@ export async function modifyGroupchatStatus(id, status) {
   return { name, groupChatId };
 }
 
-export async function searchChats(searchQuery, curIsCommunity, page) {
+export async function searchChats(
+  searchQuery,
+  curIsCommunity,
+  page,
+  pageSize = 8
+) {
   const {
     data: {
       groupChats: {
@@ -101,6 +106,7 @@ export async function searchChats(searchQuery, curIsCommunity, page) {
       page,
       ...(searchQuery === "" ? {} : { text: searchQuery }),
       ...(curIsCommunity !== 0 ? { isCommunity: curIsCommunity === 2 } : {}),
+      pageSize,
     },
   });
   return { newGroupChats, newTotalPages, newPageNumber };
