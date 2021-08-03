@@ -4,6 +4,7 @@ import { GroupChat } from "../models";
 import { createGroupChatInput } from "../inputs";
 import { GroupChatIds, GroupChatPaginiated } from "../models/Groupchat";
 import { departmentToImage, escapeRegex } from "../helpers";
+import { Status } from "../constants";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
@@ -23,6 +24,7 @@ export class GroupChatResolver {
     page: number = 0
   ) {
     const groupChats = await GroupChatModel.find()
+      .sort({ views: -1, likes: -1 })
       .skip(page * this.pageSize)
       .limit(this.pageSize);
     const totalCount = await GroupChatModel.find().countDocuments();
@@ -48,7 +50,10 @@ export class GroupChatResolver {
 
   @Query(() => GroupChat, { nullable: true })
   async getGroupChat(@Arg("id") id: string) {
-    const GroupChat = await GroupChatModel.findOne({ _id: id });
+    const GroupChat = await GroupChatModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { views: 1 } }
+    );
     return GroupChat;
   }
 
@@ -69,9 +74,12 @@ export class GroupChatResolver {
     @Arg("isCommunity", { nullable: true })
     type?: boolean,
     @Arg("page", { nullable: true })
-    page: number = 0
+    page: number = 0,
+    @Arg("pageSize", { nullable: true })
+    pageSize: number = this.pageSize
   ) {
     let queryObj = {};
+    queryObj = { status: Status.approved };
     if (campus != undefined && campus !== "") {
       queryObj = { ...queryObj, "courseInformation.campus": campus };
     }
@@ -95,8 +103,9 @@ export class GroupChatResolver {
       queryObj = { ...queryObj, isCommunity: type };
     }
     const groupChats = await GroupChatModel.find(queryObj)
-      .skip(page * this.pageSize)
-      .limit(this.pageSize);
+      .sort({ views: -1, likes: -1 })
+      .skip(page * pageSize)
+      .limit(pageSize);
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
     if (totalCount === 0) {
       return {
@@ -107,7 +116,7 @@ export class GroupChatResolver {
     }
     return {
       groupChats,
-      totalPages: Math.ceil(totalCount / this.pageSize) - 1,
+      totalPages: Math.ceil(totalCount / pageSize) - 1,
       pageNumber: page,
     };
   }
@@ -192,5 +201,14 @@ export class GroupChatResolver {
       return result && result2.n == 1;
     }
     return false;
+  }
+
+  @Mutation(() => GroupChat, { nullable: true })
+  async incrementLikes(@Arg("id") id: string) {
+    const GroupChat = await GroupChatModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { likes: 1 } }
+    );
+    return GroupChat;
   }
 }

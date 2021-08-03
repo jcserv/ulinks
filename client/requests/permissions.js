@@ -1,6 +1,6 @@
 import client from "../apollo-client";
 import { userStatuses } from "../constants";
-import { GET_USER } from "../gql/User";
+import { GET_USER } from "../gql";
 
 export async function getUserData(email) {
   const { data } = await client.query({

@@ -28,6 +28,7 @@ module.exports = {
     "react/jsx-one-expression-per-line": "off",
     "no-console": "error",
     "no-unused-vars": "error",
+    "import/no-named-as-default": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-implicit-coercion": "error",

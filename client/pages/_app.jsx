@@ -6,9 +6,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { IntlProvider } from "react-intl";
 
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import VerifyEmailAlert from "../components/VerifyEmailAlert";
+import { Footer, Navbar, VerifyEmailAlert } from "../components";
 import locales from "../content/locale";
 import theme from "../theme";
 
@@ -61,7 +59,7 @@ const SiteHead = ({ title }) => (
 const PageWrapper = ({ children, title }) => (
   <div>
     <SiteHead title={title} />
-    <NavBar />
+    <Navbar />
     <VerifyEmailAlert />
     <main className="main">{children}</main>
     <Footer />

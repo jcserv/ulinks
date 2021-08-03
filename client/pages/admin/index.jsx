@@ -2,19 +2,23 @@ import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 
-import client from "../../apollo-client";
-import Autocomplete from "../../components/Autocomplete";
-import BanUserModal from "../../components/BanUserModal";
-import CheckPermissions from "../../components/CheckPermissions";
-import RequestsList from "../../components/RequestsList";
-import SectionContainer from "../../components/SectionContainer";
-import UsersList from "../../components/UsersList";
-import { messages } from "../../constants/intl/pages/admin";
-import { GET_ADMIN_DATA } from "../../gql";
-import { UPDATE_GROUPCHAT_STATUS } from "../../gql/GroupChat";
-import { SEARCH_USERS } from "../../gql/User";
+import {
+  Autocomplete,
+  BanUserModal,
+  CheckPermissions,
+  RequestsList,
+  SectionContainer,
+  UsersList,
+} from "../../components";
+import { REQUEST_RESULT } from "../../constants";
+import { messages } from "../../content/messages/pages/admin";
 import { mapAsOption } from "../../helpers";
-import { checkAdmin } from "../../helpers/permissions";
+import {
+  checkAdmin,
+  getAdminData,
+  modifyGroupchatStatus,
+  searchUsersReq,
+} from "../../requests";
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,15 +31,7 @@ export default function Admin() {
   const toast = useToast();
 
   useEffect(async () => {
-    const { data: adminData } = await client.query({
-      query: GET_ADMIN_DATA,
-      variables: {
-        status1: "pending",
-        status2: "rejected",
-        limit: 50,
-        userStatus: "banned",
-      },
-    });
+    const adminData = await getAdminData();
     setPending(adminData.pendingChats);
     setRejected(adminData.rejectedChats);
     setBanned(adminData.bannedUsers);
@@ -43,17 +39,7 @@ export default function Admin() {
   }, []);
 
   const modifyRequest = async (id, status) => {
-    const {
-      data: {
-        updateStatus: { name, id: groupChatId },
-      },
-    } = await client.mutate({
-      mutation: UPDATE_GROUPCHAT_STATUS,
-      variables: {
-        id,
-        status,
-      },
-    });
+    const { name, groupChatId } = await modifyGroupchatStatus(id, status);
     if (status === "rejected") {
       setRejected((rejectedGroups) => [
         ...rejectedGroups,
@@ -63,24 +49,11 @@ export default function Admin() {
     setPending((pendingGroups) =>
       pendingGroups.filter((chat) => chat.id !== groupChatId)
     );
-    toast({
-      description: `Request ${name} has been ${status}`,
-      status: status === "approved" ? "success" : "error",
-      position: "bottom-left",
-      duration: 9000,
-      isClosable: true,
-    });
+    toast(REQUEST_RESULT(name, status));
   };
 
   const searchForUsers = async (text) => {
-    const {
-      data: { searchUsers },
-    } = await client.query({
-      query: SEARCH_USERS,
-      variables: {
-        text,
-      },
-    });
+    const searchUsers = await searchUsersReq(text);
     return mapAsOption(searchUsers, "email");
   };
 

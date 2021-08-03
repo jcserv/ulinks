@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Button,
   Modal,
@@ -14,8 +13,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import client from "../apollo-client";
+import { DELETE_CHAT_FAILURE, DELETE_CHAT_SUCCESS } from "../constants";
 import locales from "../content/locale";
+import { deleteGroupChat } from "../requests";
 
 const messages = defineMessages({
   confirm: {
@@ -39,39 +39,15 @@ export default function DeleteChatModal({ isOpen, onClose, id }) {
   const toast = useToast();
   const { formatMessage } = useIntl();
   const { locale, defaultLocale, push } = useRouter();
+
   const deleteAction = async () => {
-    const {
-      data: { deleteGroupChat: deleteResult },
-    } = await client.mutate({
-      mutation: gql`
-        mutation deleteGroupChat($id: String!) {
-          deleteGroupChat(id: $id)
-        }
-      `,
-      variables: {
-        id,
-      },
-    });
+    const deleteResult = await deleteGroupChat(id);
     if (deleteResult) {
-      toast({
-        title: "Success",
-        description: `Chat has been deleted`,
-        status: "success",
-        position: "bottom-left",
-        duration: 5000,
-        isClosable: false,
-      });
+      toast(DELETE_CHAT_SUCCESS);
       onClose();
       push(`${locale !== defaultLocale ? locale : ""}/`);
     } else {
-      toast({
-        title: "Error",
-        description: `Unable to remove chat`,
-        status: "error",
-        position: "bottom-left",
-        duration: 5000,
-        isClosable: false,
-      });
+      toast(DELETE_CHAT_FAILURE);
     }
     onClose();
   };

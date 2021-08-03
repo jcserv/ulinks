@@ -1,9 +1,8 @@
 import { NextSeo } from "next-seo";
 import React, { useState } from "react";
 
-import client from "../../apollo-client";
-import ChatInfo from "../../components/ChatInfo";
-import { GET_GROUPCHAT } from "../../gql/GroupChat";
+import { ChatInfo } from "../../components";
+import { getGroupchatReq } from "../../requests";
 
 export default function Chat({ chat, id }) {
   const [chatInfo, setChatInfo] = useState(chat);
@@ -26,12 +25,7 @@ export async function getServerSideProps(context) {
     };
   }
   try {
-    const {
-      data: { getGroupChat },
-    } = await client.query({
-      query: GET_GROUPCHAT,
-      variables: { id },
-    });
+    const getGroupChat = await getGroupchatReq(id);
     if (!getGroupChat) {
       return {
         notFound: true,

@@ -11,9 +11,10 @@ import Image from "next/image";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { messages } from "../constants/intl/components/ChatInfo";
-import { checkAdminOrCreated } from "../helpers/permissions";
-import CheckPermissions from "./CheckPermissions";
+import { messages } from "../content/messages/components/ChatInfo";
+import { incrementLikes } from "../helpers";
+import { checkAdminOrCreated } from "../requests";
+import { CheckPermissions } from "./CheckPermissions";
 import DeleteChatModal from "./DeleteChatModal";
 import EditChatModal from "./EditChatModal";
 import LinkIconBar from "./LinkIconBar";
@@ -93,6 +94,7 @@ const ChatDetails = ({
         boxSize="2em"
         justify="flex-start"
         ml={2}
+        sideEffect={() => incrementLikes(id)}
       />
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.created)}:{" "}
@@ -149,7 +151,7 @@ const ChatImage = ({ image }) => (
   </GridItem>
 );
 
-const ChatInfo = ({
+export const ChatInfo = ({
   id,
   name,
   description,

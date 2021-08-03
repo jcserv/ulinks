@@ -3,9 +3,9 @@ import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { getUserData } from "../helpers/permissions";
+import { getUserData } from "../requests";
 
-export default function VerifyEmailAlert() {
+export function VerifyEmailAlert() {
   const email = cookie.get("email");
   const { locale } = useRouter();
   const [show, setShow] = useState(false);
@@ -35,3 +35,5 @@ export default function VerifyEmailAlert() {
     )
   );
 }
+
+export default VerifyEmailAlert;

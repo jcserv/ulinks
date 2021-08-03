@@ -12,9 +12,9 @@ import { Form, withFormik } from "formik";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
-import { messages } from "../constants/intl/components/AdvancedSearchModal";
-import { ADVANCED_SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import { NO_RESULTS, RESULTS_RECEIVED } from "../constants";
+import { messages } from "../content/messages/components/AdvancedSearchModal";
+import { advancedSearch } from "../requests";
 import CourseInfo from "./CourseInfo";
 
 const SearchForm = ({
@@ -53,39 +53,18 @@ const EnhancedSearchForm = withFormik({
     { campus, department, code, term, year },
     { props: { onClose, setGroupChats, toast } }
   ) => {
-    const {
-      data: {
-        groupChats: { groupChats: newGroupChats },
-      },
-    } = await client.query({
-      query: ADVANCED_SEARCH_GROUPCHATS,
-      variables: {
-        campus,
-        department,
-        code,
-        term,
-        year,
-      },
+    const newGroupChats = await advancedSearch({
+      campus,
+      department,
+      code,
+      term,
+      year,
     });
     if (newGroupChats.length === 0) {
-      toast({
-        title: "Error",
-        description: "No results returned, please try again.",
-        status: "error",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(NO_RESULTS);
     } else {
       setGroupChats(newGroupChats);
-      toast({
-        title: "Success",
-        description: "Search results returned",
-        status: "success",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(RESULTS_RECEIVED);
     }
     onClose();
   },
@@ -101,11 +80,7 @@ const EnhancedSearchForm = withFormik({
   validateOnMount: true,
 })(SearchForm);
 
-export default function AdvancedSearchModal({
-  isOpen,
-  onClose,
-  setGroupChats,
-}) {
+export function AdvancedSearchModal({ isOpen, onClose, setGroupChats }) {
   const { formatMessage } = useIntl();
   const toast = useToast();
   return (
@@ -125,3 +100,5 @@ export default function AdvancedSearchModal({
     </Modal>
   );
 }
+
+export default AdvancedSearchModal;

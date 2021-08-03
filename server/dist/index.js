@@ -15,6 +15,7 @@ const resolvers_1 = require("./resolvers");
 mongoose_1.default.connect(`${process.env.MONGO_URI}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
 });
 const customAuthChecker = ({ context: { req } }, roles) => {
     if (!req.user) {

@@ -15,6 +15,7 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -23,15 +24,16 @@ import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
-import AdvancedSearchModal from "../components/AdvancedSearchModal";
-import { Card } from "../components/Card";
-import TabSelect from "../components/TabSelect";
-import { messages } from "../constants/intl/pages/index";
-import { SEARCH_ALL_GROUPCHATS, SEARCH_GROUPCHATS } from "../gql/GroupChat";
+import { AdvancedSearchModal, Card, TabSelect } from "../components";
+import { messages } from "../content/messages/pages/index";
+import { searchChats } from "../requests";
 
 export default function Home() {
-  const ml = useBreakpointValue({ base: 0, sm: 100 });
+  const ml = useBreakpointValue({ base: 35, sm: 150, lg: 135 });
+  const [isLargerThan1300, isLargerThan1760] = useMediaQuery([
+    "(min-width: 1300px)",
+    "(max-width: 1760px)",
+  ]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { formatMessage } = useIntl();
   const {
@@ -61,22 +63,12 @@ export default function Home() {
   const isCommunity = parseIsCommunity(iscommunity);
 
   const search = async (searchQuery, curIsCommunity = 0, page = 0) => {
-    const {
-      data: {
-        groupChats: {
-          groupChats: newGroupChats,
-          totalPages: newTotalPages,
-          pageNumber: newPageNumber,
-        },
-      },
-    } = await client.query({
-      query: curIsCommunity === 0 ? SEARCH_ALL_GROUPCHATS : SEARCH_GROUPCHATS,
-      variables: {
-        page,
-        ...(searchQuery === "" ? {} : { text: searchQuery }),
-        ...(curIsCommunity !== 0 ? { isCommunity: curIsCommunity === 2 } : {}),
-      },
-    });
+    const { newGroupChats, newTotalPages, newPageNumber } = await searchChats(
+      searchQuery,
+      curIsCommunity,
+      page,
+      isLargerThan1300 && isLargerThan1760 ? 9 : 8
+    );
     return {
       groupChats: newGroupChats,
       totalPages: newTotalPages,
@@ -119,21 +111,11 @@ export default function Home() {
   const handleSearch = async (e) => {
     e.preventDefault();
     setCurrentPage(0);
-    if (isCommunity === 0) {
-      push(
-        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
-        undefined,
-        { shallow: true }
-      );
-    } else {
-      push(
-        `${
-          locale !== defaultLocale ? locale : ""
-        }/?q=${curSearchQuery}&iscommunity=${isCommunity === 2}`,
-        undefined,
-        { shallow: true }
-      );
-    }
+    push(
+      `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+      undefined,
+      { shallow: true }
+    );
   };
 
   const displayMorePages = async () => {
@@ -150,20 +132,19 @@ export default function Home() {
   const handleCommunityChange = (newIsCommunity) => {
     setCurrentPage(0);
     if (newIsCommunity === 0) {
-      push(
-        `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
-        undefined,
-        { shallow: true }
-      );
+      push(`${locale !== defaultLocale ? locale : ""}/`, undefined, {
+        shallow: true,
+      });
     } else {
       push(
-        `${
-          locale !== defaultLocale ? locale : ""
-        }/?q=${curSearchQuery}&iscommunity=${newIsCommunity === 2}`,
+        `${locale !== defaultLocale ? locale : ""}/?iscommunity=${
+          newIsCommunity === 2
+        }`,
         undefined,
         { shallow: true }
       );
     }
+    setSearchQuery("");
   };
   return (
     <div className="page-container">

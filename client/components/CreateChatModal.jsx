@@ -2,9 +2,7 @@
 import {
   Button,
   FormControl,
-  FormHelperText,
   FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,7 +13,6 @@ import {
   RadioGroup,
   Stack,
   Text,
-  Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { FieldArray, Form, withFormik } from "formik";
@@ -24,24 +21,13 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
-import client from "../apollo-client";
-import {
-  campuses,
-  departments,
-  letterToTerm,
-  numToCampus,
-  terms,
-  utscLevels,
-  years,
-} from "../constants";
-import { messages } from "../constants/intl/components/CreateChatModal";
-import { ChatSchema } from "../constants/YupSchemas";
-import { ADD_GROUPCHAT } from "../gql/GroupChat";
+import { ChatSchema, CREATE_CHAT_SUCCESS, GENERIC_ERROR } from "../constants";
+import { messages } from "../content/messages/components/CreateChatModal";
 import { redirect } from "../helpers";
-import { capitallize } from "../helpers/formatters";
-import { getUserData } from "../helpers/permissions";
+import { createChat, getUserData } from "../requests";
 import CourseInfo from "./CourseInfo";
 import LinkFields from "./LinkFields";
+import SharedChatFields from "./SharedChatFields";
 
 const ChatForm = ({
   errors,
@@ -52,104 +38,14 @@ const ChatForm = ({
   const isValid = name || description || links || isCommunity;
   const { formatMessage } = useIntl();
 
-  // UTSG, UTM, UTSC
-  const inferCampus = (val) => {
-    const campus = val.toUpperCase();
-    if (campuses.includes(campus)) {
-      setFieldValue("courseInfo.campus", campus);
-    }
-  };
-
-  // CSC
-  const inferDepartment = (val) => {
-    const dept = val.toUpperCase();
-    if (departments.includes(dept)) {
-      setFieldValue("courseInfo.department", dept);
-    }
-  };
-
-  // CSC108
-  const inferCode = (val) => {
-    if (val.length === 6) {
-      const code = val.slice(3);
-      const numCode = parseInt(code, 10);
-      const endNums = parseInt(code[1] + code[2], 10);
-      if (numCode >= 100 && numCode <= 499) {
-        setFieldValue("courseInfo.code", code);
-      } else if (
-        utscLevels.includes(code[0]) &&
-        endNums >= 0 &&
-        endNums <= 99
-      ) {
-        setFieldValue("courseInfo.code", code);
-        setFieldValue("courseInfo.campus", "UTSC");
-      }
-    }
-  };
-
-  // CSC108H5F
-  const inferFullCode = (val) => {
-    if (val.length === 9) {
-      // don't need to do course code since that's covered by inferCode
-      const term = letterToTerm[val[8]];
-      const campus = numToCampus[val[7]];
-      if (term) setFieldValue("courseInfo.term", term);
-      if (campus) setFieldValue("courseInfo.campus", campus);
-    }
-  };
-
-  // Fall, Winter, Summer, Year
-  const inferTerm = (val) => {
-    if (!val) return;
-    const term = capitallize(val);
-    if (terms.includes(term)) {
-      setFieldValue("courseInfo.term", term);
-    }
-  };
-
-  const inferYear = (val) => {
-    const yearMatches = years.filter((x) => x.split("-")[0] === val);
-    if (yearMatches.length === 1)
-      setFieldValue("courseInfo.year", yearMatches[0]);
-  };
-
   return (
     <Form className="col-6 w-100">
-      <FormControl id="name" isInvalid={hasSubmitted && errors.name}>
-        <FormLabel>{formatMessage(messages.name)}</FormLabel>
-        <Input
-          type="text"
-          onChange={(e) => {
-            setFieldValue("name", e.target.value);
-            const words = e.target.value.split(" ");
-            words.forEach((word) => {
-              if (word.length >= 3) {
-                inferDepartment(word);
-                inferCode(word);
-                inferCampus(word);
-                inferTerm(word);
-                inferYear(word);
-                inferFullCode(word);
-              }
-            });
-          }}
-        />
-        {!isCommunity && (
-          <FormHelperText>{formatMessage(messages.gcNameTip)}</FormHelperText>
-        )}
-        {hasSubmitted && <Text color="red">{errors.name}</Text>}
-      </FormControl>
-      <FormControl
-        id="description"
-        mt={2}
-        isInvalid={hasSubmitted && errors.description}
-      >
-        <FormLabel>{formatMessage(messages.description)}</FormLabel>
-        <Textarea
-          onChange={(e) => setFieldValue("description", e.target.value)}
-        />
-        {hasSubmitted && <Text color="red">{errors.description}</Text>}
-      </FormControl>
+      <SharedChatFields
+        errors={errors}
+        hasSubmitted={hasSubmitted}
+        isCommunity={isCommunity}
+        setFieldValue={setFieldValue}
+      />
       <FormControl id="type" mt={2} isInvalid={hasSubmitted && errors.type}>
         <FormLabel>{formatMessage(messages.type)}</FormLabel>
         <RadioGroup
@@ -215,50 +111,25 @@ const EnhancedChatForm = withFormik({
   ) => {
     const email = cookie.get("email");
     const data = await getUserData(email);
-    const {
-      data: { groupChat },
-    } = await client.mutate({
-      mutation: ADD_GROUPCHAT,
-      variables: {
-        email,
-        info: {
-          name,
-          status:
-            isCommunity && data.getUser.status !== "admin"
-              ? "pending"
-              : "approved",
-          description,
-          links,
-          isCommunity,
-          ...(!isCommunity ? { courseInformation: courseInfo } : {}),
-        },
-      },
-    });
+    const userStatus = data.getUser.status;
+    const groupChat = await createChat(
+      email,
+      name,
+      isCommunity,
+      userStatus,
+      description,
+      links,
+      courseInfo
+    );
     if (groupChat) {
       const { name: groupChatName, id } = groupChat;
-      toast({
-        title: "Success",
-        description: `${
-          isCommunity && data.getUser.status !== "admin"
-            ? "Request has been submitted"
-            : `${groupChatName} has been created`
-        }`,
-        status: "success",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(
+        CREATE_CHAT_SUCCESS(isCommunity, data.getUser.status, groupChatName)
+      );
       onClose();
       redirectToChat(id);
     } else {
-      toast({
-        title: "Error",
-        description: "An error has occurred, please try again.",
-        status: "error",
-        position: "bottom-left",
-        duration: 5000,
-        isCloseable: false,
-      });
+      toast(GENERIC_ERROR);
       onClose();
     }
   },

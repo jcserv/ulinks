@@ -19,6 +19,7 @@ const models_1 = require("../models");
 const inputs_1 = require("../inputs");
 const Groupchat_1 = require("../models/Groupchat");
 const helpers_1 = require("../helpers");
+const constants_1 = require("../constants");
 let GroupChatResolver = class GroupChatResolver {
     constructor() {
         this.pageSize = 8;
@@ -31,6 +32,7 @@ let GroupChatResolver = class GroupChatResolver {
     }
     async getGroupChats(page = 0) {
         const groupChats = await database_1.GroupChat.find()
+            .sort({ views: -1, likes: -1 })
             .skip(page * this.pageSize)
             .limit(this.pageSize);
         const totalCount = await database_1.GroupChat.find().countDocuments();
@@ -52,11 +54,12 @@ let GroupChatResolver = class GroupChatResolver {
         return GroupChat;
     }
     async getGroupChat(id) {
-        const GroupChat = await database_1.GroupChat.findOne({ _id: id });
+        const GroupChat = await database_1.GroupChat.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } });
         return GroupChat;
     }
-    async searchGroupChats(campus, department, code, term, year, text, type, page = 0) {
+    async searchGroupChats(campus, department, code, term, year, text, type, page = 0, pageSize = this.pageSize) {
         let queryObj = {};
+        queryObj = { status: constants_1.Status.approved };
         if (campus != undefined && campus !== "") {
             queryObj = { ...queryObj, "courseInformation.campus": campus };
         }
@@ -80,8 +83,9 @@ let GroupChatResolver = class GroupChatResolver {
             queryObj = { ...queryObj, isCommunity: type };
         }
         const groupChats = await database_1.GroupChat.find(queryObj)
-            .skip(page * this.pageSize)
-            .limit(this.pageSize);
+            .sort({ views: -1, likes: -1 })
+            .skip(page * pageSize)
+            .limit(pageSize);
         const totalCount = await database_1.GroupChat.find(queryObj).countDocuments();
         if (totalCount === 0) {
             return {
@@ -92,7 +96,7 @@ let GroupChatResolver = class GroupChatResolver {
         }
         return {
             groupChats,
-            totalPages: Math.ceil(totalCount / this.pageSize) - 1,
+            totalPages: Math.ceil(totalCount / pageSize) - 1,
             pageNumber: page,
         };
     }
@@ -156,6 +160,10 @@ let GroupChatResolver = class GroupChatResolver {
         }
         return false;
     }
+    async incrementLikes(id) {
+        const GroupChat = await database_1.GroupChat.findOneAndUpdate({ _id: id }, { $inc: { likes: 1 } });
+        return GroupChat;
+    }
 };
 __decorate([
     type_graphql_1.Query(() => Groupchat_1.GroupChatIds),
@@ -194,8 +202,9 @@ __decorate([
     __param(5, type_graphql_1.Arg("text", { nullable: true })),
     __param(6, type_graphql_1.Arg("isCommunity", { nullable: true })),
     __param(7, type_graphql_1.Arg("page", { nullable: true })),
+    __param(8, type_graphql_1.Arg("pageSize", { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String, String, String, String, Boolean, Number]),
+    __metadata("design:paramtypes", [String, String, String, String, String, String, Boolean, Number, Number]),
     __metadata("design:returntype", Promise)
 ], GroupChatResolver.prototype, "searchGroupChats", null);
 __decorate([
@@ -228,6 +237,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], GroupChatResolver.prototype, "deleteGroupChat", null);
+__decorate([
+    type_graphql_1.Mutation(() => models_1.GroupChat, { nullable: true }),
+    __param(0, type_graphql_1.Arg("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GroupChatResolver.prototype, "incrementLikes", null);
 GroupChatResolver = __decorate([
     type_graphql_1.Resolver(models_1.GroupChat)
 ], GroupChatResolver);

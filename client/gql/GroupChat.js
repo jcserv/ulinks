@@ -9,6 +9,12 @@ export const ADD_GROUPCHAT = gql`
   }
 `;
 
+export const DELETE_GROUPCHAT = gql`
+  mutation deleteGroupChat($id: String!) {
+    deleteGroupChat(id: $id)
+  }
+`;
+
 export const GET_GROUPCHAT = gql`
   query getGroupChat($id: String!) {
     getGroupChat(id: $id) {
@@ -64,11 +70,17 @@ export const GET_GROUPCHAT_IDS = gql`
 `;
 
 export const SEARCH_GROUPCHATS = gql`
-  query searchGroupChats($page: Float, $text: String, $isCommunity: Boolean) {
+  query searchGroupChats(
+    $page: Float
+    $text: String
+    $isCommunity: Boolean
+    $pageSize: Float
+  ) {
     groupChats: searchGroupChats(
       page: $page
       text: $text
       isCommunity: $isCommunity
+      pageSize: $pageSize
     ) {
       groupChats {
         name
@@ -85,8 +97,12 @@ export const SEARCH_GROUPCHATS = gql`
 `;
 
 export const SEARCH_ALL_GROUPCHATS = gql`
-  query searchGroupChats($page: Float, $text: String) {
-    groupChats: searchGroupChats(page: $page, text: $text) {
+  query searchGroupChats($page: Float, $text: String, $pageSize: Float) {
+    groupChats: searchGroupChats(
+      page: $page
+      text: $text
+      pageSize: $pageSize
+    ) {
       groupChats {
         name
         description
@@ -160,8 +176,17 @@ export const UPDATE_GROUPCHAT = gql`
   }
 `;
 
+export const INCREMENT_LIKES = gql`
+  mutation incrementLikes($id: String!) {
+    incrementLikes(id: $id) {
+      id
+    }
+  }
+`;
+
 export default {
   ADD_GROUPCHAT,
+  DELETE_GROUPCHAT,
   GET_GROUPCHAT,
   GET_GROUPCHATS,
   GET_GROUPCHAT_IDS,

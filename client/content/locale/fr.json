@@ -6,8 +6,10 @@
   "login": "Se connecter",
   "register": "S'inscrire",
   "get-started": "Commencer",
+  "languages": "Langues",
   "toggle-light-mode": "Alterner mode éclairé",
   "toggle-dark-mode": "Alterner mode noir",
+  "settings": "Paramètres",
   "create-acct": "Créer votre compte",
   "email-address": "e-mail",
   "email-helper-text": "S'il vous plaît, utilize votre e-mail mail.utoronto.ca",
@@ -66,5 +68,7 @@
   "join-discord": "Joignez le serveur Discord",
   "join-whatsapp": "Joignez le tchat WhatsApp",
   "join-slack": "Joignez le tchat Slack",
-  "visit-linktree": "Visitez la siteweb Linktree"
+  "visit-linktree": "Visitez la siteweb Linktree",
+  "ban-user": "Utilisateur Banni",
+  "ban-confirmation": "Êtes-vous sûr de vouloir interdire"
 }

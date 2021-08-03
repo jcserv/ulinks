@@ -1,9 +1,11 @@
+import { useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 import AsyncSelect from "react-select/async";
 
 import locales from "../content/locale";
 import styles from "../styles/components/Autocomplete.module.css";
+import { colors } from "../theme";
 
 const messages = defineMessages({
   searchForUsers: {
@@ -13,8 +15,15 @@ const messages = defineMessages({
   },
 });
 
-const Autocomplete = ({ name, options, onSearch, onSelect, ...props }) => {
+export const Autocomplete = ({
+  name,
+  options,
+  onSearch,
+  onSelect,
+  ...props
+}) => {
   const { formatMessage } = useIntl();
+  const textColor = useColorModeValue(colors.bg.light, colors.bg.dark);
   const loadOptions = (inputValue) =>
     new Promise((resolve) => {
       setTimeout(() => {
@@ -22,9 +31,17 @@ const Autocomplete = ({ name, options, onSearch, onSelect, ...props }) => {
       }, 1000);
     });
 
+  const customStyles = {
+    option: (provided) => ({
+      ...provided,
+      color: textColor,
+    }),
+  };
+
   return (
     <AsyncSelect
       name={name}
+      styles={customStyles}
       cacheOptions
       defaultOptions={options}
       loadOptions={loadOptions}

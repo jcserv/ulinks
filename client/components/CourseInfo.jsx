@@ -3,9 +3,9 @@ import React from "react";
 import { useIntl } from "react-intl";
 
 import { campuses, departments, terms, years } from "../constants";
-import { messages } from "../constants/intl/components/CourseInfo";
+import { messages } from "../content/messages/components/CourseInfo";
 
-const CourseInfo = ({
+export const CourseInfo = ({
   errors,
   hasSubmitted,
   setFieldValue,

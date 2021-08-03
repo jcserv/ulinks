@@ -15,7 +15,7 @@ import { FaDiscord, FaSlack, FaTree, FaWhatsapp } from "react-icons/fa";
 import { useIntl } from "react-intl";
 
 import { MAX_NUM_LINKS, MIN_NUM_LINKS, supportedLinks } from "../constants";
-import { messages } from "../constants/intl/components/CreateChatModal";
+import { messages } from "../content/messages/components/CreateChatModal";
 
 const QuickAddButtons = ({ index, links, formatMessage, setFieldValue }) => {
   const onQuickAdd = (url) => {
@@ -60,7 +60,7 @@ const QuickAddButtons = ({ index, links, formatMessage, setFieldValue }) => {
   );
 };
 
-const LinkFields = ({ errors, hasSubmitted, links, setFieldValue }) => {
+export const LinkFields = ({ errors, hasSubmitted, links, setFieldValue }) => {
   const { formatMessage } = useIntl();
   return (
     <div>
