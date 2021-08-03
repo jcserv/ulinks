@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
+import { STATUSES, Status } from "../constants";
 
 const CourseInformationSchema: Schema = new Schema({
   campus: String,
@@ -23,8 +24,8 @@ const GroupChatSchema: Schema = new Schema(
     courseInformation: CourseInformationSchema,
     status: {
       type: String,
-      enum: ["approved", "pending", "rejected"],
-      default: ["pending"],
+      enum: STATUSES,
+      default: [Status.pending],
     },
     created: Date,
     updated: Date,

@@ -4,6 +4,7 @@ import { GroupChat } from "../models";
 import { createGroupChatInput } from "../inputs";
 import { GroupChatIds, GroupChatPaginiated } from "../models/Groupchat";
 import { departmentToImage, escapeRegex } from "../helpers";
+import { Status } from "../constants";
 
 @Resolver(GroupChat)
 export class GroupChatResolver {
@@ -78,6 +79,7 @@ export class GroupChatResolver {
     pageSize: number = this.pageSize
   ) {
     let queryObj = {};
+    queryObj = { status: Status.approved };
     if (campus != undefined && campus !== "") {
       queryObj = { ...queryObj, "courseInformation.campus": campus };
     }

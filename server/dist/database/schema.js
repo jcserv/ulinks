@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GroupChat = exports.User = exports.mongoose = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 exports.mongoose = mongoose_1.default;
+const constants_1 = require("../constants");
 const CourseInformationSchema = new mongoose_1.Schema({
     campus: String,
     department: String,
@@ -43,8 +44,8 @@ const GroupChatSchema = new mongoose_1.Schema({
     courseInformation: CourseInformationSchema,
     status: {
         type: String,
-        enum: ["approved", "pending", "rejected"],
-        default: ["pending"],
+        enum: constants_1.STATUSES,
+        default: [constants_1.Status.pending],
     },
     created: Date,
     updated: Date,
