@@ -11,6 +11,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 require("dotenv/config");
 const express_jwt_1 = __importDefault(require("express-jwt"));
 const database_1 = require("./database");
+const email_1 = require("./helpers/email");
 const resolvers_1 = require("./resolvers");
 mongoose_1.default.connect(`${process.env.MONGO_URI}`, {
     useNewUrlParser: true,
@@ -55,6 +56,25 @@ const main = async () => {
             return;
         }
         res.sendStatus(404);
+    });
+    // Resend verification email
+    app.get("/resend/:email", async function (req, res) {
+        const { email } = req.params;
+        const user = await database_1.User.findOne({ email });
+        if (!user) {
+            res.sendStatus(404);
+            return;
+        }
+        try {
+            await email_1.sendEmail(email, await email_1.emailTypeToContent("confirmEmail", user.verifyHash));
+        }
+        catch (e) {
+            console.log(e);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(200);
+        return;
     });
     apolloServer.applyMiddleware({ app, path });
     app.listen(process.env.PORT || 4000, () => {

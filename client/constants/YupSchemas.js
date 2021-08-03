@@ -38,7 +38,34 @@ export const ChatSchema = Yup.object().shape({
   }),
 });
 
+export const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email()
+    .matches(
+      /(^[A-Za-z0-9._%+-]+@mail.utoronto.ca$|^[A-Za-z0-9._%+-]+@utoronto.ca$)/,
+      "Email does not end with valid domain"
+    )
+    .required(),
+  password: Yup.string().required(),
+});
+
+export const RegisterSchema = Yup.object().shape({
+  email: Yup.string()
+    .email()
+    .matches(
+      /(^[A-Za-z0-9._%+-]+@mail.utoronto.ca$|^[A-Za-z0-9._%+-]+@utoronto.ca$)/,
+      "Email does not end with valid domain"
+    )
+    .required(),
+  password: Yup.string().required(),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required(),
+});
+
 export default {
   ChatSchema,
   CourseInfoSchema,
+  LoginSchema,
+  RegisterSchema,
 };

@@ -75,6 +75,16 @@ export const REQUEST_FAILED = {
   ...errorToast,
 };
 
+export const RESEND_VERIFICATION_SUCCESS = {
+  description: "Verification email successfully re-sent",
+  ...successToast,
+};
+
+export const RESEND_VERIFICATION_FAILURE = {
+  description: "Verification email successfully re-sent",
+  ...successToast,
+};
+
 export const RESULTS_RECEIVED = {
   description: "Search results returned",
   ...successToast,

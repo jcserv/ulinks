@@ -1,7 +1,6 @@
 import {
   Button,
   FormControl,
-  FormHelperText,
   FormLabel,
   Input,
   Text,
@@ -11,25 +10,11 @@ import { Form, withFormik } from "formik";
 import cookie from "js-cookie";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
-import * as Yup from "yup";
 
-import { USER_EXISTS } from "../constants";
+import { RegisterSchema, USER_EXISTS } from "../constants";
 import { messages } from "../content/messages/components/RegisterForm";
 import { register } from "../requests";
-
-const RegisterSchema = Yup.object().shape({
-  email: Yup.string()
-    .email()
-    .matches(
-      /(^[A-Za-z0-9._%+-]+@mail.utoronto.ca$|^[A-Za-z0-9._%+-]+@utoronto.ca$)/,
-      "Email does not end with valid domain"
-    )
-    .required(),
-  password: Yup.string().required(),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required(),
-});
+import Email from "./Email";
 
 const RegisterForm = ({
   errors,
@@ -42,21 +27,13 @@ const RegisterForm = ({
   const isValid = email && password && confirmPassword;
   return (
     <Form className={`col-6 ${width}`}>
-      <FormControl
-        id="email"
-        isRequired
-        isInvalid={hasSubmitted && errors.email}
-      >
-        <FormLabel>{formatMessage(messages.emailAddress)}</FormLabel>
-        <Input
-          type="email"
-          onChange={(e) => setFieldValue("email", e.target.value)}
-        />
-        <FormHelperText>
-          {formatMessage(messages.emailHelperText)}
-        </FormHelperText>
-        {hasSubmitted && <Text color="red">{errors.email}</Text>}
-      </FormControl>
+      <Email
+        email={email}
+        hasSubmitted={hasSubmitted}
+        errors={errors}
+        formatMessage={formatMessage}
+        setFieldValue={setFieldValue}
+      />
       <FormControl
         id="password"
         isRequired

@@ -1,10 +1,21 @@
-export const campuses = ["UTM", "UTSG", "UTSC"];
+// Application config
+export const supportedLinks = {
+  discord: "http://discord.gg/",
+  whatsapp: "http://chat.whatsapp.com/",
+  slack: "https://join.slack.com/t/",
+  linktree: "http://linktr.ee/",
+};
+export const MIN_NUM_LINKS = 1;
+export const MAX_NUM_LINKS = 4;
+export const userStatuses = { admin: "admin", user: "user", banned: "banned" };
 export const statuses = {
   approved: "approved",
   pending: "pending",
   rejected: "rejected",
 };
-export const userStatuses = { admin: "admin", user: "user", banned: "banned" };
+// School specific
+export const acceptedEmailDomains = ["@mail.utoronto.ca", "@utoronto.ca"];
+export const campuses = ["UTM", "UTSG", "UTSC"];
 export const departments = [
   "ANT",
   "AST",
@@ -48,11 +59,3 @@ export const letterToTerm = {
   S: "Winter",
   Y: "Year",
 };
-export const supportedLinks = {
-  discord: "http://discord.gg/",
-  whatsapp: "http://chat.whatsapp.com/",
-  slack: "https://join.slack.com/t/",
-  linktree: "http://linktr.ee/",
-};
-export const MIN_NUM_LINKS = 1;
-export const MAX_NUM_LINKS = 4;

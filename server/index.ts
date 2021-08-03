@@ -7,6 +7,8 @@ import "dotenv/config";
 import jwt, { secretType } from "express-jwt";
 import { User } from "./database";
 
+import { emailTypeToContent, sendEmail } from "./helpers/email";
+
 import {
   AuthenticationResolver,
   UserResolver,
@@ -70,6 +72,28 @@ const main = async () => {
       return;
     }
     res.sendStatus(404);
+  });
+
+  // Resend verification email
+  app.get("/resend/:email", async function (req, res) {
+    const { email } = req.params;
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.sendStatus(404);
+      return;
+    }
+    try {
+      await sendEmail(
+        email,
+        await emailTypeToContent("confirmEmail", user.verifyHash)
+      );
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(500);
+      return;
+    }
+    res.sendStatus(200);
+    return;
   });
 
   apolloServer.applyMiddleware({ app, path });

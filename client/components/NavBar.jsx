@@ -30,9 +30,13 @@ import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import { LOGOUT_SUCCESS } from "../constants";
+import {
+  LOGOUT_SUCCESS,
+  RESEND_VERIFICATION_FAILURE,
+  RESEND_VERIFICATION_SUCCESS,
+} from "../constants";
 import { messages } from "../content/messages/components/NavBar";
-import { getUserData } from "../requests";
+import { getUserData, resendVerificationEmail } from "../requests";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
 
@@ -168,17 +172,26 @@ const LocaleSelect = ({ mr }) => {
   );
 };
 
-const Settings = ({ mr }) => {
+const Settings = ({ mr, isVerified }) => {
   const { locale } = useRouter();
   const { formatMessage } = useIntl();
   const toast = useToast();
+  const email = cookie.get("email");
+
+  const resendVerify = async () => {
+    const data = await resendVerificationEmail(email);
+    if (data.status === 200) {
+      return toast(RESEND_VERIFICATION_SUCCESS);
+    }
+    return toast(RESEND_VERIFICATION_FAILURE);
+  };
 
   const logout = async () => {
     cookie.remove("email");
     return toast(LOGOUT_SUCCESS);
   };
 
-  if (typeof cookie.get("email") !== "undefined") {
+  if (typeof email !== "undefined") {
     return (
       <Menu>
         <Tooltip
@@ -195,8 +208,15 @@ const Settings = ({ mr }) => {
           />
         </Tooltip>
         <MenuList size="sm">
+          {!isVerified && (
+            <MenuItem onClick={resendVerify}>
+              {formatMessage(messages.resendVerificationEmail)}
+            </MenuItem>
+          )}
           <NextLink href="/" locale={locale}>
-            <MenuItem onClick={logout}>Logout</MenuItem>
+            <MenuItem onClick={logout}>
+              {formatMessage(messages.logout)}
+            </MenuItem>
           </NextLink>
         </MenuList>
       </Menu>
@@ -207,10 +227,19 @@ const Settings = ({ mr }) => {
 
 const MenuLinks = ({ locale, onModalOpen, onClose }) => {
   const [localeMargin, setLocaleMargin] = useState("15px");
+  const [isVerified, setIsVerified] = useState(true);
   const email = cookie.get("email");
 
-  useEffect(() => {
+  useEffect(async () => {
     setLocaleMargin(typeof email === "undefined" ? "15px" : "0px");
+    if (!email) {
+      return;
+    }
+    const data = await getUserData(email);
+    if (!data) return;
+    if (!data.getUser.verified) {
+      setIsVerified(false);
+    }
   }, [email]);
 
   return (
@@ -229,7 +258,7 @@ const MenuLinks = ({ locale, onModalOpen, onClose }) => {
       />
       <ColorModeButton />
       <LocaleSelect mr={localeMargin} />
-      <Settings mr="15px" />
+      <Settings mr="15px" isVerified={isVerified} />
     </Stack>
   );
 };

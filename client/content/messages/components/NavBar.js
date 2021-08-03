@@ -18,6 +18,11 @@ export const messages = defineMessages({
     description: locales.en.login,
     defaultMessage: locales.en.login,
   },
+  logout: {
+    id: "logout",
+    description: locales.en.logout,
+    defaultMessage: locales.en.logout,
+  },
   register: {
     id: "register",
     description: locales.en.register,
@@ -37,6 +42,11 @@ export const messages = defineMessages({
     id: "toggle-dark-mode",
     description: locales.en["toggle-dark-mode"],
     defaultMessage: locales.en["toggle-dark-mode"],
+  },
+  resendVerificationEmail: {
+    id: "resend-verification-email",
+    description: locales.en["resend-verification-email"],
+    defaultMessage: locales.en["resend-verification-email"],
   },
   settings: {
     id: "settings",
