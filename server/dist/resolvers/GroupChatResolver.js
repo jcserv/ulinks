@@ -58,6 +58,7 @@ let GroupChatResolver = class GroupChatResolver {
     }
     async searchGroupChats(campus, department, code, term, year, text, type, page = 0) {
         let queryObj = {};
+        queryObj = { status: "approved" };
         if (campus != undefined && campus !== "") {
             queryObj = { ...queryObj, "courseInformation.campus": campus };
         }

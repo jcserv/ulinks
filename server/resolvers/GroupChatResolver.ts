@@ -76,6 +76,7 @@ export class GroupChatResolver {
     page: number = 0
   ) {
     let queryObj = {};
+    queryObj = { status: "approved" };
     if (campus != undefined && campus !== "") {
       queryObj = { ...queryObj, "courseInformation.campus": campus };
     }
