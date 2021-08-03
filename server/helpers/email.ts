@@ -1,5 +1,6 @@
+import ejs from "ejs";
 import mailgun from "mailgun-js";
-import { verifyEmail } from "./constants";
+import path from "path";
 
 interface EmailContent {
   subject: string;
@@ -17,19 +18,23 @@ const mg = mailgun({
   domain: "ulinks.io",
 });
 
-export const emailTypeToContent = (
+export const emailTypeToContent = async (
   type: string,
   verificationHash: string = ""
-): EmailContent => {
+): Promise<EmailContent> => {
   const emailContent: EmailContent = {
     subject: "",
     html: "",
     text: "",
   };
-
   if (type === "confirmEmail") {
     emailContent.subject = "Verify Email";
-    emailContent.html = verifyEmail(`${HOSTNAME}/verify/${verificationHash}`);
+    emailContent.html = await ejs.renderFile(
+      path.join(__dirname, "..", "templates/verifyEmail.ejs"),
+      {
+        link: `${HOSTNAME}/verify/${verificationHash}`,
+      }
+    );
     emailContent.text = `Thanks for signing up to ULinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
   }
   return emailContent;

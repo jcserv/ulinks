@@ -34,6 +34,7 @@ const main = async () => {
         context: ({ req }) => ({ req }),
     });
     const app = express_1.default();
+    app.set("view engine", "ejs");
     app.use(path, express_jwt_1.default({
         secret: process.env.SECRET,
         credentialsRequired: false,

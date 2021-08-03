@@ -44,6 +44,8 @@ const main = async () => {
 
   const app = Express();
 
+  app.set("view engine", "ejs");
+
   app.use(
     path,
     jwt({
