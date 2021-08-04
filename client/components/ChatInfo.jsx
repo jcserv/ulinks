@@ -78,6 +78,8 @@ const ChatDetails = ({
     onClose: onDeleteModalClose,
   } = useDisclosure();
 
+  const dateTimeFormat = new Intl.DateTimeFormat("en-US");
+
   return (
     <GridItem>
       <Text fontSize="md" color="grey" m={2}>
@@ -98,12 +100,12 @@ const ChatDetails = ({
       />
       <Text fontSize="sm" color="grey" m={2}>
         {formatMessage(messages.created)}:{" "}
-        {new Intl.DateTimeFormat("en-GB").format(new Date(created))}
+        {dateTimeFormat.format(new Date(created))}
       </Text>
       {updated && (
         <Text fontSize="sm" color="grey" m={2}>
           {formatMessage(messages.lastModified)}:{" "}
-          {new Intl.DateTimeFormat("en-GB").format(new Date(updated))}
+          {dateTimeFormat.format(new Date(updated))}
         </Text>
       )}
       <CheckPermissions data={{ id }} permissionCheck={checkAdminOrCreated}>

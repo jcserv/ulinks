@@ -1,8 +1,7 @@
 # 🚀 ulinks
 
 ULinks is a platform for students to browse & upload academic group chats to stay connected during online school.
-It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. 
-Ulinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
+It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. ULinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
 ## 📁 Project Structure
 
@@ -32,7 +31,7 @@ ULinks follows Gitflow. We practice CI/CD where we continuously deploy off of ma
         │                                   │
         └───────────── develop ─────────────                          # Development work
             │                           │
-            └───────── feat/[feat-name] ───                             # Feature branches
+            └────── feat/[feat-name] ───                              # Feature branches
 ```
 
 Dev branches should be appended with an indicator to describe the type of work being done, including but not limited to:
@@ -53,6 +52,8 @@ Frontend Acceptance Criteria:
 1. It should be properly linted/formatted (`yarn run format`)
 2. Adequate automated test coverage (WIP)
 3. Basic manual QA & accessibility checks with Axe
+4. Constants should be placed in a constants file
+5. All text should be intl-ize'd
 
 ## ⛏️ Featurework:
 
@@ -102,7 +103,8 @@ Go to http://localhost:3000 for the frontend, and http://localhost:4000/graphql 
 
 Client: Import your Github project into Vercel. It will now have automated deployments on push.
 
-Server: We opted to use Google Cloud Run, which can be set to auto deploy on pushes to main.
+Server: We originally used Google Cloud Run, however due to some changes with their API, the backend randomly went down
+without us receiving a alert. We could not resolve this issue, and thus had to migrate to Heroku.
 
 ## ⛏️ Built With
 
