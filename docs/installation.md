@@ -28,11 +28,9 @@ Local:
     - `yarn dev`
 
 With Docker 🐳
+
 4. Copy .dockerenv into the root folder
 5. Run `docker compose up --build`
-
-
-=======================================================
 
 Regardless of how you ran it (locally or with docker), the frontend should now be running at http://localhost:3000
 and the backend should be running at http://localhost:4000.
