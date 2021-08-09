@@ -74,6 +74,8 @@ const main = async () => {
     })
   );
 
+  app.use( Express.static( "public" ) );
+
   // Verification
   app.get("/verify/:hashId", async function (req, res) {
     const { hashId } = req.params;
