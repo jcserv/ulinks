@@ -29,6 +29,7 @@ import { BsGearFill } from "react-icons/bs";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
+import Image from "next/image";
 
 import {
   LOGOUT_SUCCESS,
@@ -48,8 +49,13 @@ const Logo = ({ locale }) => (
     size="lg"
     style={{ textDecoration: "none" }}
   >
+    <Image
+      src="/logo.png"
+      width="45"
+      height="35"
+      />
     <NextLink href="/" locale={locale}>
-      ULinks
+    &nbsp; ULinks
     </NextLink>
   </Heading>
 );
