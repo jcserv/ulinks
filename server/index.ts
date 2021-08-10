@@ -35,7 +35,7 @@ const customAuthChecker: AuthChecker<any> = (
 const path = "/graphql";
 
 // TO DO: figure out how to allow vercel preview apps
-const allowedOrigins = ["http://localhost:3000", "http://ulinks.io"];
+const allowedOrigins = ["http://localhost:3000", "https://www.ulinks.io/"];
 
 const main = async () => {
   const schema = await buildSchema({
