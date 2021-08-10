@@ -55,6 +55,7 @@ const main = async () => {
         credentialsRequired: false,
         algorithms: ["HS256"],
     }));
+    app.use(express_1.default.static("public"));
     // Verification
     app.get("/verify/:hashId", async function (req, res) {
         const { hashId } = req.params;
