@@ -63,7 +63,11 @@ export class AuthenticationResolver {
       password: await bcrypt.hash(password, 10),
       groupChatsCreated: [],
     });
-    await sendEmail(email, emailTypeToContent("confirmEmail", newHash));
+    try {
+      await sendEmail(email, await emailTypeToContent("confirmEmail", newHash));
+    } catch (e) {
+      console.log(e);
+    }
     return {
       status: "OK",
       jwtToken: jsonwebtoken.sign(

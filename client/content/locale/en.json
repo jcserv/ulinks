@@ -6,6 +6,7 @@
   "login": "Login",
   "register": "Register",
   "get-started": "Get Started",
+  "logout": "Logout",
   "languages": "Languages",
   "toggle-light-mode": "Toggle light mode",
   "toggle-dark-mode": "Toggle dark mode",
@@ -69,5 +70,6 @@
   "join-slack": "Join the Slack group",
   "visit-linktree": "Visit the Linktree page",
   "ban-user": "Ban User",
-  "ban-confirmation": "Are you sure you want to ban"
+  "ban-confirmation": "Are you sure you want to ban",
+  "resend-verification-email": "Resend Verification Email"
 }

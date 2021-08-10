@@ -6,6 +6,7 @@
   "login": "Se connecter",
   "register": "S'inscrire",
   "get-started": "Commencer",
+  "logout": "Se déconnecter",
   "languages": "Langues",
   "toggle-light-mode": "Alterner mode éclairé",
   "toggle-dark-mode": "Alterner mode noir",
@@ -70,5 +71,6 @@
   "join-slack": "Joignez le tchat Slack",
   "visit-linktree": "Visitez la siteweb Linktree",
   "ban-user": "Utilisateur Banni",
-  "ban-confirmation": "Êtes-vous sûr de vouloir interdire"
+  "ban-confirmation": "Êtes-vous sûr de vouloir interdire",
+  "resend-verification-email": "Renvoyer l'e-mail de vérification"
 }
