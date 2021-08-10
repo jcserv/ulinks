@@ -27,7 +27,7 @@ const customAuthChecker = ({ context: { req } }, roles) => {
 };
 const path = "/graphql";
 // TO DO: figure out how to allow vercel preview apps
-const allowedOrigins = ["http://localhost:3000", "http://ulinks.io"];
+// const allowedOrigins = ["http://localhost:3000", "https://www.ulinks.io"];
 const main = async () => {
     const schema = await type_graphql_1.buildSchema({
         resolvers: [resolvers_1.AuthenticationResolver, resolvers_1.UserResolver, resolvers_1.GroupChatResolver],
@@ -39,17 +39,7 @@ const main = async () => {
     });
     const app = express_1.default();
     app.set("view engine", "ejs");
-    app.use(cors_1.default({
-        origin: function (origin, callback) {
-            if (!origin)
-                return callback(null, true);
-            if (allowedOrigins.indexOf(origin) === -1) {
-                const msg = "The CORS policy for this site does not allow access from the specified domain";
-                return callback(new Error(msg), false);
-            }
-            return callback(null, true);
-        },
-    }));
+    app.use(cors_1.default());
     app.use(path, express_jwt_1.default({
         secret: process.env.SECRET,
         credentialsRequired: false,
