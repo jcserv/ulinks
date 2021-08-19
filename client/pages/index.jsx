@@ -1,7 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
   ButtonGroup,
   Flex,
   Heading,
@@ -12,7 +10,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { BsFillGridFill, BsPeopleFill } from "react-icons/bs";
 import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
@@ -62,9 +60,11 @@ export default function Home({
   const [totalPageState, setTotalPage] = useState(totalPages);
   const [groupChatStates, setGroupChats] = useState(groupChats);
   const [isCommunity, setCommunity] = useState(0);
-
+  const [isLoading, setisLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [oldSearchQuery, setOldSearchQuery] = useState("");
+
+  const observer = useRef();
 
   const tabs = [
     {
@@ -118,6 +118,7 @@ export default function Home({
   };
 
   const displayMorePages = async () => {
+    setisLoading(true);
     setCurrentPage((page) => page + 1);
     const {
       data: {
@@ -138,7 +139,27 @@ export default function Home({
     setGroupChats((oldGroupChats) => [...oldGroupChats, ...newGroupChats]);
     setTotalPage(newTotalPages);
     setCurrentPage(newPageNumber);
+    setisLoading(false);
   };
+  const handleObserver = (entries) => {
+    if (isLoading) return;
+    if (entries[0].isIntersecting && currentPage !== totalPageState) {
+      displayMorePages();
+    }
+  };
+
+  const loadAnchor = useCallback((endRef) => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    observer.current = new IntersectionObserver(handleObserver, {
+      threshold: 1,
+    });
+    if (endRef) {
+      observer.current.observe(endRef);
+    }
+  });
+
   return (
     <div className="page-container">
       <div
@@ -186,11 +207,7 @@ export default function Home({
             <Card key={index} {...groupChat} />
           ))}
         </Flex>
-        {currentPage !== totalPageState ? (
-          <Box textAlign="center">
-            <Button onClick={displayMorePages}>View More</Button>
-          </Box>
-        ) : null}
+        <div ref={loadAnchor} />
         <AdvancedSearchModal
           isOpen={isOpen}
           onOpen={onOpen}
