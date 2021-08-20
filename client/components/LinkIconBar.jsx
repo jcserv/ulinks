@@ -6,26 +6,30 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaDev, FaDiscord, FaWhatsapp } from "react-icons/fa";
-import { VscGithubInverted } from "react-icons/vsc";
+import { FaDev, FaDiscord, FaSlack, FaTree, FaWhatsapp } from "react-icons/fa";
+import { VscGithubInverted, VscIssues } from "react-icons/vsc";
 
 import { colors } from "../theme";
 
 const icons = {
+  bug: VscIssues,
+  devpost: FaDev,
   discord: FaDiscord,
   github: VscGithubInverted,
-  devpost: FaDev,
+  linktree: FaTree,
+  slack: FaSlack,
   whatsapp: FaWhatsapp,
 };
 
 const LinkIcon = ({
   index,
-  boxSize,
-  color,
-  onHoverColor,
   url,
   label,
   icon,
+  sideEffect,
+  boxSize,
+  color,
+  onHoverColor,
 }) => (
   <Tooltip label={label} aria-label={`${label}-tooltip`} key={`link-${index}`}>
     <Link
@@ -33,6 +37,7 @@ const LinkIcon = ({
       data-testid={label}
       display="inline-block"
       href={url}
+      onClick={sideEffect}
       isExternal
     >
       <Icon
@@ -45,8 +50,9 @@ const LinkIcon = ({
   </Tooltip>
 );
 
-const LinkIconBar = ({
+export const LinkIconBar = ({
   links,
+  sideEffect = () => {},
   color,
   onHoverColor,
   boxSize = "1.5em",
@@ -72,6 +78,7 @@ const LinkIconBar = ({
           <LinkIcon
             key={link.label}
             index={index}
+            sideEffect={sideEffect}
             boxSize={boxSize}
             color={iconColor}
             onHoverColor={hoverColor}

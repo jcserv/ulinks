@@ -44,7 +44,7 @@ export const wrapInTheme = (component) => (
 );
 
 export const renderWrapped = (component) =>
-  render(wrapInTheme(wrapInIntl(component)));
+  render(wrapInRouter(wrapInTheme(wrapInIntl(component))));
 
 export default {
   wrapInIntl,

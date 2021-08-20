@@ -16,7 +16,7 @@ const UserCard = ({ email }) => (
   </Box>
 );
 
-const UsersList = ({ heading, noItemsText, items }) => (
+export const UsersList = ({ heading, noItemsText, items }) => (
   <div className="col-12 m-5">
     <div className="row-12">
       <Heading as="h2" size="md" mb={2} color="gray.500">

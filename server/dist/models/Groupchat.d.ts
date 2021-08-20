@@ -13,6 +13,11 @@ export declare class GroupChat {
     isCommunity: boolean;
     courseInformation?: CourseInformation;
     status: string;
+    image: string;
+    created: Date;
+    updated: Date;
+    views: number;
+    likes: number;
 }
 export declare class GroupChatIds {
     groupChats: string[];

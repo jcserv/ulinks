@@ -4,9 +4,10 @@ import {
   HttpLink,
   InMemoryCache,
 } from "@apollo/client";
+import fetch from "cross-fetch";
 import cookie from "js-cookie";
 
-const httpLink = new HttpLink({ uri: `${process.env.HOST}/graphql` });
+const httpLink = new HttpLink({ uri: `${process.env.HOST}/graphql`, fetch });
 
 const authLink = new ApolloLink((operation, forward) => {
   const token = cookie.get("authToken");

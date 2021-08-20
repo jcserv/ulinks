@@ -1,24 +1,23 @@
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
-import { contributors, links } from "../constants/footerLinks";
-import { formatAsList } from "../helpers/formatters";
+import { links } from "../constants";
+import Contributors from "./Contributors";
 import Emoji from "./Emoji";
 import LinkIconBar from "./LinkIconBar";
 
-export default function Footer() {
+export function Footer() {
   return (
     <Box as="footer" mt={12} height="100%" textAlign="center" className="app">
-      <Text fontSize="sm">
-        Made with <Emoji label="blue heart" symbol="&#128153;" />
-        {" by  "}
-        {contributors.map((contributor, index) => (
-          <Link key={contributor.name} href={contributor.href} isExternal>
-            {formatAsList(contributor.name, index, contributors)}
-          </Link>
-        ))}
-      </Text>
+      <HStack justify="center">
+        <Text fontSize="sm">
+          Made with <Emoji label="blue heart" symbol="&#128153;" /> by
+        </Text>
+        <Contributors />
+      </HStack>
       <LinkIconBar links={links} />
     </Box>
   );
 }
+
+export default Footer;

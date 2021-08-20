@@ -66,7 +66,7 @@ const ChatRequestCard = ({ showRequestBtns, modifyRequest, name, id }) => {
   );
 };
 
-const RequestsList = ({
+export const RequestsList = ({
   heading,
   noItemsText,
   showRequestBtns,

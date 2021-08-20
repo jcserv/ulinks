@@ -1,58 +1,24 @@
 import { Box, Heading, useDisclosure, useToast } from "@chakra-ui/react";
-import cookie from "js-cookie";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
-import client from "../../apollo-client";
-import Autocomplete from "../../components/Autocomplete";
-import BanUserModal from "../../components/BanUserModal";
-import RequestsList from "../../components/RequestsList";
-import SectionContainer from "../../components/SectionContainer";
-import UsersList from "../../components/UsersList";
-import locales from "../../content/locale";
-import { GET_ADMIN_DATA } from "../../gql";
-import { UPDATE_GROUPCHAT } from "../../gql/GroupChat";
-import { GET_USER, SEARCH_USERS } from "../../gql/User";
+import {
+  Autocomplete,
+  BanUserModal,
+  CheckPermissions,
+  RequestsList,
+  SectionContainer,
+  UsersList,
+} from "../../components";
+import { REQUEST_RESULT } from "../../constants";
+import { messages } from "../../content/messages/pages/admin";
 import { mapAsOption } from "../../helpers";
-
-const messages = defineMessages({
-  requestManagement: {
-    id: "request-management",
-    description: locales.en["request-management"],
-    defaultMessage: locales.en["request-management"],
-  },
-  userManagement: {
-    id: "user-management",
-    description: locales.en["user-management"],
-    defaultMessage: locales.en["user-management"],
-  },
-  pendingRequests: {
-    id: "pending-requests",
-    description: locales.en["pending-requests"],
-    defaultMessage: locales.en["pending-requests"],
-  },
-  rejectedRequests: {
-    id: "rejected-requests",
-    description: locales.en["rejected-requests"],
-    defaultMessage: locales.en["rejected-requests"],
-  },
-  bannedUsers: {
-    id: "banned-users",
-    description: locales.en["banned-users"],
-    defaultMessage: locales.en["banned-users"],
-  },
-  noRequests: {
-    id: "no-requests",
-    description: locales.en["no-requests"],
-    defaultMessage: locales.en["no-requests"],
-  },
-  noUsers: {
-    id: "no-users",
-    description: locales.en["no-users"],
-    defaultMessage: locales.en["no-users"],
-  },
-});
+import {
+  checkAdmin,
+  getAdminData,
+  modifyGroupchatStatus,
+  searchUsersReq,
+} from "../../requests";
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,38 +29,9 @@ export default function Admin() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const toast = useToast();
-  const { locale, defaultLocale, push } = useRouter();
 
   useEffect(async () => {
-    const email = cookie.get("email");
-    if (!email) {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-    const { data } = await client.query({
-      query: GET_USER,
-      variables: {
-        email,
-      },
-    });
-    if (!data.getUser) {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-    if (data.getUser.status !== "admin") {
-      push(`${locale !== defaultLocale ? locale : ""}/`);
-      return;
-    }
-
-    const { data: adminData } = await client.query({
-      query: GET_ADMIN_DATA,
-      variables: {
-        status1: "pending",
-        status2: "rejected",
-        limit: 50,
-        userStatus: "banned",
-      },
-    });
+    const adminData = await getAdminData();
     setPending(adminData.pendingChats);
     setRejected(adminData.rejectedChats);
     setBanned(adminData.bannedUsers);
@@ -102,17 +39,7 @@ export default function Admin() {
   }, []);
 
   const modifyRequest = async (id, status) => {
-    const {
-      data: {
-        updateGroupChat: { name, id: groupChatId },
-      },
-    } = await client.mutate({
-      mutation: UPDATE_GROUPCHAT,
-      variables: {
-        id,
-        status,
-      },
-    });
+    const { name, groupChatId } = await modifyGroupchatStatus(id, status);
     if (status === "rejected") {
       setRejected((rejectedGroups) => [
         ...rejectedGroups,
@@ -122,24 +49,11 @@ export default function Admin() {
     setPending((pendingGroups) =>
       pendingGroups.filter((chat) => chat.id !== groupChatId)
     );
-    toast({
-      description: `Request ${name} has been ${status}`,
-      status: status === "approved" ? "success" : "error",
-      position: "bottom-left",
-      duration: 9000,
-      isClosable: true,
-    });
+    toast(REQUEST_RESULT(name, status));
   };
 
   const searchForUsers = async (text) => {
-    const {
-      data: { searchUsers },
-    } = await client.query({
-      query: SEARCH_USERS,
-      variables: {
-        text,
-      },
-    });
+    const searchUsers = await searchUsersReq(text);
     return mapAsOption(searchUsers, "email");
   };
 
@@ -152,44 +66,46 @@ export default function Admin() {
 
   return (
     <div className="page-container">
-      <SectionContainer height="">
-        <Heading alignSelf="flex-start">
-          {formatMessage(messages.requestManagement)}
-        </Heading>
-        <RequestsList
-          heading={formatMessage(messages.pendingRequests)}
-          noItemsText={formatMessage(messages.noRequests)}
-          items={pending}
-          showRequestBtns
-          modifyRequest={modifyRequest}
-        />
-        <RequestsList
-          heading={formatMessage(messages.rejectedRequests)}
-          noItemsText={formatMessage(messages.noRequests)}
-          items={rejected}
-        />
-        <Heading alignSelf="flex-start" mb={4}>
-          {formatMessage(messages.userManagement)}
-        </Heading>
-        <Box justifyContent="flex-start" w="100%">
-          <Autocomplete
-            name="Search Users"
-            options={mapAsOption(users, "email")}
-            onSearch={searchForUsers}
-            onSelect={onSelectUser}
+      <CheckPermissions permissionCheck={checkAdmin} redirectIfNoEmail redirect>
+        <SectionContainer height="">
+          <Heading alignSelf="flex-start">
+            {formatMessage(messages.requestManagement)}
+          </Heading>
+          <RequestsList
+            heading={formatMessage(messages.pendingRequests)}
+            noItemsText={formatMessage(messages.noRequests)}
+            items={pending}
+            showRequestBtns
+            modifyRequest={modifyRequest}
           />
-        </Box>
-        <UsersList
-          heading={formatMessage(messages.bannedUsers)}
-          noItemsText={formatMessage(messages.noUsers)}
-          items={banned}
-        />
-        <BanUserModal
-          isOpen={isOpen}
-          onClose={onClose}
-          selectedUser={selectedUser}
-        />
-      </SectionContainer>
+          <RequestsList
+            heading={formatMessage(messages.rejectedRequests)}
+            noItemsText={formatMessage(messages.noRequests)}
+            items={rejected}
+          />
+          <Heading alignSelf="flex-start" mb={4}>
+            {formatMessage(messages.userManagement)}
+          </Heading>
+          <Box justifyContent="flex-start" w="100%">
+            <Autocomplete
+              name="Search Users"
+              options={mapAsOption(users, "email")}
+              onSearch={searchForUsers}
+              onSelect={onSelectUser}
+            />
+          </Box>
+          <UsersList
+            heading={formatMessage(messages.bannedUsers)}
+            noItemsText={formatMessage(messages.noUsers)}
+            items={banned}
+          />
+          <BanUserModal
+            isOpen={isOpen}
+            onClose={onClose}
+            selectedUser={selectedUser}
+          />
+        </SectionContainer>
+      </CheckPermissions>
     </div>
   );
 }

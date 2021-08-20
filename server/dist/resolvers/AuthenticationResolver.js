@@ -22,6 +22,8 @@ const database_1 = require("../database");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
+const helpers_1 = require("../helpers");
+const email_1 = require("../helpers/email");
 let AuthenticationResolver = class AuthenticationResolver {
     async me() {
         return "Hello";
@@ -51,11 +53,21 @@ let AuthenticationResolver = class AuthenticationResolver {
                 status: "USER_EXISTS",
             };
         }
+        const newHash = helpers_1.generateRandomString();
+        //send an email
         const newUser = await database_1.User.create({
             email,
+            verified: false,
+            verifyHash: newHash,
             password: await bcrypt_1.default.hash(password, 10),
             groupChatsCreated: [],
         });
+        try {
+            await email_1.sendEmail(email, await email_1.emailTypeToContent("confirmEmail", newHash));
+        }
+        catch (e) {
+            console.log(e);
+        }
         return {
             status: "OK",
             jwtToken: jsonwebtoken_1.default.sign({ email, status: `${newUser.status}` }, `${process.env.SECRET}`, { expiresIn: "1y" }),
@@ -71,14 +83,16 @@ __decorate([
 ], AuthenticationResolver.prototype, "me", null);
 __decorate([
     type_graphql_1.Query(() => models_1.AuthenticationMsg),
-    __param(0, type_graphql_1.Arg("email")), __param(1, type_graphql_1.Arg("password")),
+    __param(0, type_graphql_1.Arg("email")),
+    __param(1, type_graphql_1.Arg("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], AuthenticationResolver.prototype, "login", null);
 __decorate([
     type_graphql_1.Mutation(() => models_1.AuthenticationMsg),
-    __param(0, type_graphql_1.Arg("email")), __param(1, type_graphql_1.Arg("password")),
+    __param(0, type_graphql_1.Arg("email")),
+    __param(1, type_graphql_1.Arg("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)

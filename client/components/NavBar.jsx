@@ -19,56 +19,39 @@ import {
   useColorMode,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import cookie from "js-cookie";
+import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { BsGearFill } from "react-icons/bs";
 import { FaGlobe, FaMoon, FaSun } from "react-icons/fa";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import Sticky from "react-stickynode";
 
-import locales from "../content/locale";
+import {
+  LOGOUT_SUCCESS,
+  RESEND_VERIFICATION_FAILURE,
+  RESEND_VERIFICATION_SUCCESS,
+} from "../constants";
+import { messages } from "../content/messages/components/NavBar";
+import { getUserData, resendVerificationEmail } from "../requests";
 import { colors } from "../theme";
 import CreateChatModal from "./CreateChatModal";
 
-const messages = defineMessages({
-  admin: {
-    id: "admin",
-    description: locales.en.admin,
-    defaultMessage: locales.en.admin,
-  },
-  create: {
-    id: "create",
-    description: locales.en.create,
-    defaultMessage: locales.en.create,
-  },
-  login: {
-    id: "login",
-    description: locales.en.login,
-    defaultMessage: locales.en.login,
-  },
-  register: {
-    id: "register",
-    description: locales.en.register,
-    defaultMessage: locales.en.register,
-  },
-  toggleLightMode: {
-    id: "toggle-light-mode",
-    description: locales.en["toggle-light-mode"],
-    defaultMessage: locales.en["toggle-light-mode"],
-  },
-  toggleDarkMode: {
-    id: "toggle-dark-mode",
-    description: locales.en["toggle-dark-mode"],
-    defaultMessage: locales.en["toggle-dark-mode"],
-  },
-});
-
 const Logo = ({ locale }) => (
-  <Heading as={Link} href="/" m={4} size="lg">
+  <Heading
+    as={Link}
+    href="/"
+    m={4}
+    size="lg"
+    style={{ textDecoration: "none" }}
+  >
+    <Image src="/logo.png" width="45" height="35" />
     <NextLink href="/" locale={locale}>
-      ConnectU
+      &nbsp; ULinks
     </NextLink>
   </Heading>
 );
@@ -83,10 +66,16 @@ const MenuToggle = ({ isOpen, onOpen }) => (
 
 const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   const { formatMessage } = useIntl();
+  const [navBtns, setNavBtns] = useState([]);
 
-  const navBtns = [
+  const navBtnsAll = [
     {
       label: formatMessage(messages.create),
+      href: "Create",
+    },
+    {
+      label: formatMessage(messages.admin),
+      href: "/admin",
     },
     {
       label: formatMessage(messages.login),
@@ -98,11 +87,25 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
     },
   ];
 
-  const displayBtns =
-    cookie.get("email") !== undefined ? navBtns.slice(0, 1) : navBtns.slice(1);
-  const btns = displayBtns.map((btn) => (
+  const statusToNavBtnIndex = {
+    admin: 2,
+    user: 1,
+  };
+
+  const email = cookie.get("email");
+
+  useEffect(async () => {
+    if (!email) {
+      setNavBtns(navBtnsAll.slice(2));
+      return;
+    }
+    const data = await getUserData(email);
+    setNavBtns(navBtnsAll.slice(0, statusToNavBtnIndex[data?.getUser.status]));
+  }, [email, locale]);
+
+  const btns = navBtns.map((btn) => (
     <Button key={btn.label} size={size} variant="link" mb={2} onClick={onClose}>
-      {btn.label === "Create" ? (
+      {btn.href === "Create" ? ( // forgive me father for this is jank
         <Button variant="link" onClick={onModalOpen}>
           {btn.label}
         </Button>
@@ -118,7 +121,7 @@ const NavButtons = ({ locale, onModalOpen, size, onClose }) => {
   return <>{btns}</>;
 };
 
-const ColorModeButton = ({ mr }) => {
+const ColorModeButton = () => {
   const { toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
@@ -136,50 +139,131 @@ const ColorModeButton = ({ mr }) => {
         color="current"
         onClick={toggleColorMode}
         icon={<SwitchIcon />}
-        style={{ marginRight: mr }}
       />
     </Tooltip>
   );
 };
 
-const LocaleSelect = () => (
-  <Menu>
-    <MenuButton
-      title="language-btn"
-      as={IconButton}
-      icon={<FaGlobe />}
-      size="md"
-      variant="ghost"
-    />
-    <MenuList size="sm">
-      <NextLink href="/" locale="en">
-        <MenuItem>English</MenuItem>
-      </NextLink>
-      <NextLink href="/" locale="fr">
-        <MenuItem>French</MenuItem>
-      </NextLink>
-    </MenuList>
-  </Menu>
-);
+const LocaleSelect = ({ mr }) => {
+  const { formatMessage } = useIntl();
 
-const MenuLinks = ({ locale, onModalOpen, onClose }) => (
-  <Stack
-    display={{ base: "none", sm: "none", md: "block" }}
-    width={{ sm: "full", md: "auto" }}
-    spacing="24px"
-    direction={["column", "row", "row", "row"]}
-    alignItems="center"
-  >
-    <NavButtons
-      locale={locale}
-      size="sm"
-      onModalOpen={onModalOpen}
-      onClose={onClose}
-    />
-    <LocaleSelect />
-    <ColorModeButton mr="12px" />
-  </Stack>
-);
+  return (
+    <Menu>
+      <Tooltip
+        label={formatMessage(messages.languages)}
+        aria-label={formatMessage(messages.languages)}
+      >
+        <MenuButton
+          title="language-btn"
+          as={IconButton}
+          icon={<FaGlobe />}
+          size="md"
+          variant="ghost"
+          style={{ marginRight: mr }}
+        />
+      </Tooltip>
+      <MenuList size="sm">
+        <NextLink href="/" locale="en">
+          <MenuItem>English</MenuItem>
+        </NextLink>
+        <NextLink href="/" locale="fr">
+          <MenuItem>French</MenuItem>
+        </NextLink>
+      </MenuList>
+    </Menu>
+  );
+};
+
+const Settings = ({ mr, isVerified }) => {
+  const { locale } = useRouter();
+  const { formatMessage } = useIntl();
+  const toast = useToast();
+  const email = cookie.get("email");
+
+  const resendVerify = async () => {
+    const data = await resendVerificationEmail(email);
+    if (data.status === 200) {
+      return toast(RESEND_VERIFICATION_SUCCESS);
+    }
+    return toast(RESEND_VERIFICATION_FAILURE);
+  };
+
+  const logout = async () => {
+    cookie.remove("email");
+    return toast(LOGOUT_SUCCESS);
+  };
+
+  if (typeof email !== "undefined") {
+    return (
+      <Menu>
+        <Tooltip
+          label={formatMessage(messages.settings)}
+          aria-label={formatMessage(messages.settings)}
+        >
+          <MenuButton
+            title="settings-btn"
+            as={IconButton}
+            icon={<BsGearFill />}
+            size="lg"
+            variant="ghost"
+            style={{ marginRight: mr }}
+          />
+        </Tooltip>
+        <MenuList size="sm">
+          {!isVerified && (
+            <MenuItem onClick={resendVerify}>
+              {formatMessage(messages.resendVerificationEmail)}
+            </MenuItem>
+          )}
+          <NextLink href="/" locale={locale}>
+            <MenuItem onClick={logout}>
+              {formatMessage(messages.logout)}
+            </MenuItem>
+          </NextLink>
+        </MenuList>
+      </Menu>
+    );
+  }
+  return null;
+};
+
+const MenuLinks = ({ locale, onModalOpen, onClose }) => {
+  const [localeMargin, setLocaleMargin] = useState("15px");
+  const [isVerified, setIsVerified] = useState(true);
+  const email = cookie.get("email");
+
+  useEffect(async () => {
+    setLocaleMargin(typeof email === "undefined" ? "15px" : "0px");
+    if (!email) {
+      return;
+    }
+    const data = await getUserData(email);
+    if (!data) return;
+    if (!data.getUser.verified) {
+      setIsVerified(false);
+    }
+  }, [email]);
+
+  return (
+    <Stack
+      display={{ base: "none", sm: "none", md: "block" }}
+      width={{ sm: "full", md: "auto" }}
+      spacing="24px"
+      direction={["column", "row", "row", "row"]}
+      alignItems="center"
+    >
+      <NavButtons
+        locale={locale}
+        size="sm"
+        onModalOpen={onModalOpen}
+        onClose={onClose}
+      />
+      <ColorModeButton />
+      <LocaleSelect mr={localeMargin} />
+      <Settings mr="15px" isVerified={isVerified} />
+    </Stack>
+  );
+};
 
 const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
@@ -199,8 +283,9 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
               onModalOpen={onModalOpen}
               onClose={onClose}
             />
-            <LocaleSelect />
             <ColorModeButton />
+            <LocaleSelect />
+            <Settings />
           </Stack>
         </DrawerBody>
       </DrawerContent>
@@ -208,7 +293,7 @@ const NavMenu = ({ locale, isOpen, onModalOpen, onClose }) => (
   </Drawer>
 );
 
-export default function Navbar() {
+export function Navbar() {
   const primary = useColorModeValue(colors.primary.light, colors.primary.dark);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -250,3 +335,5 @@ export default function Navbar() {
     </Sticky>
   );
 }
+
+export default Navbar;

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import RegisterForm from "../../components/RegisterForm";
+import { EnhancedRegisterForm as RegisterForm } from "../../components";
 import locales from "../../content/locale";
 
 const messages = defineMessages({

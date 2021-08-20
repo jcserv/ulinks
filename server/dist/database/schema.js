@@ -22,33 +22,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GroupChat = exports.User = exports.mongoose = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 exports.mongoose = mongoose_1.default;
+const constants_1 = require("../constants");
 const CourseInformationSchema = new mongoose_1.Schema({
     campus: String,
     department: String,
     code: String,
     term: {
         type: String,
-        enum: ["Fall", "Winter", "Summer", "Year"],
+        enum: ["Fall", "Winter", "Summer", "Year", "N/A"],
         default: "Fall",
     },
     year: String,
 });
 const GroupChatSchema = new mongoose_1.Schema({
     name: String,
+    createdBy: String,
     description: String,
     isCommunity: Boolean,
     links: [String],
+    image: String,
     courseInformation: CourseInformationSchema,
     status: {
         type: String,
-        enum: ["approved", "pending", "rejected"],
-        default: ["pending"],
+        enum: constants_1.STATUSES,
+        default: [constants_1.Status.pending],
     },
+    created: Date,
+    updated: Date,
+    views: Number,
+    likes: Number,
 }, { toObject: { versionKey: false } });
 // Schema for User
 const UserSchema = new mongoose_1.Schema({
     email: String,
     password: String,
+    verified: Boolean,
+    verifyHash: String,
     groupChatsCreated: [mongoose_1.Schema.Types.ObjectId],
     status: {
         type: String,
