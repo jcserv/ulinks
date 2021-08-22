@@ -22,6 +22,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import cookie from "js-cookie";
+import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -48,8 +49,9 @@ const Logo = ({ locale }) => (
     size="lg"
     style={{ textDecoration: "none" }}
   >
+    <Image src="/logo.png" width="45" height="35" />
     <NextLink href="/" locale={locale}>
-      ULinks
+      &nbsp; ULinks
     </NextLink>
   </Heading>
 );

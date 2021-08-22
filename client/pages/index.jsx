@@ -1,7 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   ButtonGroup,
   Center,
   Flex,
@@ -18,7 +17,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BsFillGridFill, BsPeopleFill } from "react-icons/bs";
 import { FaBook } from "react-icons/fa";
 import { GoSettings } from "react-icons/go";
@@ -56,6 +55,7 @@ export default function Home() {
   };
 
   const [isSearching, setIsSearching] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
   const [curSearchQuery, setSearchQuery] = useState(q ?? "");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPageState, setTotalPage] = useState(0);
@@ -93,6 +93,8 @@ export default function Home() {
     setCurrentPage(pageNumber);
   }, [q, iscommunity]);
 
+  const observer = useRef();
+
   const tabs = [
     {
       label: formatMessage(messages.all),
@@ -119,6 +121,7 @@ export default function Home() {
   };
 
   const displayMorePages = async () => {
+    setisLoading(true);
     setCurrentPage((page) => page + 1);
     const {
       groupChats: newGroupChats,
@@ -128,7 +131,27 @@ export default function Home() {
     setGroupChats((oldGroupChats) => [...oldGroupChats, ...newGroupChats]);
     setTotalPage(newTotalPages);
     setCurrentPage(newPageNumber);
+    setisLoading(false);
   };
+  const handleObserver = (entries) => {
+    if (isLoading) return;
+    if (entries[0].isIntersecting && currentPage !== totalPageState) {
+      displayMorePages();
+    }
+  };
+
+  const loadAnchor = useCallback((endRef) => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    observer.current = new IntersectionObserver(handleObserver, {
+      threshold: 1,
+    });
+    if (endRef) {
+      observer.current.observe(endRef);
+    }
+  });
+
   const handleCommunityChange = (newIsCommunity) => {
     setCurrentPage(0);
     if (newIsCommunity === 0) {
@@ -223,13 +246,7 @@ export default function Home() {
           <SkeletonText mt="4" noOfLines={4} spacing="4" />
         </Box>
       )}
-      {currentPage !== totalPageState ? (
-        <Box textAlign="center">
-          <Button onClick={displayMorePages}>
-            {formatMessage(messages.viewMore)}
-          </Button>
-        </Box>
-      ) : null}
+      <div ref={loadAnchor} />
       <AdvancedSearchModal
         isOpen={isOpen}
         onOpen={onOpen}

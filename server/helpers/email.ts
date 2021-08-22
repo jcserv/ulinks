@@ -33,6 +33,7 @@ export const emailTypeToContent = async (
       path.join(__dirname, "..", "templates/verifyEmail.ejs"),
       {
         link: `${HOSTNAME}/verify/${verificationHash}`,
+        image: `https://user-images.githubusercontent.com/45128231/127544410-c38a01c4-c2c1-408a-935d-ff9545ddaf94.png`,
       }
     );
     emailContent.text = `Thanks for signing up to ULinks.io! To get started creating group chat entries, click this link to verify your email: ${HOSTNAME}/verify/${verificationHash}`;
