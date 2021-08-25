@@ -149,11 +149,11 @@ const LocaleSelect = ({ mr }) => {
   const { pathname, query } = useRouter();
 
   let currentPath = pathname;
-  if (typeof query.id !== "undefined") {
+  if (query?.id) {
     currentPath = `/chat/${query.id}`;
-  } else if (typeof query.iscommunity !== "undefined") {
+  } else if (query?.iscommunity) {
     currentPath = `?iscommunity=${query.iscommunity}`;
-  } else if (typeof query.q !== "undefined") {
+  } else if (query?.q) {
     currentPath = `?q=${query.q}`;
   }
 
