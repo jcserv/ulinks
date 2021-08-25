@@ -153,6 +153,8 @@ const LocaleSelect = ({ mr }) => {
     currentPath = `/chat/${query.id}`;
   } else if (typeof query.iscommunity !== "undefined") {
     currentPath = `?iscommunity=${query.iscommunity}`;
+  } else if (typeof query.q !== "undefined") {
+    currentPath = `?q=${query.q}`;
   }
 
   return (

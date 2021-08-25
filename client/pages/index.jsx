@@ -114,7 +114,7 @@ export default function Home() {
     e.preventDefault();
     setCurrentPage(0);
     push(
-      `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
+      `/?q=${curSearchQuery}`,
       undefined,
       { shallow: true }
     );
