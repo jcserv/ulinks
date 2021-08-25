@@ -36,8 +36,6 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { formatMessage } = useIntl();
   const {
-    locale,
-    defaultLocale,
     push,
     query: { q, iscommunity },
   } = useRouter();
@@ -113,11 +111,7 @@ export default function Home() {
   const handleSearch = async (e) => {
     e.preventDefault();
     setCurrentPage(0);
-    push(
-      `/?q=${curSearchQuery}`,
-      undefined,
-      { shallow: true }
-    );
+    push(`/?q=${curSearchQuery}`, undefined, { shallow: true });
   };
 
   const displayMorePages = async () => {
