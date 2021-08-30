@@ -36,8 +36,6 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { formatMessage } = useIntl();
   const {
-    locale,
-    defaultLocale,
     push,
     query: { q, iscommunity },
   } = useRouter();
@@ -113,11 +111,7 @@ export default function Home() {
   const handleSearch = async (e) => {
     e.preventDefault();
     setCurrentPage(0);
-    push(
-      `${locale !== defaultLocale ? locale : ""}/?q=${curSearchQuery}`,
-      undefined,
-      { shallow: true }
-    );
+    push(`/?q=${curSearchQuery}`, undefined, { shallow: true });
   };
 
   const displayMorePages = async () => {
@@ -155,17 +149,13 @@ export default function Home() {
   const handleCommunityChange = (newIsCommunity) => {
     setCurrentPage(0);
     if (newIsCommunity === 0) {
-      push(`${locale !== defaultLocale ? locale : ""}/`, undefined, {
+      push(`/`, undefined, {
         shallow: true,
       });
     } else {
-      push(
-        `${locale !== defaultLocale ? locale : ""}/?iscommunity=${
-          newIsCommunity === 2
-        }`,
-        undefined,
-        { shallow: true }
-      );
+      push(`/?iscommunity=${newIsCommunity === 2}`, undefined, {
+        shallow: true,
+      });
     }
     setSearchQuery("");
   };
