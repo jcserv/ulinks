@@ -14,7 +14,13 @@ import React from "react";
 
 import { statuses } from "../constants";
 
-const ChatRequestCard = ({ showRequestBtns, modifyRequest, name, id }) => {
+const ChatRequestCard = ({
+  showRequestBtns,
+  modifyRequest,
+  name,
+  id,
+  createdBy,
+}) => {
   const { locale, defaultLocale, push } = useRouter();
   return (
     <Box
@@ -30,6 +36,8 @@ const ChatRequestCard = ({ showRequestBtns, modifyRequest, name, id }) => {
           {name}
         </Link>
       </Heading>
+      <Spacer />
+      <Text m={7}>{createdBy}</Text>
       <Spacer />
       {showRequestBtns ? (
         <>

@@ -52,6 +52,10 @@ __decorate([
     __metadata("design:type", String)
 ], GroupChat.prototype, "description", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], GroupChat.prototype, "createdBy", void 0);
+__decorate([
     type_graphql_1.Field(() => [String]),
     __metadata("design:type", Array)
 ], GroupChat.prototype, "links", void 0);
