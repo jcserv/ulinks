@@ -102,10 +102,21 @@ export class GroupChatResolver {
     if (type != undefined) {
       queryObj = { ...queryObj, isCommunity: type };
     }
-    const groupChats = await GroupChatModel.find(queryObj)
-      .sort({ views: -1, likes: -1 })
-      .skip(page * pageSize)
-      .limit(pageSize);
+
+    let groupChats;
+
+    if (type) {
+      groupChats = await GroupChatModel.find(queryObj)
+        .sort({ views: -1, likes: -1 })
+        .skip(page * pageSize)
+        .limit(pageSize);
+    } else {
+      groupChats = await GroupChatModel.find(queryObj)
+        .sort({ created: -1, views: -1, likes: -1 })
+        .skip(page * pageSize)
+        .limit(pageSize);
+    }
+
     const totalCount = await GroupChatModel.find(queryObj).countDocuments();
     if (totalCount === 0) {
       return {

@@ -79,6 +79,7 @@ export const Card = ({
       <Box
         bg={backgroundColor}
         maxW="sm"
+        minHeight="100%"
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
