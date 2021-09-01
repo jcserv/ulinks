@@ -161,6 +161,7 @@ export const UPDATE_GROUPCHAT_STATUS = gql`
     updateStatus(id: $id, status: $status) {
       name
       id
+      createdBy
     }
   }
 `;

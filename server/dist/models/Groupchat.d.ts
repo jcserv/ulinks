@@ -9,6 +9,7 @@ export declare class GroupChat {
     id: string;
     name: string;
     description: string;
+    createdBy: string;
     links: string[];
     isCommunity: boolean;
     courseInformation?: CourseInformation;

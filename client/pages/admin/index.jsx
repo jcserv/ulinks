@@ -39,11 +39,14 @@ export default function Admin() {
   }, []);
 
   const modifyRequest = async (id, status) => {
-    const { name, groupChatId } = await modifyGroupchatStatus(id, status);
+    const { name, groupChatId, createdBy } = await modifyGroupchatStatus(
+      id,
+      status
+    );
     if (status === "rejected") {
       setRejected((rejectedGroups) => [
         ...rejectedGroups,
-        { id: groupChatId, name },
+        { id: groupChatId, name, createdBy },
       ]);
     }
     setPending((pendingGroups) =>

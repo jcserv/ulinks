@@ -21,6 +21,8 @@ export class GroupChat {
 
   @Field() description: string;
 
+  @Field() createdBy: string;
+
   @Field(() => [String])
   links: string[];
 
