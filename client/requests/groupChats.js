@@ -74,7 +74,7 @@ export async function getGroupchatReq(id) {
 export async function modifyGroupchatStatus(id, status) {
   const {
     data: {
-      updateStatus: { name, id: groupChatId },
+      updateStatus: { name, id: groupChatId, createdBy },
     },
   } = await client.mutate({
     mutation: UPDATE_GROUPCHAT_STATUS,
@@ -83,7 +83,7 @@ export async function modifyGroupchatStatus(id, status) {
       status,
     },
   });
-  return { name, groupChatId };
+  return { name, groupChatId, createdBy };
 }
 
 export async function searchChats(
