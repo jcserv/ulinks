@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import {
+  FaCalendar,
   FaDiscord,
   FaRegSnowflake,
   FaSun,
@@ -16,6 +17,7 @@ const termToIcon = {
   Fall: GiChestnutLeaf,
   Winter: FaRegSnowflake,
   Summer: FaSun,
+  Year: FaCalendar,
 };
 
 const LinkIcon = ({ link, titleColor }) => (
@@ -41,7 +43,8 @@ const CourseInfo = ({ descriptionColor, campus, term, year }) => (
       as="h2"
       isTruncated
     >
-      {campus} <Icon as={termToIcon[term]} /> {year}
+      {campus} {year !== "N/A" ? year : ""}{" "}
+      {term !== "N/A" && <Icon as={termToIcon[term]} />}
     </Box>
   </>
 );
