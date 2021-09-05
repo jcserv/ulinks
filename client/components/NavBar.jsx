@@ -146,6 +146,16 @@ const ColorModeButton = () => {
 
 const LocaleSelect = ({ mr }) => {
   const { formatMessage } = useIntl();
+  const { pathname, query } = useRouter();
+
+  let currentPath = pathname;
+  if (query?.id) {
+    currentPath = `/chat/${query.id}`;
+  } else if (query?.iscommunity) {
+    currentPath = `?iscommunity=${query.iscommunity}`;
+  } else if (query?.q) {
+    currentPath = `?q=${query.q}`;
+  }
 
   return (
     <Menu>
@@ -163,10 +173,10 @@ const LocaleSelect = ({ mr }) => {
         />
       </Tooltip>
       <MenuList size="sm">
-        <NextLink href="/" locale="en">
+        <NextLink href={currentPath} locale="en">
           <MenuItem>English</MenuItem>
         </NextLink>
-        <NextLink href="/" locale="fr">
+        <NextLink href={currentPath} locale="fr">
           <MenuItem>French</MenuItem>
         </NextLink>
       </MenuList>

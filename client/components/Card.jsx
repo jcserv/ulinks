@@ -1,11 +1,26 @@
-import { Box, Center, useColorModeValue } from "@chakra-ui/react";
+import { Box, Center, Icon, useColorModeValue } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import { FaDiscord, FaTree, FaWhatsapp } from "react-icons/fa";
+import {
+  FaCalendar,
+  FaDiscord,
+  FaRegSnowflake,
+  FaSun,
+  FaTree,
+  FaWhatsapp,
+} from "react-icons/fa";
+import { GiChestnutLeaf } from "react-icons/gi";
 import Tilt from "react-vanilla-tilt";
 
-const Icon = ({ link, titleColor }) => (
+const termToIcon = {
+  Fall: GiChestnutLeaf,
+  Winter: FaRegSnowflake,
+  Summer: FaSun,
+  Year: FaCalendar,
+};
+
+const LinkIcon = ({ link, titleColor }) => (
   <>
     {link.includes("discord") && (
       <FaDiscord color={titleColor} style={{ marginRight: "5px" }} />
@@ -19,7 +34,29 @@ const Icon = ({ link, titleColor }) => (
   </>
 );
 
-export const Card = ({ name, description, image, links, id }) => {
+const CourseInfo = ({ descriptionColor, campus, term, year }) => (
+  <>
+    <Box
+      mt="1"
+      color={descriptionColor}
+      fontWeight="semibold"
+      as="h2"
+      isTruncated
+    >
+      {campus} {year !== "N/A" ? year : ""}{" "}
+      {term !== "N/A" && <Icon as={termToIcon[term]} />}
+    </Box>
+  </>
+);
+
+export const Card = ({
+  name,
+  image,
+  links,
+  id,
+  isCommunity,
+  courseInformation,
+}) => {
   const { locale, defaultLocale, push } = useRouter();
   const backgroundColor = useColorModeValue("#FFFFFF", "#181a1b");
   const descriptionColor = useColorModeValue("gray.600", "gray.400");
@@ -45,6 +82,7 @@ export const Card = ({ name, description, image, links, id }) => {
       <Box
         bg={backgroundColor}
         maxW="sm"
+        minHeight="100%"
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -68,19 +106,15 @@ export const Card = ({ name, description, image, links, id }) => {
           >
             {name}
           </Box>
-
-          <Box
-            mt="1"
-            color={descriptionColor}
-            fontWeight="semibold"
-            as="h2"
-            isTruncated
-          >
-            {description}
-          </Box>
+          {!isCommunity && (
+            <CourseInfo
+              descriptionColor={descriptionColor}
+              {...courseInformation}
+            />
+          )}
           <Box className="d-flex" mt="2">
             {links.map((link, index) => (
-              <Icon key={index} color={titleColor} link={link} />
+              <LinkIcon key={index} color={titleColor} link={link} />
             ))}
           </Box>
         </Box>

@@ -10,10 +10,12 @@ export const GET_ADMIN_DATA = gql`
     pendingChats: getGroupChatByStatus(status: $status1) {
       id
       name
+      createdBy
     }
     rejectedChats: getGroupChatByStatus(status: $status2) {
       id
       name
+      createdBy
     }
     users: getUsers(limit: $limit) {
       email

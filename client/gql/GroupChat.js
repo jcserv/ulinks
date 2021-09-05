@@ -89,6 +89,12 @@ export const SEARCH_GROUPCHATS = gql`
         links
         id
         isCommunity
+        courseInformation {
+          term
+          campus
+          code
+          year
+        }
       }
       totalPages
       pageNumber
@@ -110,6 +116,12 @@ export const SEARCH_ALL_GROUPCHATS = gql`
         links
         id
         isCommunity
+        courseInformation {
+          term
+          campus
+          code
+          year
+        }
       }
       totalPages
       pageNumber
@@ -149,6 +161,7 @@ export const UPDATE_GROUPCHAT_STATUS = gql`
     updateStatus(id: $id, status: $status) {
       name
       id
+      createdBy
     }
   }
 `;
