@@ -1,7 +1,5 @@
 # 🚀 ulinks
 
-![visitors](https://img.shields.io/endpoint?url=https://vu-mi.com/api/v1/views?id=jcserv/ulinks)
-
 ULinks is a platform for students to browse & upload academic group chats to stay connected during online school.
 It is an open source project, built with accessibility and i18n in mind, allowing any schools to spin up their own instance with little to no modification. ULinks was originally started at TOHacks 2021, <a href="https://devpost.com/software/connectu-q2cm8o">Devpost here</a>.
 
